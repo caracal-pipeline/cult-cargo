@@ -21,9 +21,18 @@ cabs:
         dtype: str
         required: true
       sky-model:
+        info: Name of file containing the sky model
         dtype: File
         required: true
       within:
+        info: Give JS9 region file. Only sources within those regions will be included.
+        required: false
         dtype: File
       num-sources:
+        info: "Select only N brightest sources. O means all."
+        default: 0
         dtype: int
+      memory-fraction:
+        info: "Fraction of system RAM that can be used. Used when setting automatically the chunk size"
+        dtype: float
+        default: 0.1
