@@ -13,9 +13,10 @@ COPY casasiteconfig.py /opt/casa
 
 ENV CASASITECONFIG /opt/casa/casasiteconfig.py
 
-RUN ln -s /usr/bin/python3.8 /usr/bin/python  
+RUN {python} -m casaconfig --measurespath /opt/casa/data --update-all
 
-CMD /usr/bin/python3.8
+RUN {python} -m casaconfig --measurespath /opt/casa/data --current-data
 
+RUN ln -s /usr/bin/{python} /usr/bin/python  
 
-
+CMD /usr/bin/python
