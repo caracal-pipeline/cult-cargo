@@ -167,6 +167,18 @@ lib:
           dtype: float
         maxuvw-m:
           dtype: float
+        mem:
+          info: Percentage limit of system memory to use
+          dtype: float
+        abs-mem:
+          info: Absolute limit of system memory to use (GB)
+          dtype: float
+        j:
+          info: Number of threads to use
+          dtype: int
+        deconvolution-threads:
+          info: Limit the deconvolution process to this number of threads
+          dtype: int
 
       base-outputs:
         source-list:
