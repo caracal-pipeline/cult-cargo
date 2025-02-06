@@ -274,3 +274,4 @@ images:
     versions:
       master:
         package: git+https://github.com/caracal-pipeline/RFInder.git
+

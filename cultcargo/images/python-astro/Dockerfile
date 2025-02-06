@@ -4,7 +4,7 @@ FROM {REGISTRY}/python-base:{VERSION}-{BUNDLE_VERSION}
 RUN python{VERSION} -m pip install --no-cache-dir \
     python-casacore astropy astroplan regions astro-tigger-lsm \
     owlcat dask-ms scipy omegaconf bdsf msutils \
-    stimela
+    stimela katbeam
 
 CMD python{VERSION}
 
