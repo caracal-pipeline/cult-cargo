@@ -74,7 +74,6 @@ lib:
           dtype: int
         multiscale-gain:
           dtype: float
-          default: 0.15
         multiscale-scale-bias:
           dtype: float
         scale:
@@ -184,4 +183,5 @@ lib:
           skip_freshness_checks: true
           mkdir: true
           must_exist: false
+          required: false
 
