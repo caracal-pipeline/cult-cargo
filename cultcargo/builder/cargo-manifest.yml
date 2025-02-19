@@ -229,17 +229,18 @@ images:
     assign:
       CMD: DDF.py --help
     versions:
-      # experimental branch, Oleg only
-      useapp-meerklass:
-        experimental_dependencies:
-          - /home/oms/projects/cult-cargo/cultcargo/images/ddfacet/DDFacet-useapp-meerklass
-          - /home/oms/projects/cult-cargo/cultcargo/images/ddfacet/killMS-useapp-meerklass
-        pre_install: |
-          ADD DDFacet-useapp-meerklass DDFacet-branch
-          ADD killMS-useapp-meerklass killMS-branch
-        package: -e ./DDFacet-branch ./killMS-branch
+      # # experimental branch, Oleg only
+      # useapp-meerklass:
+      #   experimental_dependencies:
+      #     - /home/oms/projects/cult-cargo/cultcargo/images/ddfacet/DDFacet-useapp-meerklass
+      #     - /home/oms/projects/cult-cargo/cultcargo/images/ddfacet/killMS-useapp-meerklass
+      #   pre_install: |
+      #     ADD DDFacet-useapp-meerklass DDFacet-branch
+      #     ADD killMS-useapp-meerklass killMS-branch
+      #   package: -e ./DDFacet-branch ./killMS-branch
       '0.8':
         package: DDFacet==0.8.0.0 killMS==3.2.0
+        extra_deps: ninja
 
   mosaic-queen:
     assign:
