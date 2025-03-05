@@ -197,6 +197,8 @@ images:
         package: quartical==0.2.4
       '0.2.5':
         package: quartical==0.2.5
+      '0.2.6dev':
+        package: git+https://github.com/ratt-ru/QuartiCal@v0.2.6-dev
       latest:
         package: quartical
       master:
