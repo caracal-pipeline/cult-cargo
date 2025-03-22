@@ -3,3 +3,4 @@ vars:
     images:
       registry: quay.io/stimela2
       version: cc0.2.0
+    astropy-data-dir: /var/cache/astropy
