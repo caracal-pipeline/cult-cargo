@@ -3,7 +3,7 @@ _include:
 
 cabs:
     sunblocker:
-        info: A pyrap method to remove solar-like RFI from interferometric data (https://github.com/gigjozsa/sunblocker)
+        info: Removes solar-like RFI from interferometric data (https://github.com/gigjozsa/sunblocker)
         image:
             _use: vars.cult-cargo.images
             name: sunblocker

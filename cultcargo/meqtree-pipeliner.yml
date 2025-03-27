@@ -1,6 +1,6 @@
 cabs:
   meqsim:
-    info: Runs MeqTrees turbo-sim.py script
+    info: Runs MeqTrees turbo-sim.py script (http://meqtrees.net)
     flavour:
       kind: python-code
         #interpreter_binary: python

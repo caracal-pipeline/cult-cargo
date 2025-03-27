@@ -8,7 +8,7 @@ cabs:
       _use: vars.cult-cargo.images
       name: crystalball
     command: crystalball
-    info: Crystalball visibility predictor
+    info: Crystalball visibility predictor (https://github.com/caracal-pipeline/crystalball)
 
     inputs:
       ms:

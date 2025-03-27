@@ -1,11 +1,14 @@
 FROM {REGISTRY}/python-base:{default_python_version}-{BUNDLE_VERSION}
 
 RUN apt-get update && apt-get -y upgrade && \
-    apt-get -y install xvfb python3-casacore libblas-dev liblapack-dev \
+    apt-get -y install xvfb python3-casacore libblas-dev liblapack-dev libfuse2 \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/archives 
 
-RUN pip install --no-cache-dir --upgrade numpy casatools=={wheel_version} casatasks=={wheel_version} casaconfig casadata
+RUN pip install --no-cache-dir --upgrade numpy casatools=={wheel_version} casatasks=={wheel_version} casaplotms casaconfig casadata
+
+# needed for casaplotms
+RUN pip install --no-cache-dir "protobuf<=3.21"
 
 RUN mkdir -p /opt/casa/data
 

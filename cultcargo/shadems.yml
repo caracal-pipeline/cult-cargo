@@ -10,7 +10,7 @@ cabs:
             name: shadems
 
         command: shadems
-        info: Rapid Measurement Set plotting with xarray-ms and datashader.
+        info: Rapid Measurement Set plotting with xarray-ms and datashader (https://github.com/ratt-ru/shadeMS)
 
         defaults:
             norm: auto
