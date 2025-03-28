@@ -11,6 +11,10 @@ ENV XDG_CACHE_HOME /var/cache
 ENV XDG_CONFIG_HOME /var/config
 RUN mkdir -p /var/cache/astropy /var/config/astropy
 
+# keep matplotlib happy in this environment, wants a writable config dir
+RUN ln -s /tmp /var/config/matplotlib
+RUN ln -s /tmp /var/cache/matplotlib
+
 RUN python{VERSION} -c "from astropy.config.paths import get_cache_dir, get_config_dir; print(get_cache_dir()); print(get_config_dir())"
 
 # force download of basic astropy data

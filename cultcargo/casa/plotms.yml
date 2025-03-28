@@ -9,12 +9,15 @@ cabs:
     info: Summarize dataset 
     command: casaplotms.plotms
     _use: lib.misc.casa6.command-data
+    flavour:
+      kind: python
+      interpreter_binary: xvfb-run -a python
     inputs:
       ms:
         info: Input MS or CalTable (blank for none)
         required: true
         default: ''
-        dtype: str
+        dtype: MS
         nom_de_guerre: vis
       gridrows:
         info: Number of subplot rows
