@@ -1,5 +1,5 @@
 # cult-cargo
-Curated Stimela2 cargo for popular radio astronomy software.
+Curated Stimela2 cargo for popular radio astronomy software. See [Image manifest](./bundle-manifest.md) for available images.
 
 ## Regular userland install
 
