@@ -80,6 +80,6 @@ You don't even need to run stimela (or indeed install anything) to take advantag
 For example, if you want to run a wsclean image, just do:
 
 ```
-$ singularity build wsclean-3.3.sif docker:quay.io/stimela2/wsclean:3.3-cc0.1.2
+$ singularity build wsclean-3.3.sif docker:quay.io/stimela2/wsclean:3.3-cc0.2.0
 $ singularity exec wsclean-3.3.sif wsclean 
 ```
