@@ -5,7 +5,7 @@ _include:
 
 cabs:
     casa.applycal:
-        info: Summarize dataset 
+        info: "CASA 'applycal' task: applies calibration tables and generates corrected data" 
         command: casatasks.applycal
         _use: lib.misc.casa6.command-data
         inputs:
@@ -86,7 +86,7 @@ cabs:
                 
 
     casa.fluxscale:
-        info: Bootstrap the flux density scale from standard calibrators 
+        info: "CASA 'fluxscale' task: bootstraps the flux density scale from standard calibrators"      
         command: casatasks.fluxscale
         _use: lib.misc.casa6.command-data
         inputs:
@@ -150,7 +150,7 @@ cabs:
                 
             
     casa.gaincal:
-        info: Uses CASA flux density calibration 
+        info: "CASA 'gaincal' task: gain calibration"      
         command: casatasks.gaincal
         _use: lib.misc.casa6.command-data
         inputs:

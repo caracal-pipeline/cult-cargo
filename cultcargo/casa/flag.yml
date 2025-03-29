@@ -5,7 +5,7 @@ _include:
 
 cabs:
     casa.flagman:
-        info: Uses CASA flagmanager to save/restore/list flagversions 
+        info: "CASA 'flagmanager' task: saves/restores flags" 
         command: casatasks.flagmanager
         _use: lib.misc.casa6.command-data
         inputs:
@@ -18,7 +18,7 @@ cabs:
                 required: true
 
     casa.flagsummary:
-        info: Uses CASA flagdata to obtain a flag summary
+        info: "CASA 'flagdata' task: separate cab to generate a flagging summary" 
         command: casatasks.flagdata
         _use: lib.misc.casa6.command-data
         inputs:
@@ -38,7 +38,7 @@ cabs:
                     - HIGHLIGHT:bold green
 
     casa.flagdata:
-        info: Uses CASA flagdata to perform flagging for different modes.
+        info: "CASA 'flagdata' task: performs flagging" 
         command: casatasks.flagdata
         _use: lib.misc.casa6.command-data
         inputs:

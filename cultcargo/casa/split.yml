@@ -6,7 +6,7 @@ _include:
 cabs:
             
     casa.split:
-        info: Split casa task. 
+        info: "CASA 'split' task: splits out subset of MS" 
         command: casatasks.split
         _use: lib.misc.casa6.command-data
         inputs:

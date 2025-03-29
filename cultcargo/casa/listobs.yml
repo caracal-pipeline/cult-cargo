@@ -5,7 +5,7 @@ _include:
 
 cabs:
     casa.listobs:
-        info: Summarize dataset 
+        info: "CASA 'listobs' task: summarizes an MS" 
         command: casatasks.listobs
         _use: lib.misc.casa6.command-data
         inputs:

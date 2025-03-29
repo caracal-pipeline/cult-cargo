@@ -5,7 +5,7 @@ _include:
 
 cabs:
     casa.setjy:
-        info: Uses CASA flux density calibration 
+        info: "CASA 'setjy' task: sets model from a flux density scale" 
         command: casatasks.setjy
         _use: lib.misc.casa6.command-data
         inputs:

@@ -5,7 +5,7 @@ _include:
 
 cabs:
     casa.polcal:
-        info: Summarize dataset 
+        info: "CASA 'polcal' task: polarization calibration" 
         command: casatasks.polcal
         _use: lib.misc.casa6.command-data
         inputs:

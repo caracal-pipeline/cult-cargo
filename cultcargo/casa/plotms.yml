@@ -6,7 +6,7 @@ _include:
 
 cabs:
   casa.plotms:
-    info: Summarize dataset 
+    info: "CASA 'plotms' task: generates plots based on an MS" 
     command: casaplotms.plotms
     _use: lib.misc.casa6.command-data
     flavour:

@@ -5,7 +5,7 @@ _include:
 
 cabs:
     casa.concat:
-        info: Uses CASA concat to merge list of ms 
+        info: "CASA 'concat' task: concatenates MSs" 
         command: casatasks.concat
         _use: lib.misc.casa6.command-data
         inputs:

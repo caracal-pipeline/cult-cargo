@@ -5,7 +5,7 @@ _include:
 
 cabs:
     casa.bandpass:
-        info: Summarize dataset 
+        info: "CASA 'bandpass' task: bandpass calibration" 
         command: casatasks.bandpass
         _use: lib.misc.casa6.command-data
         inputs:
