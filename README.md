@@ -36,6 +36,29 @@ dummy-recipe:
       cab: wsclean
 ```
 
+## Overriding image versions
+
+By default, cult-cargo will use the [image versions](./bundle-manifest.md) designated as latest in its [cargo manifest](https://github.com/caracal-pipeline/cult-cargo/blob/master/cultcargo/builder/cargo-manifest.yml). These versions are always called ``ccX.Y.Z``, where X.Y.Z is the cult-cargo release.
+
+You can select a different image version on a per-cab basis as follows:
+
+```yml
+#!/usr/bin/env -S stimela run -l
+_include: 
+  - (cultcargo)wsclean.yml
+
+cabs: 
+  wclean:
+    image:
+      version: 2.10.1-kern7-cc0.2.0
+
+dummy-recipe:
+  info: a dummy recipe
+  steps:
+    image:
+      cab: wsclean
+```
+
 ## Cab developers install
 
 ```
@@ -52,7 +75,7 @@ If you would like to maintain your own image collection, write your own manifest
 
 ## Using cult-cargo as a standalone image repository
 
-You don't even need to run stimela (or indeed install anything) to take advantage of the images packaged with cult-cargo. Take a look at the image repository on https://quay.io/organization/stimela2 to see what's available.
+You don't even need to run stimela (or indeed install anything) to take advantage of the images packaged with cult-cargo. The [image manifest](./bundle-manifest.md) will provide a concise version, or else take a look at the image repository on https://quay.io/organization/stimela2. 
 
 For example, if you want to run a wsclean image, just do:
 
