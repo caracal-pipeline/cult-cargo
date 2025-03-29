@@ -437,12 +437,11 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
         finally:
             if mfile:
                 mfile.close()
-            if any_not_found:
-                os.unlink(tmp_list_manifest)
-            else:
-                shutil.move(tmp_list_manifest, list_manifest)
-                print(f"Wrote bundle manifest to {list_manifest}\n")
-
+                if any_not_found:
+                    os.unlink(tmp_list_manifest)
+                else:
+                    shutil.move(tmp_list_manifest, list_manifest)
+                    print(f"Wrote bundle manifest to {list_manifest}\n")
 
     print("Success!", style="green")
 
