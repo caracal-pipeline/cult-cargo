@@ -29,4 +29,8 @@ RUN sed -i -e "s|app_path = __os.path.join( __os.path.abspath( __os.path.join(__
 ENV LD_LIBRARY_PATH /opt/casaplotms/usr/lib/
 ENV QT_QPA_PLATFORM_PLUGIN_PATH /opt/casaplotms/usr/lib/plugins/platforms
 
+# point to CASA data
+RUN mkdir -p /usr/local/share/data/
+RUN ln -s /opt/casa/data /usr/local/share/data/casacore
+
 CMD python{default_python_version}

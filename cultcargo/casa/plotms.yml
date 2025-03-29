@@ -12,6 +12,11 @@ cabs:
     flavour:
       kind: python
       interpreter_binary: xvfb-run -a python
+    backend:
+      singularity:
+        bind_dirs:
+          run-user:
+            host: /run/user
     inputs:
       ms:
         info: Input MS or CalTable (blank for none)
@@ -778,6 +783,7 @@ cabs:
       showgui:
         info: Show GUI
         dtype: bool
+        implicit: False
       clearplots:
         info: Remove any existing plots so new ones can replace them.
         dtype: bool
