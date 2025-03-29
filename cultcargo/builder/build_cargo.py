@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-import json
 import sys
 import click
 import requests
 import os.path
 import re
 import subprocess
+import shutil
 from typing import List, Dict, Optional, Any
 from dataclasses import dataclass
 from omegaconf import OmegaConf
@@ -69,6 +69,7 @@ print = console.print
                 default=DEFAULT_MANIFEST,
                 help=f'Cargo manifest. Default is {DEFAULT_MANIFEST}.')
 @click.option('-l', '--list', 'do_list', is_flag=True, help='List only, do not push or build. Returns error if images are missing.')
+@click.option('-L', '--list-manifest', type=str, help='List to manifest file. Returns error if images are missing.')
 @click.option('-b', '--build', is_flag=True, help='Build only, do not push.')
 @click.option('-p', '--push', is_flag=True, help='Push only, do not build.')
 @click.option('-r', '--rebuild', is_flag=True, help='Ignore docker image caches (i.e. rebuild).')
@@ -80,8 +81,13 @@ print = console.print
 @click.option('--boring', is_flag=True, help='Be boring -- no progress bar.')
 @click.argument('imagenames', type=str, nargs=-1)
 def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False, rebuild=False, boring=False,
-                no_tests=False,
+                list_manifest=None, no_tests=False,
                 experimental=False, ignore_latest_tag=False, verbose=False, imagenames: List[str] = []):
+    # --list-manifest implies --list
+    if list_manifest:
+        do_list = True
+
+    # enable push and build by default
     if not (build or push or do_list):
         build = push = True
 
@@ -286,7 +292,6 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
                 dockerfile = version_info.get('dockerfile') or image_info.dockerfile or 'Dockerfile'
                 dockerfile = dockerfile.format(**version_vars)
                 full_image = f"{registry}/{image}:{image_version}"
-                remote_image_exists = True
 
                 # find Dockerfile for this image
                 dockerpath = os.path.join(path, dockerfile)
@@ -295,26 +300,36 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
                     print(f"  {dockerpath} doesn't exist")
                     sys.exit(1)
                 build_dir = os.path.dirname(dockerpath)
+                remote_image_exists = True
 
                 # check if remote image exists
                 if push or build or do_list:
-                    print(f"Checking if registry already contains {full_image}")
-                    cmd = ['docker', 'manifest', 'inspect', full_image]
-                    try:
-                        print(f"  [bold].$ {' '.join(cmd)}[/bold]", highlight=False)
-                        # Execute the command
-                        subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
-                        print(f"  Manifest returned for {full_image}")
-                    except subprocess.CalledProcessError as e:
-                        output = e.stderr.strip()
-                        if "no such manifest" in output or "was deleted" in output:
-                            print(f"  {output}")
-                            print(f"  [green]No manifest returned for {full_image}[/green]")
-                            remote_image_exists = False
-                        else:
-                            print(f"  Error inspecting manifest: {e.stderr}")
-                            sys.exit(1)
-                    remote_images_exist.setdefault(image, {})[image_version] = remote_image_exists
+                    # helper function to check the registry for remote image
+                    def check_remote_image(full_name, version, linked_version=None):
+                        print(f"Checking if registry already contains {full_name}")
+                        cmd = ['docker', 'manifest', 'inspect', full_name]
+                        try:
+                            print(f"  [bold].$ {' '.join(cmd)}[/bold]", highlight=False)
+                            # Execute the command
+                            subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+                            print(f"  Manifest returned for {full_name}")
+                            image_exists = True
+                        except subprocess.CalledProcessError as e:
+                            output = e.stderr.strip()
+                            if "no such manifest" in output or "was deleted" in output:
+                                print(f"  {output}")
+                                print(f"  [green]No manifest returned for {full_name}[/green]")
+                                image_exists = False
+                            else:
+                                print(f"  Error inspecting manifest: {e.stderr}")
+                                sys.exit(1)
+                        remote_images_exist.setdefault(image, {})[version] = image_exists, linked_version
+                        return image_exists
+                    # check registry
+                    remote_image_exists = check_remote_image(full_image, image_version)
+                    # check for non-default latest tag as well
+                    if image_version == tag_latest.get(image):
+                        check_remote_image(f"{registry}/{image}:{BUNDLE_VERSION}", BUNDLE_VERSION, image_version)
 
                 # go build
                 if build:
@@ -357,8 +372,8 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
                     run(f"docker push {full_image}", cwd=path)
                     if image_version == tag_latest.get(image):
                         run(f"docker push {registry}/{image}:{BUNDLE_VERSION}")
-            progress.update(progress_task, description=
-                f"image [bold]{image}[/bold] [{i_image}/{len(imagenames)}]: tagging latest version")
+                    progress.update(progress_task, description=
+                        f"image [bold]{image}[/bold] [{i_image}/{len(imagenames)}]: tagging latest version")
 
             # # apply :latest tag to images
             # if all_versions and built_or_pushed_versions:
@@ -374,20 +389,59 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
     if do_list:
         print(Rule(f"Image list follows"))
         any_not_found = False
-        for image in imagenames:
-            found = [version for version, exists in remote_images_exist[image].items() if exists]
-            not_found = [version for version, exists in remote_images_exist[image].items() if not exists]
-            messages = [f"[green]{' '.join(found)}[/green] found"] if found else []
-            if not_found:
-                messages.append(f"[red]{' '.join(not_found)}[/red] not found")
-                any_not_found = True
-            if not messages:
-                print(f"[bold]{image}[/bold]: no versions defined")
+        if list_manifest:
+            tmp_list_manifest = list_manifest + ".tmp"
+            mfile = open(tmp_list_manifest, "wt")
+            mfile.write(f"# {conf.metadata.PACKAGE} bundle version {BUNDLE_VERSION}\n\n")
+            mfile.write("|**Image name**|**Available versions**|\n"
+                        "|--------------|----------------------|\n")
+        else:
+            mfile = None
+
+        try:
+            for image in sorted(imagenames):
+                found_linked = {}
+                not_found = []
+                # make list of found and not found images
+                for version, (exists, linked) in remote_images_exist[image].items():
+                    if exists:
+                        found_linked[version] = linked
+                    else:
+                        not_found.append(version)
+                # massage found list so that bundle version comes first
+                found = []
+                if BUNDLE_VERSION in found_linked:
+                    linked = found_linked.pop(BUNDLE_VERSION)
+                    if linked:
+                        found_linked.pop(linked, None)
+                        found.append(f"{BUNDLE_VERSION} ({linked})")
+                    else:
+                        found.append(BUNDLE_VERSION)
+                # append all others
+                found += sorted(found_linked.keys())
+                # write manifest
+                if mfile:
+                    mfile.write(f"|{image}|{' '.join(found)}|\n")
+                # display messages
+                messages = [f"[green]{' '.join(found)}[/green] found"] if found else []
+                if not_found:
+                    messages.append(f"[red]{' '.join(not_found)}[/red] not found")
+                    any_not_found = True
+                if not messages:
+                    print(f"[bold]{image}[/bold]: no versions defined")
+                else:
+                    print(f"[bold]{image}[/bold]: {', '.join(messages)}")
+            if any_not_found:
+                print("One or more image versions not found", style="red")
+                sys.exit(1)
+        finally:
+            if mfile:
+                mfile.close()
+            if any_not_found:
+                os.unlink(tmp_list_manifest)
             else:
-                print(f"[bold]{image}[/bold]: {', '.join(messages)}")
-        if any_not_found:
-            print("One or more image versions not found", style="red")
-            sys.exit(1)
+                shutil.move(tmp_list_manifest, list_manifest)
+                print(f"Wrote bundle manifest to {list_manifest}\n")
 
 
     print("Success!", style="green")
