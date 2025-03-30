@@ -2,9 +2,9 @@ FROM {REGISTRY}/python-base:{default_python_version}-{BUNDLE_VERSION}
 
 RUN apt-get update && apt-get -y upgrade && \
     apt-get -y install xvfb python3-casacore libblas-dev liblapack-dev libfuse-dev fuse \
-    libgoogle-perftools-dev libglib2.0-0 libqt5gui5 
-#    && rm -rf /var/lib/apt/lists/* \
-#    && rm -rf /var/cache/apt/archives 
+    libgoogle-perftools-dev libglib2.0-0 libqt5gui5 \
+   && rm -rf /var/lib/apt/lists/* \
+   && rm -rf /var/cache/apt/archives 
 
 RUN pip install --no-cache-dir --upgrade numpy casatools=={wheel_version} casatasks=={wheel_version} casaplotms casaconfig casadata
 

@@ -1,7 +1,7 @@
-FROM {REGISTRY}/base-cult:{BUNDLE_VERSION}
+FROM {REGISTRY}/base-cult:kern-{kern_version}-{BUNDLE_VERSION}
 
 RUN apt-get update && apt-get -y upgrade && \
-    apt-get -y install casacore-dev libgsl-dev libhdf5-dev \
+    apt-get -y install cmake casacore-dev libgsl-dev libhdf5-dev \
         libfftw3-dev libboost-dev \
         libboost-date-time-dev libboost-filesystem-dev \
         libboost-program-options-dev libboost-system-dev \

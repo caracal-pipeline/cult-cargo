@@ -3,10 +3,10 @@
 |Image name|Default version|Alternatives|
 |----------|---------------|--------------|
 |**aimfast**|**master**-cc0.2.0|**1.3.4**-cc0.2.0|
-|**base-cult**|**kern9**-cc0.2.0|**kern7**-cc0.2.0&nbsp;&nbsp;**kern8**-cc0.2.0|
+|**base-cult**|**kern-9**-cc0.2.0|**kern-7**-cc0.2.0&nbsp;&nbsp;**kern-8**-cc0.2.0&nbsp;&nbsp;**kern-dev**-cc0.2.0|
 |**breizorro**|cc0.2.0|**0.1.1**-cc0.2.0&nbsp;&nbsp;**master**-cc0.2.0|
 |**casa**|**5.8.0**-cc0.2.0|**4.7.2**-cc0.2.0&nbsp;&nbsp;**_base**-cc0.2.0|
-|**casa6**|**6.6**-cc0.2.0||
+|**casa6**|**6.7**-cc0.2.0|**6.6**-cc0.2.0|
 |**crystalball**|cc0.2.0|**0.4.2**-cc0.2.0&nbsp;&nbsp;**master**-cc0.2.0|
 |**cubical**|cc0.2.0|**1.6.4**-cc0.2.0&nbsp;&nbsp;**master**-cc0.2.0|
 |**ddfacet**|**0.8**-cc0.2.0||

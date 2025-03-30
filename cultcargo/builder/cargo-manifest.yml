@@ -25,11 +25,13 @@ images:
   # These are suitable as base images for binary installs
   base-cult:
     versions:
-      'kern7':
+      'kern-dev':
+        kern_version: dev
+      'kern-7':
         kern_version: 7
-      'kern8':
+      'kern-8':
         kern_version: 8
-      'kern9':
+      'kern-9':
         kern_version: 9
 
   # This adds a specific version of python on top of a base image, and upgrades pip
@@ -67,6 +69,8 @@ images:
         dockerfile: Dockerfile.kern9
 
   wsclean:
+    assign:
+      kern_version: 9
     versions:
       # these versions shipped in KERN
       '2.10.1-kern7':  # frozen version
@@ -99,6 +103,10 @@ images:
         dockerfile: Dockerfile.build
       '3.5':
         dockerfile: Dockerfile.build
+      ## build error -- casacore problems on kern-9, and cmake version on kern-dev
+      # '3.6':
+      #   kern_version: dev
+      #   dockerfile: Dockerfile.build
 
   casa:
     assign:
@@ -119,6 +127,8 @@ images:
       #     wheel_version: 6.5.6.22
       '6.6':
           wheel_version: 6.6.5.31
+      '6.7':
+          wheel_version: 6.7.0.31
 
   breizorro:
     versions:
