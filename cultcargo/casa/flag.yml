@@ -10,7 +10,9 @@ cabs:
         _use: lib.misc.casa6.command-data
         inputs:
             _use: lib.params.casa.base-inputs
-            # TODO decide on the write_parent_dir: true
+            ms:
+                # since a new "<MS>.flagversions" may need to be created, mark parent dir of ms as writeable
+                write_parent_dir: true
             versionname:
                 info: "flag version name"
             mode: 
@@ -43,7 +45,6 @@ cabs:
         _use: lib.misc.casa6.command-data
         inputs:
             _use: lib.params.casa.ms-field-spw-inputs
-            #    write_parent_dir: true
             mode:
                 info: Flagging mode
                 choices:

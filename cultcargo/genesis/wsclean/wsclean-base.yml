@@ -171,6 +171,12 @@ lib:
           dtype: float
         maxuvw-m:
           dtype: float
+        mem: 
+          dtype: int
+          info: "Limit memory usage to the given percentage of the total system memory. This is an approximate value. Default: 100."
+        abs-mem:
+          dtype: int
+          info: "Like -mem, but this specifies a fixed amount of memory in gigabytes."
 
       base-outputs:
         source-list:

@@ -6,10 +6,14 @@ RUN apt-get update && apt-get -y upgrade && \
    && rm -rf /var/lib/apt/lists/* \
    && rm -rf /var/cache/apt/archives 
 
-RUN pip install --no-cache-dir --upgrade numpy casatools=={wheel_version} casatasks=={wheel_version} casaplotms casaconfig casadata
+RUN uv python pin python{default_python_version}
+ 
+## leaving old command for reference
+#RUN pip install --no-cache-dir --upgrade numpy casatools=={wheel_version} casatasks=={wheel_version} casaplotms casaconfig casadata
 
-# needed for casaplotms
-RUN pip install --no-cache-dir "protobuf==3.20"
+# NB: protobuf==3.20 required by casa
+RUN uv pip -n install --system --upgrade numpy \
+    casatools=={wheel_version} casatasks=={wheel_version} casaplotms casaconfig casadata protobuf==3.20
 
 RUN mkdir -p /opt/casa/data
 

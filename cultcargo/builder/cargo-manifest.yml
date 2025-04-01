@@ -17,7 +17,7 @@ assign:
   pre_install: ''
   post_install: ''
   extra_deps: ''
-
+  default_pip_base_image: python-base
   default_python_version: '3.10'
 
 images:
@@ -38,18 +38,16 @@ images:
   # These are suitable as base images for pip installs
   python-base:
     versions:
-#      '3.12': {}   # having some trouble with 3.12 so ignoring it for now
-      '3.11': {}
-      '3.10': {}
+      '3.12': {}   # having some trouble with 3.12 so ignoring it for now
       '3.9': {}
-      '3.8': {}
+      '3.10': {}
+      '3.11': {}
 
   # Python base will all the astro goodies (and stimela) thrown in
   # This is the default image stimela uses for python cabs
   python-astro:
     versions:
-#      '3.12': {}
-      '3.8': {}
+      '3.12': {}
       '3.9': {}
       '3.10': {}
       '3.11': {}
@@ -104,9 +102,9 @@ images:
       '3.5':
         dockerfile: Dockerfile.build
       ## build error -- casacore problems on kern-9, and cmake version on kern-dev
-      # '3.6':
-      #   kern_version: dev
-      #   dockerfile: Dockerfile.build
+      '3.6':
+        kern_version: dev
+        dockerfile: Dockerfile.build
 
   casa:
     assign:
@@ -129,6 +127,16 @@ images:
           wheel_version: 6.6.5.31
       '6.7':
           wheel_version: 6.7.0.31
+
+  bdsf:
+    assign:
+      default_pip_base_image: python-astro
+      default_python_version: '3.9'    # use older python and astropy for bdsf 1.12
+      extra_deps: "'matplotlib<3.10' mpl-tools"  # this astropy doesn't like 3.10, too
+      CMD: "python -c 'import bdsf; print(bdsf)'"
+    versions:
+      '1.12.0':
+        package: bdsf==1.12.0
 
   breizorro:
     versions:
@@ -162,10 +170,6 @@ images:
   tricolour:
     assign:
       default_python_version: '3.8'
-      # python: python3.8
-      # extra_deps: -U scipy 
-    #  pre_install: RUN pip uninstall -y bokeh # bokeh causes deps conflict with numpy pin in tricolour
-    #  extra_deps: numpy\<1.20 # numba==0.54.0 bokeh\<3 psutil
     versions:
       '0.1.8.1':
         package: tricolour==0.1.8.1
@@ -186,7 +190,7 @@ images:
 
   msutils:
     assign:
-      CMD: /bin/true  # no main binary as such
+      CMD: "python -c 'import MSUtils; print(MSUtils)'"
     versions:
       '1.2.0':
         package: msutils==1.2.0
