@@ -3,7 +3,7 @@ _include:
 
 cabs:
   tigger-convert:
-    info: Interface to tigger-convert tool from the tigger-lsm package
+    info: Interface to tigger-convert LSM model conversion tool from the tigger-lsm package (https://github.com/ratt-ru/tigger-lsm)
     command: tigger-convert
 
     image:

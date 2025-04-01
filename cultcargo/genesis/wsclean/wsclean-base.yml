@@ -70,6 +70,10 @@ lib:
           dtype: List[int]
           policies:
             repeat: ','
+        multiscale-max-scales:
+          dtype: int
+        multiscale-gain:
+          dtype: float
         multiscale-scale-bias:
           dtype: float
         scale:
@@ -179,4 +183,5 @@ lib:
           skip_freshness_checks: true
           mkdir: true
           must_exist: false
+          required: false
 
