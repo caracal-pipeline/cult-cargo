@@ -33,3 +33,9 @@ lib:
                 image: 
                     _use: vars.cult-cargo.images
                     name: casa6
+                backend:
+                    singularity:
+                        bind_dirs:
+                            dot-casa:
+                                host: empty
+                                target: ~/.casa
