@@ -7,7 +7,7 @@ cabs:
     info: Uses PyBDSF to source-find within an image and write source catalog(s) (https://pybdsf.readthedocs.io/)
     image: 
       _use: vars.cult-cargo.images
-      name: python-astro
+      name: bdsf
     command: |
       import sys
       import bdsf as bdsm

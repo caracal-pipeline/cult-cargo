@@ -8,12 +8,14 @@ RUN apt-get update && apt-get install apt-utils && \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/archives 
 
-#RUN update-alternatives --install /usr/bin/python python /usr/bin/python{VERSION} 1
+## left as reminder in case of future problems
+# RUN update-alternatives --install /usr/bin/python python /usr/bin/python{VERSION} 1
 
-# # needed to upgrade pip properly -- sometimes it gets stuck and is unable to upgrade itself
+## left as reminder in case of future problems
+## needed to upgrade pip properly -- sometimes it gets stuck and is unable to upgrade itself
 #RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python{VERSION}
 
-RUN python{VERSION} -m pip install --no-cache-dir -U pip setuptools wheel packaging
+RUN python{VERSION} -m pip install --no-cache-dir -U pip setuptools wheel packaging uv
 
 CMD python{VERSION}
 

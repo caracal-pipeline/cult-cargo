@@ -1,9 +1,11 @@
 FROM {REGISTRY}/python-base:{VERSION}-{BUNDLE_VERSION}
 
 # add useful astro stuff
-RUN python{VERSION} -m pip install --no-cache-dir \
+# RUN python{VERSION} -m 
+RUN uv python pin python{VERSION}
+RUN uv pip -n install --system \
     python-casacore astropy astroplan regions astro-tigger-lsm \
-    owlcat dask-ms scipy omegaconf bdsf msutils \
+    owlcat dask-ms scipy omegaconf msutils \
     stimela katbeam
 
 # set XDG cache (normally ~/.cache)

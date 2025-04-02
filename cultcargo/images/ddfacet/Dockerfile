@@ -48,7 +48,7 @@ RUN apt-get update && \
 
 {pre_install}
 
-RUN python{default_python_version} -mpip install --use-pep517 --no-cache-dir -U matplotlib dask-ms python-casacore casadata ninja
+RUN python{default_python_version} -mpip install --use-pep517 --no-cache-dir -U matplotlib mpl-tools dask-ms python-casacore casadata ninja
 RUN python{default_python_version} -mpip install --use-pep517 --no-cache-dir {package} {extra_deps}
 
 {post_install}

@@ -411,7 +411,6 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
                 found_linked = {}
                 not_found = []
                 # make list of found and not found images
-                print(remote_images_exist[image])
                 for version, (exists, linked) in remote_images_exist[image].items():
                     if exists:
                         found_linked[version] = linked
