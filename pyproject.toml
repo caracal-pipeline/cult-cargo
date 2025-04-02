@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{include = "cultcargo"}]
 
 [tool.poetry.dependencies]
-python = "^3.9 <3.13"
+python = ">=3.9 <3.13"
 stimela = "^2.0.3"
 requests = "^2.0"
 
