@@ -1,4 +1,4 @@
-
+# needs pip install "ruamel.yaml<0.18.0" for newer pythoin versions
 import requests
 from ruamel.yaml import YAML
 yaml = YAML()
