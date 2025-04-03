@@ -23,7 +23,7 @@
 |**smops**|cc0.2.0|**0.1.7**-cc0.2.0&nbsp;&nbsp;**master**-cc0.2.0|
 |**spimple**|**base**-cc0.2.0|**master**-cc0.2.0|
 |**sunblocker**|**master**-cc0.2.0|**1.0.1**-cc0.2.0|
-|**tricolour**|cc0.2.0|**0.1.8.1**-cc0.2.0&nbsp;&nbsp;**master**-cc0.2.0|
+|**tricolour**|**0.1.8.1**-cc0.2.0||
 |**wsclean**|**3.6-haswell**-cc0.2.0|**2.10.1-kern7**-cc0.2.0&nbsp;&nbsp;**3.0.1-haswell**-cc0.2.0&nbsp;&nbsp;**3.1-haswell**-cc0.2.0&nbsp;&nbsp;**3.1-kern8**-cc0.2.0&nbsp;&nbsp;**3.2-haswell**-cc0.2.0&nbsp;&nbsp;**3.3-haswell**-cc0.2.0&nbsp;&nbsp;**3.4-haswell**-cc0.2.0&nbsp;&nbsp;**3.5-haswell**-cc0.2.0&nbsp;&nbsp;**3.5-skylake**-cc0.2.0&nbsp;&nbsp;**3.6-skylake**-cc0.2.0|
 
 

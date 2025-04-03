@@ -184,16 +184,20 @@ images:
         package: crystalball  
 
   tricolour:
-    assign:
-      default_python_version: '3.8'
     versions:
-      '0.1.8.1':
-        package: tricolour==0.1.8.1
-      latest:
-        package: tricolour
-      master:
-        # pre_install: RUN pip install -U
-        package: git+https://github.com/ratt-ru/tricolour
+      '0.1.8.1': {}
+    ## will re-enable this when tricolour has numpy 2 under control again
+    ##
+    # assign:
+    #   default_python_version: '3.8'
+    # versions:
+    #   '0.1.8.1':
+    #     package: tricolour==0.1.8.1
+    #   latest:
+    #     package: tricolour
+    #   master:
+    #     # pre_install: RUN pip install -U
+    #     package: git+https://github.com/ratt-ru/tricolour
 
   smops:
     versions:
