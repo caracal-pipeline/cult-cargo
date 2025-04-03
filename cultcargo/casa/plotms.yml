@@ -8,7 +8,8 @@ cabs:
   casa.plotms:
     info: "CASA 'plotms' task: generates plots based on an MS" 
     command: casaplotms.plotms
-    _use: lib.misc.casa6.command-data
+    _use: 
+      - lib.misc.casa6.command-data
     flavour:
       kind: python
       interpreter_binary: xvfb-run -a python
