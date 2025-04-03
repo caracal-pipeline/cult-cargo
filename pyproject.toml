@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cult-cargo"
-version = "0.1.3"
+version = "0.2.0"
 description = "Curated cargo of standard radio astronomy packages for stimela 2.0"
 authors = ["Oleg Smirnov, Sphesihle Makhathini"]
 license = "MIT"
@@ -8,8 +8,8 @@ readme = "README.md"
 packages = [{include = "cultcargo"}]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-stimela = "^2.0.1"
+python = ">=3.9 <3.13"
+stimela = "^2.0.3"
 requests = "^2.0"
 
 [tool.poetry.scripts]

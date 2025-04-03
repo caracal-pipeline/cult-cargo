@@ -1,0 +1,63 @@
+_include:
+  - genesis/cult-cargo-base.yml
+
+
+vars:
+  cult-cargo:
+    pfb-imaging:
+      image:
+        _use: vars.cult-cargo.images
+        name: pfb-imaging
+
+cabs:
+  _include: genesis/pfb-imaging/latest/uncabbedcabs.yml
+
+  pfb.init:
+    image:
+      _use: vars.cult-cargo.pfb-imaging.image
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
+
+  pfb.grid:
+    image:
+      _use: vars.cult-cargo.pfb-imaging.image
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
+
+  pfb.degrid:
+    image:
+      _use: vars.cult-cargo.pfb-imaging.image
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
+
+  pfb.kclean:
+    image:
+      _use: vars.cult-cargo.pfb-imaging.image
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
+
+  pfb.restore:
+    image:
+      _use: vars.cult-cargo.pfb-imaging.image
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
+
+  pfb.fluxtractor:
+    image:
+      _use: vars.cult-cargo.pfb-imaging.image
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
+
+  pfb.sara:
+    image:
+      _use: vars.cult-cargo.pfb-imaging.image
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
+
+  pfb.model2comps:
+    image:
+      _use: vars.cult-cargo.pfb-imaging.image
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
+
+  pfb.hci:
+    image:
+      _use: vars.cult-cargo.pfb-imaging.image
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
+    
+  pfb.smoovie:
+    image:
+      _use: vars.cult-cargo.pfb-imaging.image
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings

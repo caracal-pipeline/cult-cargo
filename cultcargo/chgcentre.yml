@@ -10,7 +10,7 @@ cabs:
       name: wsclean
       
     command: chgcentre
-    info: "Recompute UVWs and rotate visibilities to a new specified phase centre"
+    info: "Recompute UVWs and rotate visibilities to a new specified phase centre (from https://wsclean.readthedocs.io)"
 
     policies:
       prefix: '-'
@@ -34,19 +34,20 @@ cabs:
       shiftback:
         info: After changing the phase centre, project the visibilities back to the old phase centre. This is useful in WSClean for imaging with minimum w-values in a different projection.
         dtype: bool
-      f:
+      force:
         info: Force recalculation, even if destination is the same as the original phase direction
         dtype: bool
+        nom_de_guerre: f
       datacolumn:
         info: Only phase-rotate the visibilities in the given column. Otherwise, the columns DATA, MODEL_DATA and CORRECTED_DATA will all be processed if they exist.
         dtype: str
       from-ms:
         info: Rotate the measurement set to the same direction as specified in the provided measurement set.
-        dtype: str
+        dtype: MS
       ms:
         info: Measurement Set
         writable: true
-        dtype: str
+        dtype: MS
         required: true
         policies:
           positional: true
@@ -62,5 +63,3 @@ cabs:
         required: true
         policies:
           positional: true
-
-
