@@ -41,7 +41,7 @@ cabs:
         bind_dirs:
           astropy-cache:
             host: =current.cache-dir
-            target: =config.vars.cult-cargo.astropy.data-dir
+            target: =config.lib.misc.astropy.data-dir
             mkdir: true
 
   astropy.refresh-host-cache:
@@ -84,5 +84,5 @@ cabs:
         bind_dirs:
           astropy-cache:
             host: =current.cache-dir
-            target: =config.vars.cult-cargo.astropy.data-dir
+            target: =config.lib.misc.astropy.data-dir
             mkdir: true
