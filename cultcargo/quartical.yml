@@ -7,6 +7,7 @@ cabs:
     image:
       _use: vars.cult-cargo.images
       name: quartical
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
     command: goquartical
     info: QuartiCal calibration package (https://github.com/ratt-ru/QuartiCal)
     policies:

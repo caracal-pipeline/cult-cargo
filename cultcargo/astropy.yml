@@ -18,13 +18,14 @@ cabs:
 
   astropy.test-host-cache:
     info: Tests local astropy IERS and site data cache
+    _use: lib.misc.astropy.data-dir-cab-settings
+    flavour: 
+      kind: python-code
     inputs:
       cache-dir:
         dtype: Directory
-        info: local directory in which astropy data cache is meant to live 
-        default: '{config.run.env.HOME}/.astropy/cache'
-    flavour: 
-      kind: python-code
+        writable: true
+        implicit: =config.lib.misc.astropy.local-data-dir
     command: |
       import os
       from astropy.config.paths import get_cache_dir
@@ -36,27 +37,19 @@ cabs:
       print("Testing site data")
       from astropy.coordinates import EarthLocation
       print(EarthLocation.of_site('VLA'))
-    backend:
-      singularity:
-        bind_dirs:
-          astropy-cache:
-            host: =current.cache-dir
-            target: =config.vars.cult-cargo.astropy.data-dir
-            mkdir: true
 
   astropy.refresh-host-cache:
     info: Refreshes local astropy IERS and site data cache
+    _use: lib.misc.astropy.data-dir-cab-settings
     inputs:
       clear-cache:
         dtype: bool
         default: false
         info: clears cache, forcing a re-download
-    outputs:
       cache-dir:
         dtype: Directory
-        info: local directory in which astropy data cache is meant to live 
-        default: '{config.run.env.HOME}/.astropy/cache'
-        mkdir_self: true
+        writable: true
+        implicit: =config.lib.misc.astropy.local-data-dir
     flavour: 
       kind: python-code
     command: |
@@ -79,10 +72,3 @@ cabs:
       print("Downloading and testing site data")
       from astropy.coordinates import EarthLocation
       print(EarthLocation.of_site('VLA'))
-    backend:
-      singularity:
-        bind_dirs:
-          astropy-cache:
-            host: =current.cache-dir
-            target: =config.vars.cult-cargo.astropy.data-dir
-            mkdir: true

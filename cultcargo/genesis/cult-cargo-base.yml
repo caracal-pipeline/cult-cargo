@@ -3,6 +3,41 @@ vars:
     images:
       registry: quay.io/stimela2
       version: cc0.2.0
+
+lib:
+  misc:
     astropy:
+      # internal container path to astropy directories
       data-dir: /var/cache/astropy
       config-dir: /var/config/astropy
+      # local host directory for astropy cache
+      local-data-dir: ~/.astropy/cache
+
+      # Can include this into cabs via "_use: lib.misc.astropy.data-dir-cab-settings"
+      # This binds a local directory as the astropy data directory, overriding the internal data
+      # Use this if you want to update astropy data
+      data-dir-cab-settings:
+        backend:
+          singularity:
+            bind_dirs:
+              astropy-cache:
+                host: =config.lib.misc.astropy.local-data-dir
+                target: =config.lib.misc.astropy.data-dir
+                mkdir: true
+
+    numba:
+      # host path to Numba cache 
+      host-cache: ~/.numba-cache-stimela
+
+      # Include this into cabs via "_use: lib.misc.numba.cache-cab-settings"
+      # This binds a local directory as the numba cache, and sets internal environment variable to point to it
+      cache-cab-settings:
+        backend:
+          singularity:
+            env:
+              NUMBA_CACHE_DIR: /var/cache/numba
+            bind_dirs:
+              numba-cache:
+                host: =config.lib.misc.numba.host-cache
+                target: /var/cache/numba 
+                mkdir: true
