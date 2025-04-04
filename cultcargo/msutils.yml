@@ -36,6 +36,9 @@ cabs:
       colname:
         dtype: str
         required: true
+      likecol:
+        dtype: str
+        required: true
 
   msutils.renamecol:
     info: Renames an MS column (using standard casacore calls)
