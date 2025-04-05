@@ -30,6 +30,7 @@ cabs:
 
   cubical-gain-plots:
     command: plot-gain-solutions
+    info: plotting tool for CubiCal gain solutions
     policies:
       prefix: '--'
       replace: {'_': '-'}

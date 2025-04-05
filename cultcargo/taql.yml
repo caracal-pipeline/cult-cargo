@@ -4,7 +4,7 @@ _include:
 cabs:
   taql.update:
     name: taql.update 
-    info: "interface to taql update (https://manpages.ubuntu.com/manpages/impish/man1/taql.1.html)"
+    info: "Interface to taql update command from casacore (https://manpages.ubuntu.com/manpages/impish/man1/taql.1.html)"
     image: 
       _use: vars.cult-cargo.images
       name: python-astro

@@ -3,7 +3,7 @@ _include:
 
 cabs:
   msutils.copycol:
-    info: Copies one MS column to another. See https://github.com/SpheMakh/msutils
+    info: Copies one MS column to another (https://github.com/SpheMakh/msutils)
     flavour: python
     command: MSUtils.msutils.copycol
     image: 
@@ -22,7 +22,7 @@ cabs:
         required: true
 
   msutils.addcol:
-    info: Adds an MS column. See https://github.com/SpheMakh/msutils
+    info: Adds an MS column (see https://github.com/SpheMakh/msutils)
     flavour: python
     command: MSUtils.msutils.addcol
     image: 

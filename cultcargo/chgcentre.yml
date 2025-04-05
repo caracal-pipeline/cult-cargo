@@ -1,0 +1,65 @@
+_include:
+  - genesis/cult-cargo-base.yml
+
+cabs:
+  chgcentre:
+    name: chgcentre
+
+    image: 
+      _use: vars.cult-cargo.images
+      name: wsclean
+      
+    command: chgcentre
+    info: "Recompute UVWs and rotate visibilities to a new specified phase centre (from https://wsclean.readthedocs.io)"
+
+    policies:
+      prefix: '-'
+
+    inputs:
+      geozenith:
+        info: Will calculate the RA,dec of zenith for each timestep, and moves there. This make the set non-standard.
+        dtype: bool
+      flipuvwsign:
+        info: Flips the UVW sign. Necessary for LOFAR, for unknown reasons.
+        dtype: bool
+      minw:
+        info: Calculate the direction that gives the minimum w-values for the array.
+        dtype: bool
+      zenith:
+        info: Shift to the average zenith value.
+        dtype: bool
+      only-uvw:
+        info: Only update the UVW values, do not apply the phase shift
+        dtype: bool
+      shiftback:
+        info: After changing the phase centre, project the visibilities back to the old phase centre. This is useful in WSClean for imaging with minimum w-values in a different projection.
+        dtype: bool
+      force:
+        info: Force recalculation, even if destination is the same as the original phase direction
+        dtype: bool
+        nom_de_guerre: f
+      datacolumn:
+        info: Only phase-rotate the visibilities in the given column. Otherwise, the columns DATA, MODEL_DATA and CORRECTED_DATA will all be processed if they exist.
+        dtype: str
+      from-ms:
+        info: Rotate the measurement set to the same direction as specified in the provided measurement set.
+        dtype: MS
+      ms:
+        info: Measurement Set
+        writable: true
+        dtype: MS
+        required: true
+        policies:
+          positional: true
+      ra:
+        info: New Right Ascension (00h00m00.0s or 00:00:00.0 format)
+        dtype: str
+        required: true
+        policies:
+          positional: true
+      dec:
+        info: New Declination (00d00m00.0s or 00.00.00.0 format)
+        dtype: str
+        required: true
+        policies:
+          positional: true

@@ -1,20 +1,20 @@
 lib:
-  params: 
+  params:
     wsclean:
       base-inputs:
         ms:
           info: Measurement set(s)
           writable: true
-          dtype: MS
+          dtype: List[MS]
           required: true
           policies:
             positional: true
+            repeat: list
         prefix:
           info: Prefix of output products
           dtype: str
           nom_de_guerre: name
           required: true
-          mkdir: true
         column:
           dtype: str
           nom_de_guerre: data-column
@@ -28,7 +28,7 @@ lib:
         channel-range:
           dtype: List[int]
           policies:
-            repeat: ' '
+            repeat: list
         pol:
           dtype: Union[str, List[str]]
           element_choices: [I,Q,U,V,QU,QUV,IQ,IV,IQU,IQUV,XX,XY,YX,YY,LL,LR,RL,RR]
@@ -70,6 +70,10 @@ lib:
           dtype: List[int]
           policies:
             repeat: ','
+        multiscale-max-scales:
+          dtype: int
+        multiscale-gain:
+          dtype: float
         multiscale-scale-bias:
           dtype: float
         scale:
@@ -92,6 +96,13 @@ lib:
           dtype: float
         auto-mask:
           dtype: float
+        local-rms:
+          dtype: bool
+        local-rms-window:
+          dtype: int
+        local-rms-method:
+          dtype: str
+          choices: [rms, rms-with-min]
         gain:
           dtype: float
         mgain:
@@ -124,6 +135,8 @@ lib:
           dtype: int
         no-reorder:
           dtype: bool
+        reorder:
+          dtype: bool
         predict:
           dtype: bool
         no-update-model-required:
@@ -134,10 +147,6 @@ lib:
           dtype:  bool
         use-wgridder:
           dtype: bool
-        temp-dir:
-          dtype: Directory
-          skip_freshness_checks: true
-          writable: true
         log-time:
           dtype: bool
         interval:
@@ -162,6 +171,15 @@ lib:
           dtype: float
         maxuvw-m:
           dtype: float
+        deconvolution-threads:
+          info: Limit the deconvolution process to this number of threads
+          dtype: int
+        mem: 
+          dtype: int
+          info: "Limit memory usage to the given percentage of the total system memory. This is an approximate value. Default: 100"
+        abs-mem:
+          dtype: int
+          info: "Like -mem, but this specifies a fixed amount of memory in gigabytes"
 
       base-outputs:
         source-list:
@@ -169,3 +187,10 @@ lib:
           dtype: File
           implicit: "{current.prefix}-sources.txt"
           must_exist: false
+        temp-dir:
+          dtype: Directory
+          skip_freshness_checks: true
+          mkdir: true
+          must_exist: false
+          required: false
+

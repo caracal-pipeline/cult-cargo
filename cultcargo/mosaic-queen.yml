@@ -3,7 +3,7 @@ _include:
 
 cabs:
   mosaic-queen:
-    info: mosaicking commands from montage, that also does primary-beam correction (https://github.com/caracal-pipeline/MosaicQueen)
+    info: Mosaicking commands from montage, that also does primary-beam correction (https://github.com/caracal-pipeline/MosaicQueen)
     command: mosaic-queen
     image: 
       _use: vars.cult-cargo.images

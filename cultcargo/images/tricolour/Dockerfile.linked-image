@@ -1,0 +1,3 @@
+FROM quay.io/stimela2/{link_older_image}
+
+CMD tricolour --help

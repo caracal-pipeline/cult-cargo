@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-import json
 import sys
 import click
 import requests
 import os.path
 import re
 import subprocess
+import shutil
 from typing import List, Dict, Optional, Any
 from dataclasses import dataclass
 from omegaconf import OmegaConf
@@ -17,6 +17,10 @@ try:
     from importlib import metadata
 except ImportError: # for Python<3.8
     import importlib_metadata as metadata
+from cultcargo.builder.build_utils import (
+    substitute_environment_variables,
+    resolve_version_substitutions
+)
 
 
 
@@ -52,7 +56,7 @@ def run(command, cwd=None, input=None):
     args = command.split()
     result = subprocess.run(args, cwd=cwd, input=input, text=True)
     if result.returncode:
-        print(f"{command} failed with exit code {result.returncode}")
+        print(f"[bold red]{command} failed with exit code {result.returncode}[/bold red]")
         sys.exit(1)
     return 0
 
@@ -65,14 +69,25 @@ print = console.print
                 default=DEFAULT_MANIFEST,
                 help=f'Cargo manifest. Default is {DEFAULT_MANIFEST}.')
 @click.option('-l', '--list', 'do_list', is_flag=True, help='List only, do not push or build. Returns error if images are missing.')
+@click.option('-L', '--list-manifest', type=str, help='List to manifest file. Returns error if images are missing.')
 @click.option('-b', '--build', is_flag=True, help='Build only, do not push.')
 @click.option('-p', '--push', is_flag=True, help='Push only, do not build.')
 @click.option('-r', '--rebuild', is_flag=True, help='Ignore docker image caches (i.e. rebuild).')
 @click.option('-a', '--all', is_flag=True, help='Build and/or push all images in manifest.')
+@click.option('-E', '--experimental', is_flag=True, help='Enable experimental versions.')
 @click.option('-v', '--verbose', is_flag=True, help='Be verbose.')
+@click.option('--no-tests', is_flag=True, help='Skip image tests during the list or build.')
+@click.option('--ignore-latest-tag', is_flag=True, help='Neither require nor apply latest tag.')
 @click.option('--boring', is_flag=True, help='Be boring -- no progress bar.')
 @click.argument('imagenames', type=str, nargs=-1)
-def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False, rebuild=False, boring=False, verbose=False, imagenames: List[str] = []):
+def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False, rebuild=False, boring=False,
+                list_manifest=None, no_tests=False,
+                experimental=False, ignore_latest_tag=False, verbose=False, imagenames: List[str] = []):
+    # --list-manifest implies --list
+    if list_manifest:
+        do_list = True
+
+    # enable push and build by default
     if not (build or push or do_list):
         build = push = True
 
@@ -89,6 +104,13 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
 
         conf = OmegaConf.load(manifest)
         conf = OmegaConf.merge(OmegaConf.structured(Manifest), conf)
+
+        # NOTE(JSKenyon): Replace environment varaibles with values. Currently,
+        # this function does not traverse collections other than dictionaries.
+        conf = substitute_environment_variables(conf)
+        # NOTE(JSKenyon): Resolve versioning substitutions on images to make
+        # manipulating the config more consistent between use-cases.
+        resolve_version_substitutions(conf)
 
         # get package version
         if conf.metadata.PACKAGE_VERSION == "auto":
@@ -131,7 +153,6 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
                 print(f"  [red]Failed to fetch release info: {response.status_code}[/red]")
                 sys.exit(1)
 
-
         # get registry
         def resolve_config_reference(value):
             comps =  value.split("::")
@@ -151,7 +172,7 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
         print(f"Registry is {conf.metadata.REGISTRY}, bundle is '{conf.metadata.BUNDLE_VERSION}', prefix '{conf.metadata.BUNDLE_VERSION_PREFIX}'")
         if not conf.metadata.BUNDLE_VERSION.startswith(conf.metadata.BUNDLE_VERSION_PREFIX):
             print("Inconsistent manifest metadata: BUNDLE_VERSION must start with BUNDLE_VERSION_PREFIX")
-            return 1
+            sys.exit(1)
 
         unprefixed_image_version = conf.metadata.BUNDLE_VERSION[len(conf.metadata.BUNDLE_VERSION_PREFIX):]
 
@@ -188,12 +209,15 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
             # figure out latest version - this will be tagged as BUNDLE_VERSION
             # explicitly specified?
             latest = image_info.latest
-            if latest: # case (a)
+            if ignore_latest_tag:  # Skip latest tag logic.
+                tag_latest[image] = None
+            elif latest: # case (a)
                 if "latest" in versions:
-                    print("Image {image}: both 'latest' version and a latest tag defined, can't have both")
+                    print(f"Image {image}: both 'latest' version and a latest tag defined, can't have both")
                     sys.exit(1)
                 if latest not in versions:
-                    print("Image {image}: latest tag refers to unknown version '{latest}'")
+                    print(f"Image {image}: latest tag refers to unknown version '{latest}'")
+                    print(f"Known versions are: {versions}.")
                     sys.exit(1)
                 tag_latest[image] = f"{latest}-{BUNDLE_VERSION}"  # case (b)
             elif "latest" not in versions:
@@ -211,10 +235,10 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
                 image, version = image.split(":", 1)
             if image not in conf.images:
                 print(f"Unknown image '{image}'")
-                return 1
+                sys.exit(1)
             if version is not None and version not in conf.images[image].versions:
                 print(f"Unknown image '{image}:{version}'")
-                return 1
+                sys.exit(1)
 
         remote_images_exist = {}
 
@@ -231,7 +255,7 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
             image_info = conf.images[image]
             image_vars = global_vars.copy()
             image_vars.update(IMAGE=image, **(image_info.assign or {}))
-            image_vars.setdefault("CMD", image)
+            image_vars.setdefault("CMD", f"{image} --help")
 
             path = os.path.join(global_vars.BASE_IMAGE_PATH, image).format(**image_vars)
 
@@ -243,7 +267,6 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
                 if version == "latest":
                     image_version = BUNDLE_VERSION
                 else:
-                    version = version.format(**image_vars)
                     image_version = f"{version}-{BUNDLE_VERSION}"
 
                 version_info = image_info.versions[version]
@@ -252,38 +275,61 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
                 version_vars["VERSION"] = version
                 version_vars["IMAGE_VERSION"] = image_version
 
+                is_exp = version_info.get('experimental')
+                exp_deps = version_info.get('experimental_dependencies', [])
+
+                if is_exp or exp_deps:
+                    if not experimental:
+                        print(f"[bold]{image}:{image_version}[/bold] is experimental and -E switch not given, skipping")
+                        continue
+                    # check dependencies
+                    print(f"[bold]{image}:{image_version}[/bold] is experimental")
+                    for dep in exp_deps:
+                        if not os.path.exists(dep):
+                            print(f"  [red]ERROR: dependency {dep} doesn't exist[/red]")
+                            sys.exit(1)
+
                 dockerfile = version_info.get('dockerfile') or image_info.dockerfile or 'Dockerfile'
                 dockerfile = dockerfile.format(**version_vars)
                 full_image = f"{registry}/{image}:{image_version}"
-                remote_image_exists = True
 
                 # find Dockerfile for this image
                 dockerpath = os.path.join(path, dockerfile)
                 print(f"[bold]{image}:{image_version}[/bold] defined by {dockerpath}")
                 if not os.path.exists(dockerpath):
                     print(f"  {dockerpath} doesn't exist")
-                    return 1
+                    sys.exit(1)
                 build_dir = os.path.dirname(dockerpath)
+                remote_image_exists = True
 
                 # check if remote image exists
                 if push or build or do_list:
-                    print(f"Checking if registry already contains {full_image}")
-                    cmd = ['docker', 'manifest', 'inspect', full_image]
-                    try:
-                        print(f"  [bold].$ {' '.join(cmd)}[/bold]", highlight=False)
-                        # Execute the command
-                        subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
-                        print(f"  Manifest returned for {full_image}")
-                    except subprocess.CalledProcessError as e:
-                        output = e.stderr.strip()
-                        if "no such manifest" in output or "was deleted" in output:
-                            print(f"  {output}")
-                            print(f"  [green]No manifest returned for {full_image}[/green]")
-                            remote_image_exists = False
-                        else:
-                            print(f"  Error inspecting manifest: {e.stderr}")
-                            sys.exit(1)
-                    remote_images_exist.setdefault(image, {})[image_version] = remote_image_exists
+                    # helper function to check the registry for remote image
+                    def check_remote_image(full_name, version, linked_version=None):
+                        print(f"Checking if registry already contains {full_name}")
+                        cmd = ['docker', 'manifest', 'inspect', full_name]
+                        try:
+                            print(f"  [bold].$ {' '.join(cmd)}[/bold]", highlight=False)
+                            # Execute the command
+                            subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+                            print(f"  Manifest returned for {full_name}")
+                            image_exists = True
+                        except subprocess.CalledProcessError as e:
+                            output = e.stderr.strip()
+                            if "no such manifest" in output or "was deleted" in output:
+                                print(f"  {output}")
+                                print(f"  [green]No manifest returned for {full_name}[/green]")
+                                image_exists = False
+                            else:
+                                print(f"  Error inspecting manifest: {e.stderr}")
+                                sys.exit(1)
+                        remote_images_exist.setdefault(image, {})[version] = image_exists, linked_version
+                        return image_exists
+                    # check registry
+                    remote_image_exists = check_remote_image(full_image, image_version)
+                    # check for non-default latest tag as well
+                    if image_version == tag_latest.get(image):
+                        check_remote_image(f"{registry}/{image}:{BUNDLE_VERSION}", BUNDLE_VERSION, image_version)
 
                 # go build
                 if build:
@@ -299,6 +345,11 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
                     # is this the latest version that needs to be tagged
                     if image_version == tag_latest.get(image):
                         run(f"docker tag {registry}/{image}:{image_version} {registry}/{image}:{BUNDLE_VERSION}")
+                
+                # run the image tests
+                if not no_tests:
+                    print(f"Running sanity check of {full_image}")
+                    run(f"docker run {full_image}", input="")
 
                 # go push
                 if push:
@@ -321,8 +372,8 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
                     run(f"docker push {full_image}", cwd=path)
                     if image_version == tag_latest.get(image):
                         run(f"docker push {registry}/{image}:{BUNDLE_VERSION}")
-            progress.update(progress_task, description=
-                f"image [bold]{image}[/bold] [{i_image}/{len(imagenames)}]: tagging latest version")
+                    progress.update(progress_task, description=
+                        f"image [bold]{image}[/bold] [{i_image}/{len(imagenames)}]: tagging latest version")
 
             # # apply :latest tag to images
             # if all_versions and built_or_pushed_versions:
@@ -338,23 +389,75 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
     if do_list:
         print(Rule(f"Image list follows"))
         any_not_found = False
-        for image in imagenames:
-            found = [version for version, exists in remote_images_exist[image].items() if exists]
-            not_found = [version for version, exists in remote_images_exist[image].items() if not exists]
-            messages = [f"[green]{' '.join(found)}[/green] found"] if found else []
-            if not_found:
-                messages.append(f"[red]{' '.join(not_found)}[/red] not found")
-                any_not_found = True
-            if not messages:
-                print(f"[bold]{image}[/bold]: no versions defined")
-            else:
-                print(f"[bold]{image}[/bold]: {', '.join(messages)}")
-        if any_not_found:
-            print("One or more image versions not found", style="red")
-            sys.exit(1)
+        if list_manifest:
+            tmp_list_manifest = list_manifest + ".tmp"
+            mfile = open(tmp_list_manifest, "wt")
+            mfile.write(f"# {conf.metadata.PACKAGE} manifest (bundle version {BUNDLE_VERSION})\n\n")
+            mfile.write("|Image name|Default version|Alternatives|\n"
+                        "|----------|---------------|--------------|\n")
+        else:
+            mfile = None
 
+        # helper function, formats version string with markdown highlishts
+        def format_md_version(vers):
+            vv = vers.rsplit("-", 1)
+            if len(vv) > 1:
+                return f"**{vv[0]}**-{vv[1]}"
+            else:
+                return f"**{vers}**"
+
+        try:
+            for image in sorted(imagenames):
+                found_linked = {}
+                not_found = []
+                # make list of found and not found images
+                for version, (exists, linked) in remote_images_exist[image].items():
+                    if exists:
+                        found_linked[version] = linked
+                    else:
+                        not_found.append(version)
+                # massage found list so that bundle version comes first
+                found = []
+                main_version_md = "  "
+                other_versions_md = []
+                if BUNDLE_VERSION in found_linked:
+                    linked = found_linked.pop(BUNDLE_VERSION)
+                    if linked:
+                        main_version_md = format_md_version(linked)
+                        found_linked.pop(linked, None)
+                        found.append(f"{BUNDLE_VERSION} ({linked})")
+                    else:
+                        main_version_md = BUNDLE_VERSION
+                        found.append(BUNDLE_VERSION)
+                # append all others
+                other_versions_md += map(format_md_version, sorted(found_linked.keys()))
+                found += sorted(found_linked.keys())
+                # write manifest
+                if mfile:
+                    mfile.write(f"|**{image}**|{main_version_md}|{'&nbsp;&nbsp;'.join(other_versions_md)}|\n")
+                # display messages
+                messages = [f"[green]{' '.join(found)}[/green] found"] if found else []
+                if not_found:
+                    messages.append(f"[red]{' '.join(not_found)}[/red] not found")
+                    any_not_found = True
+                if not messages:
+                    print(f"[bold]{image}[/bold]: no versions defined")
+                else:
+                    print(f"[bold]{image}[/bold]: {', '.join(messages)}")
+            if any_not_found:
+                print("One or more image versions not found", style="red")
+                sys.exit(1)
+        finally:
+            if mfile:
+                mfile.write("\n\n<br><br>*This file was automatically generated by build-cargo. Do not edit.*\n")
+                mfile.close()
+                if any_not_found:
+                    os.unlink(tmp_list_manifest)
+                else:
+                    shutil.move(tmp_list_manifest, list_manifest)
+                    print(f"Wrote bundle manifest to {list_manifest}\n")
 
     print("Success!", style="green")
 
 def driver():
-    build_cargo()
+    return build_cargo()
