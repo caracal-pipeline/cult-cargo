@@ -1,0 +1,202 @@
+_include:
+    - (cultcargo):
+        - genesis/cult-cargo-base.yml
+        - genesis/casa/casa-inputs.yml
+
+cabs:
+    casa.mstransform:
+        info: Summarize dataset 
+        command: casatasks.mstransform
+        _use: lib.misc.casa6.command-data
+        inputs:
+            _use: lib.params.casa.base-inputs
+            outputvis:
+               default: ''
+               info: Name of output Measurement Set or Multi-MS
+               dtype: str
+            field:
+               default: ''
+               info: Select field using field id(s) or field name(s)
+               dtype: str
+            spw:
+               default: ''
+               info: Select spectral window/channels
+               dtype: str
+            intent:
+               default: ''
+               info: Select observing intent
+               dtype: str
+            createmms:
+               default: false
+               info: Create a multi-MS output from an input MS
+               dtype: bool
+            douvcontsub:
+               default: false
+               info:  Enable continuum subtraction as in task uvcontsub
+               dtype: bool
+            hanning:
+               default: false
+               info: Hanning smooth data to remove Gibbs ringing
+               dtype: bool
+            chanaverage:
+               default: false
+               info: Average data in channels
+               dtype: bool
+            keepflags:
+               default: false
+               info: Keep completely flagged rows or drop them from the output.
+               dtype: bool
+            regridms:
+               default: false
+               info: Transform channel labels and visibilities to a different spectral reference frame. Notice that u,v,w data is not transformed.
+               dtype: bool
+            reindex:
+               default: false
+               info: A hidden parameter for pipeline use only
+               dtype: bool
+            usewtspectrum:
+               default: false
+               info: Force creation of the columns WEIGHT_SPECTRUM and SIGMA_SPECTRUM in the output MS, even if not present in the input MS
+               dtype: bool
+            denoising_lib:
+               default: true
+               dtype: bool
+            timeaverage:
+               default: false
+               info:  Average data in time.
+               dtype: bool
+            want_cont:
+               default: false
+               dtype: bool
+            preaverage:
+               default: false
+               dtype: bool
+            monolithic_processing:
+               default: false
+               dtype: bool
+            realmodelcol:
+               default: false
+               dtype: bool
+            phasecenter:
+               default: ''
+               dtype: str 
+            taql:
+               default: ''
+               dtype: str
+            restfreq:
+               default: ''
+               dtype: str 
+            outframe:
+               default: ''
+               dtype: str 
+            timespan:
+               default: ''
+               dtype: str 
+            callib:
+               default: ''
+               dtype: str 
+            fitspw:
+               default: ''
+               dtype: str 
+            timebin:
+               default: '0s'
+               info:  Bin width for time averaging
+               dtype: str
+            tileshape:
+               default: [0]
+               dtype: list
+            ddistart:
+               default: -1
+               dtype: int 
+            width:
+               default: 1
+               dtype: int 
+            nspw:
+               default: 1
+               dtype: int
+            start:
+               default: 0
+               dtype: int 
+            nchan:
+               default: -1
+               dtype: int 
+            chanbin:
+               default: 1
+               dtype: int 
+            niter:
+               default: 1
+               dtype: int 
+            nthreads:
+               default: 1
+               dtype: int 
+            maxuvwdistance:
+               default: 0.0
+               dtype: int
+            fitorder:
+               default: 0
+               dtype: int   
+            timerange:
+               default: ''
+               info: Select data based on time range
+               dtype: str
+            uvrange:
+               default: ''
+               info: Select data within uvrange (default units meters)
+               dtype: str
+            antenna:
+               default: ''
+               info: Select data based on antenna/baseline
+               dtype: str
+            scan:
+               default: ''
+               info: Scan number range
+               dtype: str
+            mode:
+               default: 'channel'
+               info: Scan number range
+               dtype: str
+            veltype:
+               default: 'radio'
+               info: Veltype
+               dtype: str
+            numsubms:
+               default: 'auto'
+               info: num sub ms
+               dtype: str
+            separationaxis:
+               default: 'auto'
+               info: Separation axis
+               dtype: str
+            observation:
+               default: ''
+               info: Select by observation ID(s)
+               dtype: str
+            correlation:
+               default: ''
+               info: correlation
+               dtype: str
+            datacolumn:
+               default: ''
+               info: Which data column(s) to process.
+               dtype: str
+            array:
+               default: '' 
+               info:  Select (sub)array(s) by array ID number
+               dtype: str
+            feed:
+               default: ''
+               info: Multi-feed numbers
+               dtype: str
+            disableparallel:
+                default: false
+                dtype: bool
+            docallib:
+               default: false
+               info: Use callib or traditional cal apply parameters
+               dtype: bool
+            interpolation:
+               default: 'linear'
+               info: Interpolation
+               dtype: str
+
+

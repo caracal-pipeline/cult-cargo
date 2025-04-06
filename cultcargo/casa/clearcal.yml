@@ -1,0 +1,28 @@
+_include:
+    - (cultcargo):
+        - genesis/cult-cargo-base.yml
+        - genesis/casa/casa-inputs.yml
+cabs:
+    casa.clearcal:
+        info: Summarize dataset 
+        command: casatasks.clearcal
+        _use: lib.misc.casa6.command-data
+        inputs:
+            _use: lib.params.casa.base-inputs
+            field:
+               default: ''
+               info: select field using field ID or field name
+               dtype: str
+            intent:
+               default: ''
+               info:  Select observing intent
+               dtype: str
+            spw:
+               default: ''
+               info: select spectral window
+               dtype: str
+            addmodel: 
+               default: true
+               info:  Add MODEL_DATA scratch column
+               dtype: bool
+
