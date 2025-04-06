@@ -5,16 +5,18 @@ _include:
 cabs:
     casa.importgmrt:
         info: "CASA 'importgmrt' task: imports GMRT UVFITS to ms"
+        extra_info:
+            See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.data.importgmrt.html
         command: casatasks.importgmrt
         _use: lib.misc.casa6.command-data
         inputs:
             fitsfile:
-                info: The INPUT UVFITS file from GMRT 
+                info: UVFITS file from GMRT 
                 dtype: File
                 required: true
         outputs:
             vis:
-                info: The OUTPUT measurement set.
+                info: Output measurement set
                 dtype: MS
                 required: true
                 mkdir: false
