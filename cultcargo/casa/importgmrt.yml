@@ -15,8 +15,9 @@ cabs:
                 dtype: File
                 required: true
         outputs:
-            vis:
+            ms:
                 info: Output measurement set
                 dtype: MS
                 required: true
                 mkdir: false
+                nom_de_guerre: vis
