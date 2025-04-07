@@ -9,13 +9,16 @@ cabs:
         command: casatasks.setjy
         _use: lib.misc.casa6.command-data
         inputs:
-            _use: lib.params.casa.ms-field-spw-inputs
+            _use: 
+                - lib.params.casa.ms-selectdata-inputs
+            _scrub: antenna, uvrange, msselect   # not used by this task
             standard:
                 dtype: str 
-                default: 'Perley-Butler 2017'
-                info: Which standard to use 
+                info: |
+                    Which standard to use. Default is 'Perley-Butler 2017', alternatives are 
+                    'Perley-Butler 2013', 'Perley-Butler 2010', 'Butler-JPL-Horizons 2012', 
+                    'manual', 'fluxscale'
             usescratch:
                 dtype: bool
-                default: true
-                info: Will create if necessary and use the MODEL_DATA
+                info: Will create if necessary and use the MODEL_DATA column, default is true
                 

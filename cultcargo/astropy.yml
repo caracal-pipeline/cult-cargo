@@ -24,7 +24,7 @@ cabs:
     inputs:
       cache-dir:
         dtype: Directory
-        writable: true
+        mkdir: true
         implicit: =config.lib.misc.astropy.local-data-dir
     command: |
       import os
@@ -46,10 +46,13 @@ cabs:
         dtype: bool
         default: false
         info: clears cache, forcing a re-download
+    outputs:
       cache-dir:
         dtype: Directory
-        writable: true
         implicit: =config.lib.misc.astropy.local-data-dir
+        mkdir: true
+        policies:
+          skip: false  # pass it in as a variable since we print it below
     flavour: 
       kind: python-code
     command: |
