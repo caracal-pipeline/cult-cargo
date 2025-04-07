@@ -52,7 +52,7 @@ cabs:
                 default: ''
             gaintable:
                 info: Gain calibration table(s) to apply on the fly
-                dtype: List[File]
+                dtype: List[str]
                 default: []
             gainfield:
                 info: Select a subset of calibrators from gaintable(s). Subparameter of callib=False
