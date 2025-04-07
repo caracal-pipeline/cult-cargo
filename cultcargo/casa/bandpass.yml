@@ -8,12 +8,13 @@ cabs:
         info: "CASA 'bandpass' task: bandpass calibration" 
         command: casatasks.bandpass
         _use: lib.misc.casa6.command-data
-        inputs:
-            _use: lib.params.casa.ms-field-spw-inputs
+        outputs:
             caltable:
                 info: Name of output gain calibration table
-                dtype: str 
+                dtype: File
                 required: true
+        inputs:
+            _use: lib.params.casa.ms-field-spw-inputs
             intent:
                 info: Select observing intent
                 dtype: str 

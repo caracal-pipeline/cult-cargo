@@ -52,7 +52,7 @@ cabs:
                 default: ''
             gaintable:
                 info: Gain calibration table(s) to apply on the fly
-                dtype: List[str] 
+                dtype: List[File]
                 default: []
             gainfield:
                 info: Select a subset of calibrators from gaintable(s). Subparameter of callib=False
@@ -89,15 +89,16 @@ cabs:
         info: "CASA 'fluxscale' task: bootstraps the flux density scale from standard calibrators"      
         command: casatasks.fluxscale
         _use: lib.misc.casa6.command-data
+        outputs:
+            fluxtable:
+                info: Name of output flux-scaled calibation table
+                dtype: File
+                required: true
         inputs:
             _use: lib.params.casa.base-inputs
             caltable:
                 info: Name of input calibation table
-                dtype: str 
-                required: true
-            fluxtable:
-                info: Name of output flux-scaled calibation table
-                dtype: str 
+                dtype: File
                 required: true
             reference:
                 info: Reference field name(s) (transfer flux scale FROM
@@ -153,12 +154,14 @@ cabs:
         info: "CASA 'gaincal' task: gain calibration"      
         command: casatasks.gaincal
         _use: lib.misc.casa6.command-data
-        inputs:
-            _use: lib.params.casa.ms-field-spw-inputs
+        outputs:
             caltable:
                 info: Name of output gain calibration table
-                dtype: str 
+                dtype: File
                 required: true
+                must_exist: true
+        inputs:
+            _use: lib.params.casa.ms-field-spw-inputs
             intent:
                 info: Select observing intent
                 dtype: str 
@@ -279,7 +282,7 @@ cabs:
                 default: ''
             gaintable:
                 info: Gain calibration table(s) to apply on the fly
-                dtype: List[str] 
+                dtype: List[File]
                 default: []
             interp:
                 info: Interpolation parmameters (in time[,freq]) for each gaintable, as a list of strings.
