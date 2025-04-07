@@ -4,7 +4,7 @@ _include:
 
 cabs:
     casa.importgmrt:
-        info: "CASA 'importgmrt' task: imports GMRT UVFITS to ms"
+        info: "CASA 'importgmrt' task: imports GMRT UVFITS file into an MS"
         extra_info:
             See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.data.importgmrt.html
         command: casatasks.importgmrt
