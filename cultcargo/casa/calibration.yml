@@ -283,7 +283,7 @@ cabs:
                 default: ''
             gaintable:
                 info: Gain calibration table(s) to apply on the fly
-                dtype: List[File]
+                dtype: List[str]
                 default: []
             interp:
                 info: Interpolation parmameters (in time[,freq]) for each gaintable, as a list of strings.
