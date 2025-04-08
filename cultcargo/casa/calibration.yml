@@ -92,14 +92,14 @@ cabs:
         outputs:
             fluxtable:
                 info: Name of output flux-scaled calibation table
-                dtype: File
+                dtype: Directory
                 required: true
                 must_exist: false
         inputs:
             _use: lib.params.casa.base-inputs
             caltable:
                 info: Name of input calibation table
-                dtype: File
+                dtype: Directory
                 required: true
             reference:
                 info: Reference field name(s) (transfer flux scale FROM
@@ -158,7 +158,7 @@ cabs:
         outputs:
             caltable:
                 info: Name of output gain calibration table
-                dtype: File
+                dtype: Directory
                 required: true
                 must_exist: false
         inputs:

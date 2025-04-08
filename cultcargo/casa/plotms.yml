@@ -22,7 +22,7 @@ cabs:
       ms:
         info: Input MS or CalTable (blank for none)
         required: true
-        dtype: Union[MS,File]
+        dtype: Union[MS,Directory]
         nom_de_guerre: vis
       gridrows:
         info: Number of subplot rows
