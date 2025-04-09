@@ -11,7 +11,7 @@ cabs:
         outputs:
             caltable:
                 info: Name of output gain calibration table
-                dtype: File
+                dtype: Directory
                 required: true
         inputs:
             _use: lib.params.casa.ms-field-spw-inputs
