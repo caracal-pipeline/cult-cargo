@@ -49,8 +49,12 @@ cabs:
                 default: ''
             solint:
                 info: Solution interval
-                dtype: str 
-                default: 'inf' 
+                dtype: str
+                default: 'inf'
+            solnorm:
+                info: Normalize bandpass amplitudes and phase for each spw
+                dtype: bool
+                default: false
             combine:
                 info: Data axes which to combine for solve. Options ‘’,’obs’,’scan’,’spw’,field’, or any comma-separated combination in a single string
                 dtype: str 
