@@ -15,7 +15,10 @@ cabs:
                     - 'Perley-Butler 2017'
                     - 'Perley-Butler 2013'
                     - 'Perley-Butler 2010'
+                    - 'Skaife-Heald 2012'
+                    - 'Butler-JPL-Horizons 2010'
                     - 'Butler-JPL-Horizons 2012'
+                    - 'Stevens-Reynolds 2016'
                     - manual
                     - fluxscale
                 dtype: str
