@@ -62,3 +62,24 @@ cabs:
       new-column:
         dtype: str
         required: true
+
+  msutils.summary:
+    info: Provides a summary of the MS content (using the goquartical-summary utility from https://github.com/ratt-ru/QuartiCal)
+    image:
+      _use: vars.cult-cargo.images
+      name: quartical
+    command: goquartical-summary
+    policies:
+      positional: true
+    inputs:
+      ms:
+        info: path to Measurement Set
+        dtype : MS
+        nom_de_guerre: path
+        required: true
+    outputs:
+      output-dir: 
+        info: directory to write summary file to. Note that the summary is also printed to the console.
+        dtype: Directory
+        mkdir: true
+        default: .

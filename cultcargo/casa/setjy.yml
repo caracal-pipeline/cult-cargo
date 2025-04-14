@@ -9,7 +9,9 @@ cabs:
         command: casatasks.setjy
         _use: lib.misc.casa6.command-data
         inputs:
-            _use: lib.params.casa.ms-field-spw-inputs
+            _use: 
+                - lib.params.casa.ms-selectdata-inputs
+            _scrub: antenna, uvrange, msselect   # not used by this task
             standard:
                 choices:
                     - 'Perley-Butler 2017'
