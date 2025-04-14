@@ -24,6 +24,9 @@ cabs:
             solint:
                 info: Solution interval
                 dtype: str 
+            solnorm:
+                info: Normalize average solution amplitudes to 1.0
+                dtype: bool
             combine:
                 info: Data axes which to combine for solve. Options are 'obs', 'scan', 'spw', 'field', or any comma-separated combination
                 dtype: str 
