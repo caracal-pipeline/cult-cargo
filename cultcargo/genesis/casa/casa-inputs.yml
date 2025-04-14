@@ -1,0 +1,96 @@
+#
+#   Sensible common groups of casa-tool inputs
+#   Use ms for the measurement set 
+#   (see https://stimela.readthedocs.io/en/latest/reference/schema_ref.html)
+#
+
+lib:
+    params:
+        casa:
+            # base input - MS
+            base-inputs:
+                ms:
+                    dtype: MS
+                    info: Input measurement set
+                    required: true
+                    nom_de_guerre: vis
+                    writable: true
+            # MS + field + spw
+            ms-field-spw-inputs:
+                _use: lib.params.casa.base-inputs
+                spw:
+                    info: Select spectral window/channels. e.g. spw='0:17~19'. Default all
+                    dtype: str 
+                field:
+                    info: Select field using field id(s) or field name(s) eg, field='0~2,3C286'. Default all fields
+                    dtype: str 
+
+            # As the above, plus common selectdata parameters
+            ms-selectdata-inputs:
+                _use: lib.params.casa.ms-field-spw-inputs
+                intent:
+                    info: Select based on observing intent. E.g. 'CAL*POINT*', default ('') is all
+                    dtype: str 
+                selectdata:
+                    info: Enables extended data selection parameters
+                    dtype: bool
+                    # always enable, so other parameters take effect if needed 
+                    implicit: true
+                timerange:
+                    info: Select based on time range. E.g. '09:14:0~09:54:0', default ('') is all
+                    dtype: str 
+                uvrange:
+                    info: Select based on baseline length. E.g. '0~100klambda', '0~100' (meters), default ('') is all
+                    dtype: str 
+                antenna:
+                    info: Select antenna/baselines. E.g. '3,VA04', default ('') is all
+                    dtype: str 
+                scan:
+                    info: Select based on scan number range, e.g. '0~5'
+                    dtype: str 
+                observation:
+                    info: Select based on observation ID(s) 
+                    dtype: str 
+                msselect:
+                    info: Select based on TaQL query
+                    dtype: str 
+
+            # standard set of inputs for calibration tasks
+            calibration-inputs:
+                callib:
+                    info: Specify a file containing cal library directives 
+                    dtype: File 
+                docallib:
+                    info: If true, use cal library (callib) rather than gain tabes
+                    dtype: bool 
+                    # set implicitly if callib is set
+                    default: =IFSET(current.callib, True, False)
+                gaintable:
+                    info: Gain calibration table(s) to apply on the fly (use without callib)
+                    dtype: List[Directory] 
+                gainfield:
+                    info: Select a subset of calibrators from gaintable(s) (use without callib)
+                    dtype: List[str] 
+                interp:
+                    info: Interpolation parmameters (in time[,freq]) for each gaintable, as a list of strings (use without callib)
+                    dtype: List[str] 
+                spwmap:
+                    info: Spectral window mappings to form for gaintable(s) (use without callib)
+                    dtype: List[int]
+
+    misc:
+        casa6:
+            command-data:
+                flavour:
+                    kind: python
+                    interpreter_binary: python3.10
+                image: 
+                    _use: vars.cult-cargo.images
+                    name: casa6
+                backend:
+                    singularity:
+                        bind_dirs:
+                            dot-casa:
+                                host: empty
+                                target: ~/.casa
+

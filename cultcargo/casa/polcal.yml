@@ -1,0 +1,48 @@
+_include:
+    - (cultcargo):
+        - genesis/cult-cargo-base.yml
+        - genesis/casa/casa-inputs.yml
+
+cabs:
+    casa.polcal:
+        info: "CASA 'polcal' task: polarization calibration" 
+        extra_info:
+            See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.calibration.polcal.html
+        command: casatasks.polcal
+        _use: lib.misc.casa6.command-data
+        outputs:
+            caltable:
+                info: Name of output gain calibration table
+                dtype: Directory 
+                required: true
+                mkdir: false
+        inputs:
+            _use: 
+                - lib.params.casa.ms-selectdata-inputs
+                - lib.params.casa.calibration-inputs
+            solint:
+                info: Solution interval
+                dtype: str 
+                default: 'inf' 
+            combine:
+                info: Data axes which to combine for solve. Options are 'obs', 'scan', 'spw', 'field', or any comma-separated combination
+                dtype: str 
+            preavg:
+                info: Pre-averaging interval (sec)
+                dtype: float
+            refant:
+                info: Reference antenna. You may use any antenna that is working for the whole duration of the observation.
+                dtype: str 
+                required: true
+            minblperant:
+                info: Minimum number of baselines required per antenna for each solve
+                dtype: int 
+            minsnr:
+                info: Reject solutions below this SNR
+                dtype: float
+            poltype:
+                info: Type of instrumental polarization solution, default is D+QU
+                dtype: str
+            append:
+                info: Append solutions to the (existing) table
+                dtype: bool 

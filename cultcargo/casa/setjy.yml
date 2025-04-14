@@ -1,0 +1,24 @@
+_include:
+    - (cultcargo):
+        - genesis/cult-cargo-base.yml
+        - genesis/casa/casa-inputs.yml
+
+cabs:
+    casa.setjy:
+        info: "CASA 'setjy' task: sets model from a flux density scale" 
+        command: casatasks.setjy
+        _use: lib.misc.casa6.command-data
+        inputs:
+            _use: 
+                - lib.params.casa.ms-selectdata-inputs
+            _scrub: antenna, uvrange, msselect   # not used by this task
+            standard:
+                dtype: str 
+                info: |
+                    Which standard to use. Default is 'Perley-Butler 2017', alternatives are 
+                    'Perley-Butler 2013', 'Perley-Butler 2010', 'Butler-JPL-Horizons 2012', 
+                    'manual', 'fluxscale'
+            usescratch:
+                dtype: bool
+                info: Will create if necessary and use the MODEL_DATA column, default is true
+                

@@ -1,0 +1,41 @@
+_include:
+    - (cultcargo):
+        - genesis/cult-cargo-base.yml
+        - genesis/casa/casa-inputs.yml
+
+cabs:
+    casa.concat:
+        info: "CASA 'concat' task: concatenates MSs" 
+        extra_info:
+            See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.manipulation.concat.html        
+        command: casatasks.concat
+        _use: lib.misc.casa6.command-data
+        inputs:
+            _use: lib.params.casa.base-inputs
+            timesort:
+                info: If true, sort by TIME in ascending order
+                dtype: bool    
+            freqtol:
+                info: Frequency shift tolerance for considering data as the same spwid
+                dtype: str
+            dirtol:
+                info: Direction shift tolerance for considering data as the same field
+                dtype: str
+            respectname:
+                info: If true, fields with a different name are not merged even if their direction agrees
+                dtype: bool
+            copypointing:
+                info: Copy all rows of the POINTING table, default is true
+                dtype: bool
+            visweightscale:
+                info: List of the weight scaling factors to be applied to the individual MSs
+                dtype: List[float]
+            forcesingleephemfield:
+                info: Make sure that there is only one joint ephemeris for every field in this list
+                dtype: List[str]
+        outputs:
+            output-ms:
+                info: output MS
+                dtype: MS
+                required: true
+                nom_de_guerre: concatvis

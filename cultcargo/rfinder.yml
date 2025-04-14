@@ -3,7 +3,7 @@ _include:
 
 cabs:
   rfinder:
-    info: Tool for identify the presence of RFI in an observation, flagging and visualisation (https://github.com/caracal-pipeline/RFInder.git)
+    info: Tool for identify the presence of RFI in an observation, flagging and visualisation (https://github.com/caracal-pipeline/RFInder)
     command: rfinder
     image:
       _use: vars.cult-cargo.images

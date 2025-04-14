@@ -1,0 +1,23 @@
+_include:
+    - (cultcargo):
+        - genesis/cult-cargo-base.yml
+
+cabs:
+    casa.importgmrt:
+        info: "CASA 'importgmrt' task: imports GMRT UVFITS file into an MS"
+        extra_info:
+            See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.data.importgmrt.html
+        command: casatasks.importgmrt
+        _use: lib.misc.casa6.command-data
+        inputs:
+            fitsfile:
+                info: UVFITS file from GMRT 
+                dtype: File
+                required: true
+        outputs:
+            ms:
+                info: Output measurement set
+                dtype: MS
+                required: true
+                mkdir: false
+                nom_de_guerre: vis

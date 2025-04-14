@@ -1,0 +1,807 @@
+_include:
+  - (cultcargo):
+    - genesis/cult-cargo-base.yml
+    - genesis/casa/casa-inputs.yml
+
+
+cabs:
+  casa.plotms:
+    info: "CASA 'plotms' task: generates plots based on an MS" 
+    extra_info:
+        See also: https://casadocs.readthedocs.io/en/stable/api/tt/casaplotms.plotms.html
+    command: casaplotms.plotms
+    _use: 
+      - lib.misc.casa6.command-data
+    flavour:
+      kind: python
+      interpreter_binary: xvfb-run -a python
+    backend:
+      singularity:
+        bind_dirs:
+          run-user:
+            host: /run/user
+    inputs:
+      ms:
+        info: Input MS or CalTable
+        required: true
+        dtype: Union[MS, Directory]
+        nom_de_guerre: vis
+      gridrows:
+        info: Number of subplot rows
+        dtype: int
+      gridcols:
+        info: Number of subplot columns
+        dtype: int
+      rowindex:
+        info: Row location of the plot (0-based)
+        dtype: int
+      colindex:
+        info: Column location of the plot (0-based)
+        dtype: int
+      plotindex:
+        info: Index to address a subplot (0-based)
+        dtype: int
+      xaxis:
+        info: Plot x-axis (blank for default/current)
+        dtype: str
+        choices:
+        - scan
+        - Scan
+        - field
+        - Field
+        - time
+        - Time
+        - interval
+        - time_interval
+        - timeinterval
+        - timeint
+        - Interval
+        - spw
+        - Spw
+        - channel
+        - chan
+        - Channel
+        - frequency
+        - freq
+        - Frequency
+        - correlation
+        - corr
+        - Corr
+        - antenna1
+        - ant1
+        - Antenna1
+        - antenna2
+        - ant2
+        - Antenna2
+        - baseline
+        - Baseline
+        - row
+        - Row
+        - observation
+        - Observation
+        - intent
+        - Intent
+        - feed1
+        - Feed1
+        - feed2
+        - Feed2
+        - uvdist
+        - UVdist
+        - uvwave
+        - uvdist_l
+        - uvdistl
+        - UVwave
+        - u
+        - U
+        - v
+        - V
+        - w
+        - W
+        - uwave
+        - Uwave
+        - vwave
+        - Vwave
+        - wwave
+        - Wwave
+        - velocity
+        - vel
+        - Velocity
+        - amp
+        - amplitude
+        - Amp
+        - phase
+        - Phase
+        - real
+        - Real
+        - imag
+        - imaginary
+        - Imag
+        - wt
+        - Wt
+        - weight
+        - wt*amp
+        - Wt*Amp
+        - wtsp
+        - WtSp
+        - weightspectrum
+        - WeightSpectrum
+        - sigma
+        - Sigma
+        - sigmasp
+        - SigmaSp
+        - sigmaspectrum
+        - SigmaSpectrum
+        - flag
+        - Flag
+        - azimuth
+        - Azimuth
+        - elevation
+        - Elevation
+        - hourang
+        - hourangle
+        - HourAngle
+        - parang
+        - parangle
+        - parallacticangle
+        - ParAngle
+        - antenna
+        - ant
+        - Antenna
+        - ant-azimuth
+        - Ant-Azimuth
+        - ant-elevation
+        - Ant-Elevation
+        - ant-ra
+        - Ant-RA
+        - ant-dec
+        - Ant-DEC
+        - ant-parang
+        - ant-parangle
+        - ant-parallacticangle
+        - Ant-Parangle
+        - flagrow
+        - FlagRow
+        - gainamp
+        - gamp
+        - GainAmp
+        - gainphase
+        - gphase
+        - GainPhase
+        - gainreal
+        - greal
+        - GainReal
+        - gainimag
+        - gimag
+        - GainImag
+        - delay
+        - del
+        - Delay
+        - swp
+        - swpower
+        - switchedpower
+        - SwPower
+        - spgain
+        - tsys
+        - Tsys
+        - opac
+        - opacity
+        - Opac
+        - snr
+        - SNR
+        - tec
+        - TEC
+        - antpos
+        - Antenna Positions
+        - antenna positions
+        - radialvelocity
+        - Radial Velocity
+        - rho
+        - Distance
+      xdatacolumn:
+        info: Data column to use for x-axis (blank for default/current).  Note that unspecified
+          residuals are complex (vector) differences or ratios.
+        dtype: str
+        choices:
+        - data
+        - corrected
+        - model
+        - float
+        - residual
+        - corrected-model
+        - corrected-model_vector
+        - corrected-model_scalar
+        - data-model
+        - data-model_vector
+        - data-model_scalar
+        - corrected/model
+        - corrected/model_vector
+        - corrected/model_scalar
+        - data/model
+        - data/model_vector
+        - data/model_scalar
+      xframe:
+        info: Coordinate frame to use for x-axis
+        dtype: str
+        choices:
+        - icrs
+        - j2000
+        - b1950
+        - galactic
+        - azelgeo
+      xinterp:
+        info: Interpolation method for x-axis
+        dtype: str
+        choices:
+        - nearest
+        - cubic spline
+        - spline
+      yaxis:
+        info: Plot y-axis (blank for default/current)
+        dtype: str
+        choices:
+        - scan
+        - Scan
+        - field
+        - Field
+        - time
+        - Time
+        - interval
+        - time_interval
+        - timeinterval
+        - timeint
+        - Interval
+        - spw
+        - Spw
+        - channel
+        - chan
+        - Channel
+        - frequency
+        - freq
+        - Frequency
+        - correlation
+        - corr
+        - Corr
+        - antenna1
+        - ant1
+        - Antenna1
+        - antenna2
+        - ant2
+        - Antenna2
+        - baseline
+        - Baseline
+        - row
+        - Row
+        - observation
+        - Observation
+        - intent
+        - Intent
+        - feed1
+        - Feed1
+        - feed2
+        - Feed2
+        - uvdist
+        - UVdist
+        - uvwave
+        - uvdist_l
+        - uvdistl
+        - UVwave
+        - u
+        - U
+        - v
+        - V
+        - w
+        - W
+        - uwave
+        - Uwave
+        - vwave
+        - Vwave
+        - wwave
+        - Wwave
+        - velocity
+        - vel
+        - Velocity
+        - amp
+        - amplitude
+        - Amp
+        - phase
+        - Phase
+        - real
+        - Real
+        - imag
+        - imaginary
+        - Imag
+        - wt
+        - Wt
+        - weight
+        - wt*amp
+        - Wt*Amp
+        - wtsp
+        - WtSp
+        - weightspectrum
+        - WeightSpectrum
+        - sigma
+        - Sigma
+        - sigmasp
+        - SigmaSp
+        - sigmaspectrum
+        - SigmaSpectrum
+        - flag
+        - Flag
+        - azimuth
+        - Azimuth
+        - elevation
+        - Elevation
+        - hourang
+        - hourangle
+        - HourAngle
+        - parang
+        - parangle
+        - parallacticangle
+        - ParAngle
+        - antenna
+        - ant
+        - Antenna
+        - ant-azimuth
+        - Ant-Azimuth
+        - ant-elevation
+        - Ant-Elevation
+        - ant-ra
+        - Ant-RA
+        - ant-dec
+        - Ant-DEC
+        - ant-parang
+        - ant-parangle
+        - ant-parallacticangle
+        - Ant-Parangle
+        - flagrow
+        - FlagRow
+        - gainamp
+        - gamp
+        - GainAmp
+        - gainphase
+        - gphase
+        - GainPhase
+        - gainreal
+        - greal
+        - GainReal
+        - gainimag
+        - gimag
+        - GainImag
+        - delay
+        - del
+        - Delay
+        - swp
+        - swpower
+        - switchedpower
+        - SwPower
+        - spgain
+        - tsys
+        - Tsys
+        - opac
+        - opacity
+        - Opac
+        - snr
+        - SNR
+        - tec
+        - TEC
+        - antpos
+        - Antenna Positions
+        - antenna positions
+        - radialvelocity
+        - Radial Velocity
+        - rho
+        - Distance
+        - ra
+        - RA
+        - Right Ascension
+      ydatacolumn:
+        info: Data column to use for y-axis (blank for default/current). Note that unspecified
+          residuals are complex (vector) differences or ratios.
+        dtype: str
+        choices:
+        - data
+        - corrected
+        - model
+        - float
+        - residual
+        - corrected-model
+        - corrected-model_vector
+        - corrected-model_scalar
+        - data-model
+        - data-model_vector
+        - data-model_scalar
+        - corrected/model
+        - corrected/model_vector
+        - corrected/model_scalar
+        - data/model
+        - data/model_vector
+        - data/model_scalar
+      yframe:
+        info: Coordinate frame to use for y-axis
+        dtype: str
+        choices:
+        - icrs
+        - j2000
+        - b1950
+        - galactic
+        - azelgeo
+      yinterp:
+        info: Interpolation method for y-axis
+        dtype: str
+        choices:
+        - nearest
+        - cubic spline
+        - spline
+      yaxislocation:
+        info: 'Location of the y-axis (blank for default: left)'
+        dtype: str
+        choices:
+        - left
+        - right
+      selectdata:
+        info: Enable data selection parameters
+        dtype: bool
+      field:
+        info: Field names or ids (blank for all)
+        dtype: str
+      spw:
+        info: Spectral windows:channels (blank for all)
+        dtype: str
+      timerange:
+        info: Time range (blank for all)
+        dtype: str
+      uvrange:
+        info: UV range (blank for all)
+        dtype: str
+      antenna:
+        info: Baseline/antenna names or ids (blank for all)
+        dtype: str
+      scan:
+        info: Scan numbers (blank for all)
+        dtype: str
+      correlation:
+        info: Correlations/polarizations (blank for all)
+        dtype: str
+      array:
+        info: (Sub)array numbers (blank for all)
+        dtype: str
+      observation:
+        info: Observation IDs (blank for all)
+        dtype: str
+      intent:
+        info: Observing intent (blank for all)
+        dtype: str
+      feed:
+        info: Feed numbers (blank for all)
+        dtype: str
+      msselect:
+        info: MSSelection TaQL string (blank for none)
+        dtype: str
+      averagedata:
+        info: Enable data averaging parameters
+        dtype: bool
+      avgchannel:
+        info: Average over channel (blank = False, otherwise value in channels)
+        dtype: str
+      avgtime:
+        info: Average over time (blank = False, otherwise value in seconds)
+        dtype: str
+      avgscan:
+        info: Average over scans. Only valid with time averaging
+        dtype: bool
+      avgfield:
+        info: Average over fields. Only valid with time averaging
+        dtype: bool
+      avgbaseline:
+        info: Average over all baselines (mutually exclusive with avgantenna)
+        dtype: bool
+      avgantenna:
+        info: Average per antenna (mutually exclusive with avgbaseline)
+        dtype: bool
+      avgspw:
+        info: Average over all spectral windows
+        dtype: bool
+      scalar:
+        info: Scalar averaging (False=vector averaging)
+        dtype: bool
+      transform:
+        info: Enable data transformations
+        dtype: bool
+      freqframe:
+        info: The frame in which to render frequency and velocity axes
+        dtype: str
+        choices:
+        - LSRK
+        - LSRD
+        - BARY
+        - GEO
+        - TOPO
+        - GALACTO
+        - LGROUP
+        - CMB
+      restfreq:
+        info: Rest frequency to use for velocity conversions
+        dtype: str
+      veldef:
+        info: The definition in which to render velocity
+        dtype: str
+        choices:
+        - RADIO
+        - OPTICAL
+        - 'TRUE'
+      # shift:
+      #   info: Adjust phases by this approximate phase center shift [dx,dy] (arcsec)
+      #   default: [0.0, 0.0]
+      #   dtype: List[float]
+      extendflag:
+        info: Extend flagging to other data points not plotted
+        dtype: bool
+      extcorr:
+        info: Extend flags based on correlation
+        dtype: bool
+      extchannel:
+        info: Extend flags based on channel
+        dtype: bool
+      iteraxis:
+        info: The axis over which to iterate
+        dtype: str
+        choices:
+        - scan
+        - Scan
+        - field
+        - Field
+        - spw
+        - Spw
+        - baseline
+        - Baseline
+        - antenna
+        - Antenna
+        - time
+        - Time
+        - corr
+        - Corr
+      xselfscale:
+        info: When True, iterated plots have a common x-axis range (scale).
+        dtype: bool
+      yselfscale:
+        info: When True, iterated plots have a common y-axis range (scale).
+        dtype: bool
+      xsharedaxis:
+        info: Iterated plots on a grid share a common external x-axis per column. Must also
+          set xselfscale=True and gridrows>1.
+        dtype: bool
+      ysharedaxis:
+        info: Iterated plots on a grid share a common external y-axis per row. Must also
+          set yselfscale=True and gridcols>1.
+        dtype: bool
+      customsymbol:
+        info: Enable custom symbol(s) for unflagged points
+        dtype: bool
+      symbolshape:
+        info: Shape of plotted unflagged symbols
+        dtype: str
+        choices:
+        - nosymbol
+        - autoscaling
+        - circle
+        - square
+        - diamond
+        - pixel
+      symbolsize:
+        info: Size of plotted unflagged symbols
+        dtype: int
+      symbolcolor:
+        info: Color (name or hex code) of plotted unflagged symbols
+        dtype: str
+      symbolfill:
+        info: Fill type of plotted unflagged symbols
+        dtype: str
+        choices:
+        - fill
+        - mesh1
+        - mesh2
+        - mesh3
+        - nofill
+      symboloutline:
+        info: Outline plotted unflagged symbols
+        dtype: bool
+      coloraxis:
+        info: Selects data axis for colorizing
+        dtype: str
+        choices:
+        - scan
+        - Scan
+        - field
+        - Field
+        - spw
+        - Spw
+        - antenna1
+        - ant1
+        - Antenna1
+        - antenna2
+        - ant2
+        - Antenna2
+        - baseline
+        - Baseline
+        - channel
+        - chan
+        - Channel
+        - corr
+        - Corr
+        - time
+        - Time
+        - observation
+        - Observation
+        - intent
+        - Intent
+      customflaggedsymbol:
+        info: Enable custom symbol(s) for flagged points
+        dtype: bool
+      flaggedsymbolshape:
+        info: Shape of plotted flagged symbols
+        dtype: str
+        choices:
+        - nosymbol
+        - autoscaling
+        - circle
+        - square
+        - diamond
+        - pixel
+      flaggedsymbolsize:
+        info: Size of plotted flagged symbols
+        dtype: int
+      flaggedsymbolcolor:
+        info: Color (name or hex code) of plotted flagged symbols
+        dtype: str
+      flaggedsymbolfill:
+        info: Fill type of plotted flagged symbols
+        dtype: str
+        choices:
+        - fill
+        - mesh1
+        - mesh2
+        - mesh3
+        - nofill
+      flaggedsymboloutline:
+        info: Outline plotted flagged symbols
+        dtype: bool
+      xconnector:
+        info: Set connector for data points (blank="none"; "line", "step")
+        dtype: str
+        choices:
+        - none
+        - line
+        - step
+      timeconnector:
+        info: Connect points by time rather than x-axis
+        dtype: bool
+      plotrange:
+        info: 'Plot axes ranges: [xmin,xmax,ymin,ymax]'
+        dtype: Tuple[float, float, float, float]
+      title:
+        info: Title at top of plot
+        dtype: str
+      titlefont:
+        info: Font size for plot title
+        dtype: int
+      xlabel:
+        info: Text for horizontal x-axis. Blank for default.
+        dtype: str
+      xaxisfont:
+        info: Font size for x-axis label
+        dtype: int
+      ylabel:
+        info: Text for vertical y-axis. Blank for default.
+        dtype: str
+      yaxisfont:
+        info: Font size for y-axis label
+        dtype: int
+      showmajorgrid:
+        info: Show major grid lines
+        dtype: bool
+      majorwidth:
+        info: Line width in pixels of major grid lines
+        dtype: int
+      majorstyle:
+        info: Major grid line style
+        dtype: str
+        choices:
+        - solid
+        - dash
+        - dot
+        - none
+      majorcolor:
+        info: Color (name or hex code) of major grid lines
+        dtype: str
+      showminorgrid:
+        info: Show minor grid lines
+        dtype: bool
+      minorwidth:
+        info: Line width in pixels of minor grid lines
+        dtype: int
+      minorstyle:
+        info: Minor grid line style
+        dtype: str
+        choices:
+        - solid
+        - dash
+        - dot
+        - none
+      minorcolor:
+        info: Color (name or hex code) of minor grid lines
+        dtype: str
+      showlegend:
+        info: Show a legend on the plot.
+        dtype: bool
+      legendposition:
+        info: Legend position, default upperRight.
+        dtype: str
+        choices:
+        - upperRight
+        - upperLeft
+        - lowerRight
+        - lowerLeft
+        - exteriorRight
+        - exteriorLeft
+        - exteriorTop
+        - exteriorBottom
+      plotfile:
+        info: Name of plot file to save automatically
+        dtype: str
+      expformat:
+        info: Export format type. If not provided, plotfile extension will be used to determine
+          type.
+        dtype: str
+        choices:
+        - jpg
+        - png
+        - pdf
+        - ps
+        - txt
+      verbose:
+        info: Include metadata in text export
+        dtype: bool
+      exprange:
+        info: Range of iteration plots to export, one plotfile per page.  Multipage pdf
+          exports are not supported.
+        dtype: str
+        choices:
+        - current
+        - all
+      highres:
+        info: Use high resolution
+        dtype: bool
+      dpi:
+        info: DPI of exported plot
+        dtype: int
+      width:
+        info: Width in pixels of exported plot
+        dtype: int
+      height:
+        info: Height in pixels of exported plot
+        dtype: int
+      overwrite:
+        info: Overwrite plot file if it already exists
+        dtype: bool
+      showgui:
+        info: Show GUI
+        dtype: bool
+        implicit: False   # always False in pipelines
+      clearplots:
+        info: Remove any existing plots so new ones can replace them.
+        dtype: bool
+      callib:
+        info: Calibration library string or filename for on-the-fly calibration.
+        dtype: File
+      headeritems:
+        info: Comma-separated list of pre-defined page header items.
+        dtype: str
+      showatm:
+        info: Compute and overlay the atmospheric transmission curve
+        dtype: bool
+      showtsky:
+        info: Compute and overlay the sky temperature curve
+        dtype: bool
+      showimage:
+        info: Compute and overlay the image sideband curve
+        dtype: bool

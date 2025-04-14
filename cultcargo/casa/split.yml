@@ -1,0 +1,50 @@
+_include:
+    - (cultcargo):
+        - genesis/cult-cargo-base.yml
+        - genesis/casa/casa-inputs.yml
+
+cabs:
+            
+    casa.split:
+        info: "CASA 'split' task: splits out a subset of MS" 
+        extra_info:
+            See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.manipulation.split.html        
+        command: casatasks.split
+        _use: lib.misc.casa6.command-data
+        inputs:
+            _use: 
+                - lib.params.casa.ms-selectdata-inputs
+            _scrub: selectdata, msselect        # not used in this task
+            # make MS read-only
+            ms:
+                writable: false
+            # additional selections
+            correlation:
+                info: Correlation. E.g. 'XX,YY'
+                dtype: str
+            array:
+                info: (Sub)array numbers
+                dtype: str
+            feed:
+                info: Multi-feed numbers. Not yet implemented
+                dtype: str
+            datacolumn:
+                info: Which data column(s) to process, default is corrected
+                dtype: str 
+                choices: 
+                    - data
+                    - corrected
+                    - model
+            width:
+                info: Number of channels to average to form one output channel
+                dtype: int 
+            timebin:
+                info: Bin width for time averaging
+                dtype: str 
+        outputs:
+            output-ms:
+                info: Name of output MS
+                dtype: MS
+                required: true
+                mkdir: false
+                nom_de_guerre: outputvis

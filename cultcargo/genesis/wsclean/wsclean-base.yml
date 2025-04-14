@@ -70,6 +70,10 @@ lib:
           dtype: List[int]
           policies:
             repeat: ','
+        multiscale-max-scales:
+          dtype: int
+        multiscale-gain:
+          dtype: float
         multiscale-scale-bias:
           dtype: float
         scale:
@@ -167,6 +171,15 @@ lib:
           dtype: float
         maxuvw-m:
           dtype: float
+        deconvolution-threads:
+          info: Limit the deconvolution process to this number of threads
+          dtype: int
+        mem: 
+          dtype: int
+          info: "Limit memory usage to the given percentage of the total system memory. This is an approximate value. Default: 100"
+        abs-mem:
+          dtype: int
+          info: "Like -mem, but this specifies a fixed amount of memory in gigabytes"
 
       base-outputs:
         source-list:
@@ -179,4 +192,5 @@ lib:
           skip_freshness_checks: true
           mkdir: true
           must_exist: false
+          required: false
 

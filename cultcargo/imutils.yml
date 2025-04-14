@@ -1,0 +1,29 @@
+  
+cabs:
+  imutils.sterilize-nans:
+    name: sterilize-nans
+    info: replaces NaNs in FITS images with a fixed value
+    flavour: python-code
+    inputs:
+      images:
+        info: list of FITS files to sterilize
+        dtype: List[File]
+        writable: true
+      replacement: 
+        info: value to replace NaNs with
+        dtype: float
+        default: 0
+
+    command: |
+      from astropy.io import fits
+      import numpy as np
+      print(f"processing {len(images)} images")
+      for fitsfile in images:
+        ff = fits.open(fitsfile, mode='update')
+        mask = ~np.isfinite(ff[0].data)
+        if mask.any(): 
+          ff[0].data[mask] = replacement
+          print(f"{fitsfile}: {mask.sum()} NaNs replaced with zeroes")
+          ff.flush()
+        else: 
+          print(f"{fitsfile}: no NaNs encountered")
