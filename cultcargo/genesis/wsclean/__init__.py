@@ -47,8 +47,8 @@ def make_stimela_schema(params: Dict[str, Any], inputs: Dict[str, Parameter], ou
     ntime  = params.get('intervals-out', 1)
     multitime = params.get('multi.interval', False) or not isinstance(ntime, int) or ntime > 1
 
-    for imagetype in "dirty", "restored", "residual", "model":
-        if params.get("make-psf-only", False): continue # skip all clean output
+    for imagetype in (["dirty", "restored", "residual", "model"] 
+                      if params.get("make-psf-only", False) else []):
         if imagetype == "dirty":
             # dirty image not part of outputs with no-dirty
             if params.get("no-dirty", False):
