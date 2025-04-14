@@ -6,6 +6,8 @@ _include:
 cabs:
     casa.flagman:
         info: "CASA 'flagmanager' task: saves/restores flags" 
+        extra_info:
+            See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.flagging.flagmanager.html
         command: casatasks.flagmanager
         _use: lib.misc.casa6.command-data
         inputs:
@@ -41,12 +43,15 @@ cabs:
 
     casa.flagdata:
         info: "CASA 'flagdata' task: performs flagging" 
+        extra_info:
+            See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.flagging.flagdata.html
         command: casatasks.flagdata
         _use: lib.misc.casa6.command-data
         inputs:
             _use: lib.params.casa.ms-field-spw-inputs
+            _scrub: selectdata, msselect   # these ones not implemented by this task
             mode:
-                info: Flagging mode
+                info: Flagging mode, defult is 'manual'
                 choices:
                     - manual
                     - clip
@@ -57,31 +62,12 @@ cabs:
                     - rflag
                     - extend
                     - unflag
-                default: manual
-                dtype: str
-            antenna:
-                info: Antenna/baselines. e.g. '' ==> all, antenna ='3,VA04'
-                dtype: str
-            timerange:
-                info: Time range. e.g. '' ==> all,timerange='09:14:0~09:54:0'
                 dtype: str
             correlation:
-                info: Correlation. e.g. '' ==> all, correlation='XX,YY'
-                dtype: str
-            scan:
-                info: Scan numbers. e.g. '' ==> all
-                dtype: str
-            intent:
-                info: Observation intent. e.g. '' ==> all, intent='CAL*POINT*'
+                info: Correlation. E.g. 'XX,YY'
                 dtype: str
             array:
-                info: (Sub)array numbers. e.g. '' ==> all
-                dtype: str
-            uvrange:
-                info: UV range. e.g. '' ==> all; uvrange ='0~100klambda', default units=meters
-                dtype: str
-            observation:
-                info: Observation ID. e.g. '' ==> all
+                info: (Sub)array numbers
                 dtype: str
             feed:
                 info: Multi-feed numbers. Not yet implemented
@@ -93,7 +79,7 @@ cabs:
                 info: Input ASCII file, list of files or Python list of strings with flag commands
                 dtype: str
             datacolumn:
-                info: Data column on which to operate (data,corrected,model,weight,etc.)
+                info: Data column on which to operate (data, corrected, model, weight, etc.)
                 dtype: str
             reason:
                 info: Select by REASON types
@@ -118,15 +104,14 @@ cabs:
                 dtype: float
             quackmode:
                 info: |-
-                    Quack mode. 'beg' ==> first n seconds of scan.'endb' ==> last n
-                    seconds of scan. 'end' ==> all but first n seconds of scan. 'tail' ==>
-                    all but last n seconds of scan.
+                    Quack mode. Default is 'beg' ==> first N seconds of scan; 'endb' ==> last N
+                    seconds of scan; 'end' ==> all but first N seconds of scan; 'tail' ==>
+                    all but last N seconds of scan.
                 choices:
                     - beg
                     - endb
                     - end
                     - tail
-                default: beg
                 dtype: str
             quackincrement:
                 info: Flag incrementally in time?
@@ -157,39 +142,35 @@ cabs:
                 info: Flagging thresholds in units of deviation from the fit
                 dtype: float
             timefit:
-                info: Fitting function for the time direction (poly/line)
+                info: Fitting function for the time direction (poly/line), default is line
                 choices:
                     - poly
                     - line
-                default: line
                 dtype: str
             freqfit:
-                info: Fitting function for the frequency direction (poly/line)
+                info: Fitting function for the frequency direction (poly/line), default is poly
                 choices:
                     - poly
                     - line
-                default: poly
                 dtype: str
             maxnpieces:
                 info: Number of pieces in the polynomial-fits (for 'freqfit' or 'timefit' ='poly')
                 dtype: int
             flagdimension:
-                info: Dimensions along which to calculate fit
+                info: Dimensions along which to calculate fit, default is 'freqtime'
                 choices:
                     - freq
                     - time
                     - freqtime
                     - timefreq
-                default: freqtime
                 dtype: str
             usewindowstats:
-                info: Calculate additional flags using sliding window statistics
+                info: Calculate additional flags using sliding window statistics, default is 'none'
                 choices:
                     - none
                     - sum
                     - std
                     - both
-                default: none
                 dtype: str
             halfwin:
                 info: Half-width of sliding window to use with 'usewindowstats' (1,2,3).
@@ -225,8 +206,7 @@ cabs:
                 info: minimum number of flags (absolute)
                 dtype: int
             maxabs:
-                info: maximum number of flags (absolute). Use a negative value to indicate infinity.
-                default: -1
+                info: maximum number of flags (absolute). Use a negative value to indicate infinity (this is the default)
                 dtype: int
             spwchan:
                 info: Print summary of channels per spw
@@ -238,25 +218,22 @@ cabs:
                 info: Print summary counts per baseline
                 dtype: bool
             name:
-                info: Name of this summary report (key in summary dictionary)
-                default: Summary
+                info: Name of this summary report (key in summary dictionary), default is 'Summary'
                 dtype: str
             action:
-                info: Action to perform in MS and/or in inpfile
+                info: Action to perform in MS and/or in inpfile, default is 'none'
                 choices:
                     - none
                     - apply
                     - calculate
-                default: 'none'
                 dtype: str
             display:
-                info: Display data and/or end-of-MS reports at runtime
+                info: Display data and/or end-of-MS reports at runtime, default is 'report'
                 choices:
                     - data
                     - report
                     - both
                     - none
-                default: 'report'
                 dtype: str
             flagbackup:
                 info: Back up the state of flags before the run
@@ -293,9 +270,7 @@ cabs:
                 dtype: float
             chanbin:
                 info: Bin width for channel average in number of input channels
-                default: 1
                 dtype: int
             overwrite:
-                info: Overwrite the existing parameter file given in outfile
+                info: Overwrite the existing parameter file given in outfile, default is true
                 dtype: bool
-                default: true
