@@ -1,0 +1,26 @@
+_include:
+    - (cultcargo):
+        - genesis/cult-cargo-base.yml
+        - genesis/casa/casa-inputs.yml
+
+cabs:
+    casa.plotants:
+        info: Summarize dataset 
+        command: casatasks.plotants
+        _use: lib.misc.casa6.command-data
+        inputs:
+            _use: lib.params.casa.base-inputs
+            figfile:
+               info: Save the plotted figure to this file
+               dtype: str
+            logpos:
+               info: Whether to plot logarithmic positions
+               dtype: bool
+            title:
+               info:  Title for the plot
+               dtype: str
+            showgui:
+               info: show plot on gui
+               dtype: bool
+               implicit: false
+               
