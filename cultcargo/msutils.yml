@@ -36,3 +36,50 @@ cabs:
       colname:
         dtype: str
         required: true
+      likecol:
+        dtype: str
+        required: true
+
+  msutils.renamecol:
+    info: Renames an MS column (using standard casacore calls)
+    image: 
+      _use: vars.cult-cargo.images
+      name: python-astro
+    flavour: python-code
+    command: |
+      from casacore.tables import table
+      tab = table(msname, readonly=False)
+      tab.renamecol(old_column, new_column)
+      tab.close()
+    inputs:
+      msname: 
+        dtype: MS
+        required: true
+        writable: true
+      old-column:
+        dtype: str
+        required: true
+      new-column:
+        dtype: str
+        required: true
+
+  msutils.summary:
+    info: Provides a summary of the MS content (using the goquartical-summary utility from https://github.com/ratt-ru/QuartiCal)
+    image:
+      _use: vars.cult-cargo.images
+      name: quartical
+    command: goquartical-summary
+    policies:
+      positional: true
+    inputs:
+      ms:
+        info: path to Measurement Set
+        dtype : MS
+        nom_de_guerre: path
+        required: true
+    outputs:
+      output-dir: 
+        info: directory to write summary file to. Note that the summary is also printed to the console.
+        dtype: Directory
+        mkdir: true
+        default: .

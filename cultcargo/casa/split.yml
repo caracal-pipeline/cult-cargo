@@ -6,25 +6,35 @@ _include:
 cabs:
             
     casa.split:
-        info: "CASA 'split' task: splits out subset of MS" 
+        info: "CASA 'split' task: splits out a subset of MS" 
+        extra_info:
+            See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.manipulation.split.html        
         command: casatasks.split
         _use: lib.misc.casa6.command-data
         inputs:
-            _use: lib.params.casa.ms-field-spw-inputs
+            _use: 
+                - lib.params.casa.ms-selectdata-inputs
+            _scrub: selectdata, msselect        # not used in this task
+            # make MS read-only
             ms:
                 writable: false
-            uvrange:
-                info: Select data by baseline length
-                dtype: str 
-                default: ''
+            # additional selections
+            correlation:
+                info: Correlation. E.g. 'XX,YY'
+                dtype: str
+            array:
+                info: (Sub)array numbers
+                dtype: str
+            feed:
+                info: Multi-feed numbers. Not yet implemented
+                dtype: str
             datacolumn:
-                info: Which data column(s) to process
+                info: Which data column(s) to process, default is corrected
                 dtype: str 
                 choices: 
                     - data
                     - corrected
                     - model
-                default: corrected
             width:
                 info: Number of channels to average to form one output channel
                 dtype: int 
@@ -38,4 +48,3 @@ cabs:
                 required: true
                 mkdir: false
                 nom_de_guerre: outputvis
-

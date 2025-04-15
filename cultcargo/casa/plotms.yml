@@ -7,6 +7,8 @@ _include:
 cabs:
   casa.plotms:
     info: "CASA 'plotms' task: generates plots based on an MS" 
+    extra_info:
+        See also: https://casadocs.readthedocs.io/en/stable/api/tt/casaplotms.plotms.html
     command: casaplotms.plotms
     _use: 
       - lib.misc.casa6.command-data
@@ -20,9 +22,9 @@ cabs:
             host: /run/user
     inputs:
       ms:
-        info: Input MS or CalTable (blank for none)
+        info: Input MS or CalTable
         required: true
-        dtype: MS
+        dtype: Union[MS, Directory]
         nom_de_guerre: vis
       gridrows:
         info: Number of subplot rows
@@ -664,7 +666,7 @@ cabs:
         info: Outline plotted flagged symbols
         dtype: bool
       xconnector:
-        info: Set connector for data points (blank="none"; "line","step")
+        info: Set connector for data points (blank="none"; "line", "step")
         dtype: str
         choices:
         - none
@@ -784,13 +786,13 @@ cabs:
       showgui:
         info: Show GUI
         dtype: bool
-        implicit: False
+        implicit: False   # always False in pipelines
       clearplots:
         info: Remove any existing plots so new ones can replace them.
         dtype: bool
       callib:
         info: Calibration library string or filename for on-the-fly calibration.
-        dtype: str
+        dtype: File
       headeritems:
         info: Comma-separated list of pre-defined page header items.
         dtype: str
