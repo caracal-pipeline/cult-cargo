@@ -12,20 +12,15 @@ cabs:
             _use: lib.params.casa.base-inputs
             figfile:
                info: Save the plotted figure to this file
-               default: ''
                dtype: str
-               required: true
             logpos:
                info: Whether to plot logarithmic positions
-               default: false
                dtype: bool
             title:
                info:  Title for the plot
-               default: 'ANTENNA LAYOUT PLOTS'
                dtype: str
-               required: true
             showgui:
                info: show plot on gui
-               default: ''
                dtype: bool
-               required: false
+               implicit: false
+               
