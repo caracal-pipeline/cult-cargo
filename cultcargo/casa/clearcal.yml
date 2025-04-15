@@ -9,20 +9,7 @@ cabs:
         _use: lib.misc.casa6.command-data
         inputs:
             _use: lib.params.casa.base-inputs
-            field:
-               default: ''
-               info: select field using field ID or field name
-               dtype: str
-            intent:
-               default: ''
-               info:  Select observing intent
-               dtype: str
-            spw:
-               default: ''
-               info: select spectral window
-               dtype: str
             addmodel: 
-               default: true
                info:  Add MODEL_DATA scratch column
                dtype: bool
 
