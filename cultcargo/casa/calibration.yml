@@ -91,6 +91,7 @@ cabs:
         extra_info:
             See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.calibration.gaincal.html
         command: casatasks.gaincal
+        _use: lib.misc.casa6.command-data
         outputs:
             caltable:
                 info: Name of output gain calibration table
