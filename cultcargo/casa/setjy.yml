@@ -13,12 +13,36 @@ cabs:
                 - lib.params.casa.ms-selectdata-inputs
             _scrub: antenna, uvrange, msselect   # not used by this task
             standard:
-                dtype: str 
-                info: |
-                    Which standard to use. Default is 'Perley-Butler 2017', alternatives are 
-                    'Perley-Butler 2013', 'Perley-Butler 2010', 'Butler-JPL-Horizons 2012', 
-                    'manual', 'fluxscale'
+                choices:
+                    - 'Perley-Butler 2017'
+                    - 'Perley-Butler 2013'
+                    - 'Perley-Butler 2010'
+                    - 'Skaife-Heald 2012'
+                    - 'Butler-JPL-Horizons 2010'
+                    - 'Butler-JPL-Horizons 2012'
+                    - 'Stevens-Reynolds 2016'
+                    - manual
+                    - fluxscale
+                dtype: str
+                default: 'Perley-Butler 2017'
+                info: Which standard to use 
+            scalebychan:
+                dtype: bool
+                default: true
+                info: Scale the flux density on a per channel basis or else on a per spw basis
             usescratch:
                 dtype: bool
-                info: Will create if necessary and use the MODEL_DATA column, default is true
-                
+                default: true
+                info: Will create if necessary and use the MODEL_DATA
+            fluxdensity:
+                info: Specified flux density in Jy [I,Q,U,V]; (-1 will lookup values)
+                dtype: Union[int, List[int], List[float]]
+                default: -1
+            spix:
+                info: Spectral index (including higher terms) of I fluxdensity
+                dtype: Union[float, List[float]]
+                default: 0.0
+            reffreq:
+                info: Reference frequency for spix
+                dtype: str
+                default: '1GHz'

@@ -227,6 +227,7 @@ cabs:
                     - none
                     - apply
                     - calculate
+                default: apply
                 dtype: str
             display:
                 info: Display data and/or end-of-MS reports at runtime, default is 'report'
