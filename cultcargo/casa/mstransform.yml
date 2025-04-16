@@ -1,0 +1,140 @@
+_include:
+    - (cultcargo):
+        - genesis/cult-cargo-base.yml
+        - genesis/casa/casa-inputs.yml
+
+cabs:
+    casa.mstransform:
+        info: Summarize dataset 
+        command: casatasks.mstransform
+        _use: lib.misc.casa6.command-data
+        inputs:
+            _use: lib.params.casa.base-inputs
+            outputvis:
+               info: Name of output Measurement Set or Multi-MS
+               dtype: str
+            createmms:
+               info: Create a multi-MS output from an input MS
+               dtype: bool
+            douvcontsub:
+               info:  Enable continuum subtraction as in task uvcontsub
+               dtype: bool
+            hanning:
+               info: Hanning smooth data to remove Gibbs ringing
+               dtype: bool
+            chanaverage:
+               info: Average data in channels
+               dtype: bool
+            keepflags:
+               info: Keep completely flagged rows or drop them from the output.
+               dtype: bool
+            regridms:
+               info: Transform channel labels and visibilities to a different spectral reference frame. Notice that u,v,w data is not transformed.
+               dtype: bool
+            reindex:
+               info: Hidden parameter for use in the pipeline context only
+               dtype: bool
+            usewtspectrum:
+               info: Force creation of the columns WEIGHT_SPECTRUM and SIGMA_SPECTRUM in the output MS, even if not present in the input MS
+               dtype: bool
+            denoising_lib:
+               info: Use new denoising library (based on GSL) instead of casacore fitting routines
+               dtype: bool
+            timeaverage:
+               info:  Average data in time.
+               dtype: bool
+            want_cont:
+               info:  Produce continuum estimate instead of continuum subtracted data
+               dtype: bool
+            preaverage:
+               info: Pre-average channels before regridding, when the ratio between the output and and input widths is greater than 2
+               dtype: bool
+            monolithic_processing:
+               info: Hidden parameter for internal use only. Do not change it!
+               dtype: bool
+            realmodelcol:
+               info: Make real a virtual MODEL column.
+               dtype: bool
+            phasecenter:
+               info: Phase center direction to be used for the spectral coordinate transformation: direction measure or field index
+               dtype: str 
+            taql:
+               info: Table query for nested selections
+               dtype: str
+            restfreq:
+               info: Rest frequency to use for output.
+               dtype: str 
+            outframe:
+               info: Output reference frame (‘’=keep input frame).
+               dtype: str 
+            timespan:
+               info: Span the timebin across scan, state or both.
+               dtype: str 
+            callib:
+               info:  Path to calibration library file
+               dtype: str 
+            fitspw:
+               info: Spectral window:channel selection for fitting the continuum
+               dtype: str 
+            timebin:
+               info:  Bin width for time averaging.
+               dtype: str
+            tileshape:
+               info: List with 1 or 3 elements giving the tile shape of the disk data columns.
+               dtype: list
+            ddistart:
+               info: Hidden parameter for internal use only. Do not change it!
+               dtype: int 
+            width:
+               info: Channel width of the output visibilities. Used for regridding, together with 'start', and 'nchan'.
+               dtype: int 
+            nspw:
+               info:  Number of output spws to create in output MS.
+               dtype: int
+            start:
+               info: Start of the output visibilities. Used for regridding, together with 'width' and 'nchan'. 
+               dtype: int 
+            nchan:
+               info: Number of channels in the output spw (-1=all). Used for regridding, together with 'start' and 'width'.
+               dtype: int 
+            chanbin:
+               info: Width (bin) of input channels to average to form an output channel.
+               dtype: int 
+            niter:
+               info: Number of iterations for re-weighted linear fit
+               dtype: int 
+            nthreads:
+               info: Number of OMP threads to use (currently maximum limited by number of polarizations)
+               dtype: int 
+            maxuvwdistance:
+               info: Maximum separation of start-to-end baselines that can be included in an average. (meters)
+               dtype: int
+            fitorder:
+               info:  Polynomial order for the fits
+               dtype: int   
+            mode:
+               info: Regridding mode (channel/velocity/frequency/channel_b).
+               dtype: str
+            veltype:
+               info: Velocity definition.
+               dtype: str
+            numsubms:
+               info: The number of Sub-MSs to create (auto or any number)
+               dtype: str
+            separationaxis:
+               info: Separation axis
+               dtype: str
+            datacolumn:
+               info: Which data column(s) to process.
+               dtype: str
+            disableparallel:
+               info: Hidden parameter for internal use only. Do not change it!
+               dtype: bool
+            docallib:
+               info:  Enable on-the-fly (OTF) calibration as in task applycal
+               dtype: bool
+            interpolation:
+               info: Spectral interpolation method.
+               dtype: str
+
+
