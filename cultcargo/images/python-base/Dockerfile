@@ -17,5 +17,8 @@ RUN apt-get update && apt-get install apt-utils && \
 
 RUN python{VERSION} -m pip install --no-cache-dir -U pip setuptools wheel packaging uv
 
+## install stimela -- needed to form output arguments
+RUN python{VERSION} -m pip install --no-cache-dir stimela
+
 CMD python{VERSION}
 

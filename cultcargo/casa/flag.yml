@@ -5,36 +5,111 @@ _include:
 
 cabs:
     casa.flagman:
+        name: casa.flagman
         info: "CASA 'flagmanager' task: saves/restores flags" 
         extra_info:
             See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.flagging.flagmanager.html
-        command: casatasks.flagmanager
         _use: lib.misc.casa6.command-data
+        flavour: 
+            kind: python-code
+            input_dict: args
+        command: |
+            from casatasks import flagmanager
+            summary = flagmanager(**args)
+            if args['mode'] == 'list':
+                version_list = summary
+                version_list.pop("MS", None)
+                version_list = list(version_list.values())
+                print(f"{len(version_list)} flag versions found:")
+                for value in version_list:
+                    print(f"  name: {value['name']:<32s} comment: {value['comment']}")
+            else:
+                version_list = []
         inputs:
             _use: lib.params.casa.base-inputs
-            ms:
-                # since a new "<MS>.flagversions" may need to be created, mark parent dir of ms as writeable
+            ## we could do this, but probably better do declare flagversions as an implicit input/output?
+            # ms:
+            #     # since a new "<MS>.flagversions" may need to be created, mark parent dir of ms as writeable
+            #     path_policies:
+            #         write_parent: true
+            mode: 
+                choices: [save, restore, rename, delete, list]
+                required: true
+            versionname:
+                info: flag version name
+            oldname:
+                info: flag version to rename (for mode='rename')
+            comment:
+                info: short description of the versionname
+            merge:
+                info: |
+                    Merge operation to use when saving the flags. Options available are: 'replace', 
+                    and the experimental 'or', 'and'. Use the last two options at your own risk.
+                choices: [replace, or, and]
+            flagversions-table:
+                info: flagversions table generated alongside the MS
+                dtype: Directory
+                implicit: "{current.ms}.flagversions"
+                must_exist: false   # created on the fly if not existing
+                writable: true
+                policies:
+                    skip: true
+                # need writing to parent dir in case it needs to be created. Should this be done automatically by stimela?
                 path_policies:
                     write_parent: true
-            versionname:
-                info: "flag version name"
-            mode: 
-                choices: [save, restore, list]
-                required: true
+        outputs:
+            version-list:
+                info: will contain a dict of flagversions, for mode='list'
+                dtype: List
+        management:
+            wranglers:
+                "\\d+ flag versions found:":
+                    - HIGHLIGHT:bold green
+                "name:.* comment:.*":
+                    - HIGHLIGHT:green
 
     casa.flagsummary:
-        info: "CASA 'flagdata' task: separate cab to generate a flagging summary" 
-        command: casatasks.flagdata
+        name: casa.flagsummary
+        info: "invoke CASA 'flagdata' to generate a flagging summary" 
         _use: lib.misc.casa6.command-data
+        flavour: 
+            kind: python-code
+            input_dict: args
+        command: |
+            from casatasks import flagdata
+            from pprint import pp
+            summary = flagdata(mode='summary', **args)
+            pp(summary)
+            percentage = summary['flagged'] / summary['total']
+            print(f"Total flagged percentage: {percentage:.02%}")
         inputs:
-            _use: lib.params.casa.base-inputs
-            spw:
-                dtype: str
-                default: ""
+            _use: lib.params.casa.ms-selectdata-extended-inputs
+            _scrub: [selectdata, msselect]   # these ones not implemented by this task
+        outputs:
+            summary:
+                info: summary dict
+                dtype: Dict
+            percentage:
+                info: flagged percentage
+                dtype: float
+        management:
+            wranglers:
+                "Total flagged percentage: (.*)$":
+                    - HIGHLIGHT:bold green
+
+    casa5.flagsummary:
+        name: casa5.flagsummary
+        info: "invoke CASA5 'flagdata' task to generate a flagging summary" 
+        command: flagdata
+        _use: lib.misc.casa5.command-data
+        inputs:
+            _use: lib.params.casa.ms-selectdata-extended-inputs
+            _scrub: [selectdata, msselect]   # these ones not implemented by this task
             mode:
                 implicit: 'summary'
         outputs:
             percentage:
+                info: flagged percentage
                 dtype: float
         management:
             wranglers:
@@ -43,14 +118,15 @@ cabs:
                     - HIGHLIGHT:bold green
 
     casa.flagdata:
+        name: casa.flagdata
         info: "CASA 'flagdata' task: performs flagging" 
         extra_info:
             See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.flagging.flagdata.html
         command: casatasks.flagdata
         _use: lib.misc.casa6.command-data
         inputs:
-            _use: lib.params.casa.ms-field-spw-inputs
-            _scrub: selectdata, msselect   # these ones not implemented by this task
+            _use: lib.params.casa.ms-selectdata-extended-inputs
+            _scrub: [selectdata, msselect]   # these ones not implemented by this task
             mode:
                 info: Flagging mode, defult is 'manual'
                 choices:
@@ -63,15 +139,6 @@ cabs:
                     - rflag
                     - extend
                     - unflag
-                dtype: str
-            correlation:
-                info: Correlation. E.g. 'XX,YY'
-                dtype: str
-            array:
-                info: (Sub)array numbers
-                dtype: str
-            feed:
-                info: Multi-feed numbers. Not yet implemented
                 dtype: str
             autocorr:
                 info: Flag only the auto-correlations
