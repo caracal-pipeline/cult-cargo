@@ -15,7 +15,6 @@ cabs:
             input_dict: args
         command: |
             from casatasks import flagmanager
-            from pprint import pp
             summary = flagmanager(**args)
             if args['mode'] == 'list':
                 version_list = summary
