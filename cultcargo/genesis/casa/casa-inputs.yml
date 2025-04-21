@@ -25,7 +25,7 @@ lib:
                     info: Select field using field id(s) or field name(s) eg, field='0~2,3C286'. Default all fields
                     dtype: str 
 
-            # As the above, plus common selectdata parameters
+            # as the above, plus common selectdata parameters
             ms-selectdata-inputs:
                 _use: lib.params.casa.ms-field-spw-inputs
                 intent:
@@ -55,6 +55,19 @@ lib:
                     info: Select based on TaQL query
                     dtype: str 
 
+            # as the above, plus correlation, array, feed
+            ms-selectdata-extended-inputs:
+                _use: lib.params.casa.ms-selectdata-inputs
+                correlation:
+                    info: Correlation. E.g. 'XX,YY'
+                    dtype: str
+                array:
+                    info: (Sub)array numbers
+                    dtype: str
+                feed:
+                    info: Multi-feed numbers. Not yet implemented
+                    dtype: str
+
             # standard set of inputs for calibration tasks
             calibration-inputs:
                 callib:
@@ -79,11 +92,28 @@ lib:
                     dtype: List[int]
 
     misc:
+        casa5:
+            command-data:
+                flavour:
+                    kind: casa-task
+                image: 
+                    _use: vars.cult-cargo.images
+                    name: casa
+                backend:
+                    singularity:
+                        bind_dirs:
+                            dot-casa:
+                                host: empty
+                                target: ~/.casa
+                                
         casa6:
             command-data:
                 flavour:
                     kind: python
                     interpreter_binary: python3.10
+                    pre_command: |
+                        import warnings
+                        warnings.filterwarnings("ignore", category=SyntaxWarning)
                 image: 
                     _use: vars.cult-cargo.images
                     name: casa6
@@ -93,4 +123,3 @@ lib:
                             dot-casa:
                                 host: empty
                                 target: ~/.casa
-

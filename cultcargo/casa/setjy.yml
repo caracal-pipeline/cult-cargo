@@ -11,7 +11,7 @@ cabs:
         inputs:
             _use: 
                 - lib.params.casa.ms-selectdata-inputs
-            _scrub: antenna, uvrange, msselect   # not used by this task
+            _scrub: [antenna, uvrange, msselect]   # not used by this task
             standard:
                 choices:
                     - 'Perley-Butler 2017'

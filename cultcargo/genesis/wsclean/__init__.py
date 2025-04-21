@@ -47,22 +47,29 @@ def make_stimela_schema(params: Dict[str, Any], inputs: Dict[str, Parameter], ou
     ntime  = params.get('intervals-out', 1)
     multitime = params.get('multi.interval', False) or not isinstance(ntime, int) or ntime > 1
 
-    for imagetype in (["dirty", "restored", "residual", "model"] 
-                      if params.get("make-psf-only", False) else []):
-        if imagetype == "dirty":
-            # dirty image not part of outputs with no-dirty
-            if params.get("no-dirty", False):
-                continue
+    # make list of image types which will be generated according to settings
+    imagetypes = []
+    if params.get("make-psf-only", False):
+        imagetypes.append("psf")
+    else: 
+        if not params.get("no-dirty", False):
+            imagetypes.append("dirty") 
+        if params.get("make-psf", False):
+            imagetypes.append("psf")
+        imagetypes += ["restored", "residual", "model"]
+
+    # now create outputs for all expected image types
+    for imagetype in imagetypes:
+        # dirty, restored and psf will be generated whether cleaning or not
+        if imagetype in ("dirty", "restored", "psf"):
             must_exist = True
-        # restored image generated always
-        elif imagetype == 'restored':
-            must_exist = True
-        # residual and model images only generated when cleaning is done
+        # residual and model images only generated when cleaning 
         else:
             must_exist = params.get('niter', 0) > 0
-        for st in stokes:
+        # psf images are not per-Stokes, all others are
+        for st in (stokes if imagetype != "psf" else ["I"]):
             # define name/description/filename components for this Stokes 
-            if multistokes:
+            if multistokes and imagetype != "psf":
                 st_name = f"{st.lower()}."
                 st_name1 = f".{st.lower()}"
                 st_desc = f"Stokes {st} "
