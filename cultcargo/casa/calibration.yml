@@ -53,7 +53,7 @@ cabs:
                 required: true
             transfer:
                 info: Transfer field name(s) (transfer flux scale TO)
-                dtype: str 
+                dtype: List[str]
             listfile:
                 info: Name of listfile that contains the fit information
                 dtype: str 
