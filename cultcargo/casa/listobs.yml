@@ -9,4 +9,19 @@ cabs:
         command: casatasks.listobs
         _use: lib.misc.casa6.command-data
         inputs:
-            _use: lib.params.casa.base-inputs
+            _use: lib.params.casa.ms-selectdata-inputs
+            overwrite:
+               info:  If True, tacitly overwrite listfile if it exists.
+               dtype: bool 
+            listfile:
+               info: Name of disk file to write output. Default is none (output is written to logger only)
+               dtype: str
+            verbose:
+               info: Controls level of information detail reported. True reports more than False.
+               dtype: bool
+            listunf:
+               info: List unflagged row counts? If true, it can have significant negative performance impact.
+               dtype: bool
+            cachesize: 
+               info: EXPERIMENTAL. Maximum size in megabytes of cache in which data structures can be held
+               dtype: int

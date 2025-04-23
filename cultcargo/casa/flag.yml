@@ -14,7 +14,8 @@ cabs:
             _use: lib.params.casa.base-inputs
             ms:
                 # since a new "<MS>.flagversions" may need to be created, mark parent dir of ms as writeable
-                write_parent_dir: true
+                path_policies:
+                    write_parent: true
             versionname:
                 info: "flag version name"
             mode: 
@@ -48,8 +49,8 @@ cabs:
         command: casatasks.flagdata
         _use: lib.misc.casa6.command-data
         inputs:
-            _use: lib.params.casa.ms-field-spw-inputs
-            _scrub: selectdata, msselect   # these ones not implemented by this task
+            _use: lib.params.casa.ms-selectdata-inputs
+            _scrub: [selectdata, msselect]  # these ones not implemented by this task
             mode:
                 info: Flagging mode, defult is 'manual'
                 choices:
@@ -95,6 +96,9 @@ cabs:
                 dtype: bool
             channelavg:
                 info: Average over channels (scalar average)
+                dtype: bool
+            writeflags:
+                info: Internal hidden parameter. Do not modify
                 dtype: bool
             clipzeros:
                 info: Clip zero-value data

@@ -9,7 +9,8 @@ cabs:
         command: casatasks.mstransform
         _use: lib.misc.casa6.command-data
         inputs:
-            _use: lib.params.casa.base-inputs
+            _use: lib.params.casa.ms-selectdata-inputs
+            _scrub: [selectdata] 
             outputvis:
                info: Name of output Measurement Set or Multi-MS
                dtype: str
@@ -56,7 +57,7 @@ cabs:
                info: Make real a virtual MODEL column.
                dtype: bool
             phasecenter:
-               info: Phase center direction to be used for the spectral coordinate transformation: direction measure or field index
+               info: Phase center direction to be used for the spectral coordinate transformation; direction measure or field index
                dtype: str 
             taql:
                info: Table query for nested selections

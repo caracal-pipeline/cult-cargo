@@ -11,7 +11,7 @@ cabs:
         inputs:
             _use: 
                 - lib.params.casa.ms-selectdata-inputs
-            _scrub: antenna, uvrange, msselect   # not used by this task
+            _scrub: [antenna, uvrange, msselect]   # not used by this task
             standard:
                 dtype: str 
                 info: |
@@ -21,4 +21,36 @@ cabs:
             usescratch:
                 dtype: bool
                 info: Will create if necessary and use the MODEL_DATA column, default is true
+            scalebychan:
+                info: Scale the flux density on a per channel basis or else on a per spw basis
+                dtype: bool
+            spix:
+                info: Spectral index (including higher terms) of I fluxdensity
+                dtype: list
+            fluxdensity:
+                info: Specified flux density in Jy [I,Q,U,V]
+                dtype: list
+            reffreq:
+                info: Reference frequency for spix
+                default: '1GHz'
+                dtype: str
+            polindex:
+                info: Coefficients of the frequency-dependent linear polarization index (polarization fraction) 
+                dtype: list
+            polangle:
+                info: Coefficients of the frequency-dependent linear polarization angle (in radians)
+                dtype: list
+            rotmeas:
+                info: Rotation measure (in rad/m^2)
+                dtype: float
+            model:
+                info: File location for field model
+                dtype: str
+            listmodels:
+                info: List the available models for VLA calibrators or Tb models for Solar System objects
+                dtype: bool
+            interpolation:
+                info: Method to be used to interpolate in time
+                dtype: str
+                
                 

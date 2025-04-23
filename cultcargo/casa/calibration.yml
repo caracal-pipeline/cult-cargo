@@ -91,6 +91,7 @@ cabs:
         extra_info:
             See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.calibration.gaincal.html
         command: casatasks.gaincal
+        _use: lib.misc.casa6.command-data
         outputs:
             caltable:
                 info: Name of output gain calibration table
@@ -130,12 +131,16 @@ cabs:
                 info: Solution normalization calculation type
                 dtype: str
                 choices: [mean, median]
+            gaintable:
+                info: Gain calibration table(s) to apply on the fly
+                dtype: List[str]
             gaintype:
                 info: Type of gain solution (G,T,GSPLINE,K,KCROSS)
                 dtype: str
                 choices: [G,T,GSPLINE,K,KCROSS]
-            # smodel:
-            #   info: Point source Stokes parameters for source model (experimental).
+            smodel:
+                info: Point source Stokes parameters for source model (experimental).
+                dtype: list[int]
             calmode:
                 info: Type of solution ('ap', 'p', 'a')
                 dtype: str
