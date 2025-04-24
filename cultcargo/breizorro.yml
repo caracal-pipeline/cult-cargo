@@ -2,3 +2,10 @@ _include:
   - genesis/cult-cargo-base.yml
   - genesis/breizorro/breizorro.yaml
 
+cabs:
+  breizorro:
+    name: breizorro
+
+    image:
+      _use: vars.cult-cargo.images
+      name: breizorro
