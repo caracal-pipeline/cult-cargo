@@ -289,7 +289,7 @@ cabs:
                 info: Name of this summary report (key in summary dictionary), default is 'Summary'
                 dtype: str
             action:
-                info: Action to perform in MS and/or in inpfile, default is 'none'
+                info:  Action to perform in MS/cal table or in the input list of parameters
                 choices:
                     - none
                     - apply
