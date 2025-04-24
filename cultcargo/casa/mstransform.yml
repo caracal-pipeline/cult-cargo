@@ -13,6 +13,9 @@ cabs:
             outputvis:
                info: Name of output Measurement Set or Multi-MS
                dtype: str
+            field:
+                info: Select field using field id(s) or field name(s) eg, field='0~2,3C286'. Default all fields
+                dtype: str
             createmms:
                info: Create a multi-MS output from an input MS
                dtype: bool
