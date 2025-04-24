@@ -9,13 +9,12 @@ cabs:
         command: casatasks.mstransform
         _use: lib.misc.casa6.command-data
         inputs:
-            _use: lib.params.casa.base-inputs
-            outputvis:
-               info: Name of output Measurement Set or Multi-MS
-               dtype: str
             _use:
                 - lib.params.casa.ms-selectdata-extended-inputs
             _scrub: [selectdata, msselect]        # not used in this task
+            outputvis:
+               info: Name of output Measurement Set or Multi-MS
+               dtype: str
             createmms:
                info: Create a multi-MS output from an input MS
                dtype: bool
