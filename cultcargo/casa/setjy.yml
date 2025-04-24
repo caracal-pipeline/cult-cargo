@@ -28,8 +28,7 @@ cabs:
                 info: Which standard to use 
             scalebychan:
                 dtype: bool
-                default: true
-                info: Scale the flux density on a per channel basis or else on a per spw basis
+                info: Scale the flux density on a per channel basis or else on a per spw basis (default true)
             usescratch:
                 dtype: bool
                 default: true
@@ -43,6 +42,5 @@ cabs:
                 dtype: Union[float, List[float]]
                 default: 0.0
             reffreq:
-                info: Reference frequency for spix
+                info: Reference frequency for spix (default 1 GHz)
                 dtype: str
-                default: '1GHz'
