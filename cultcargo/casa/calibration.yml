@@ -140,7 +140,7 @@ cabs:
                 choices: [G,T,GSPLINE,K,KCROSS]
             smodel:
                 info: Point source Stokes parameters for source model (experimental).
-                dtype: list[int]
+                dtype: List[float]
             calmode:
                 info: Type of solution ('ap', 'p', 'a')
                 dtype: str
