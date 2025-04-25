@@ -26,26 +26,25 @@ cabs:
                 dtype: bool
             spix:
                 info: Spectral index (including higher terms) of I fluxdensity
-                dtype: list
+                dtype: List[float]
             fluxdensity:
                 info: Specified flux density in Jy [I,Q,U,V]
-                dtype: list
+                dtype: Tuple[float, float, float, float]
             reffreq:
                 info: Reference frequency for spix
-                default: '1GHz'
                 dtype: str
             polindex:
                 info: Coefficients of the frequency-dependent linear polarization index (polarization fraction) 
-                dtype: list
+                dtype: List[float]
             polangle:
                 info: Coefficients of the frequency-dependent linear polarization angle (in radians)
-                dtype: list
+                dtype: List[float]
             rotmeas:
                 info: Rotation measure (in rad/m^2)
                 dtype: float
             model:
                 info: File location for field model
-                dtype: str
+                dtype: File
             listmodels:
                 info: List the available models for VLA calibrators or Tb models for Solar System objects
                 dtype: bool
