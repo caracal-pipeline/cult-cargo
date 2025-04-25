@@ -29,7 +29,7 @@ cabs:
                 dtype: str 
             smodel:
                 info: Point source Stokes parameters for source model (experimental).
-                dtype: list[int]
+                dtype: List[float]
             preavg:
                 info: Pre-averaging interval (sec)
                 dtype: float
