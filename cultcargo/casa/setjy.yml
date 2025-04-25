@@ -24,23 +24,19 @@ cabs:
                     - manual
                     - fluxscale
                 dtype: str
-                default: 'Perley-Butler 2017'
                 info: Which standard to use 
             scalebychan:
                 dtype: bool
                 info: Scale the flux density on a per channel basis or else on a per spw basis (default true)
             usescratch:
                 dtype: bool
-                default: true
                 info: Will create if necessary and use the MODEL_DATA
             fluxdensity:
                 info: Specified flux density in Jy [I,Q,U,V]; (-1 will lookup values)
                 dtype: Union[int, List[int], List[float]]
-                default: -1
             spix:
                 info: Spectral index (including higher terms) of I fluxdensity
                 dtype: Union[float, List[float]]
-                default: 0.0
             reffreq:
                 info: Reference frequency for spix (default 1 GHz)
                 dtype: str
