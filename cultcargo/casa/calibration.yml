@@ -53,7 +53,7 @@ cabs:
                 required: true
             transfer:
                 info: Transfer field name(s) (transfer flux scale TO)
-                dtype: str 
+                dtype: List[str]
             listfile:
                 info: Name of listfile that contains the fit information
                 dtype: str 
@@ -91,6 +91,7 @@ cabs:
         extra_info:
             See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.calibration.gaincal.html
         command: casatasks.gaincal
+        _use: lib.misc.casa6.command-data
         outputs:
             caltable:
                 info: Name of output gain calibration table

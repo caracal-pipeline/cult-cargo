@@ -197,8 +197,7 @@ cabs:
                 info: Upper limiting elevation (in degrees)
                 dtype: float
             ntime:
-                info: Time-range to use for each chunk (in seconds or minutes)
-                default: scan
+                info: Time-range to use for each chunk (in seconds or minutes) (eg 1.5min). Default 'scan' use full scan.
                 dtype: str
             combinescans:
                 info: Accumulate data across scans depending on the value of ntime.
@@ -289,7 +288,7 @@ cabs:
                 info: Name of this summary report (key in summary dictionary), default is 'Summary'
                 dtype: str
             action:
-                info: Action to perform in MS and/or in inpfile, default is 'none'
+                info:  Action to perform in MS/cal table or in the input list of parameters (default apply)
                 choices:
                     - none
                     - apply
