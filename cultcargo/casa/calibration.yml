@@ -53,7 +53,7 @@ cabs:
                 required: true
             transfer:
                 info: Transfer field name(s) (transfer flux scale TO)
-                dtype: List[str]
+                dtype: str
             listfile:
                 info: Name of listfile that contains the fit information
                 dtype: str 
@@ -135,8 +135,9 @@ cabs:
                 info: Type of gain solution (G,T,GSPLINE,K,KCROSS)
                 dtype: str
                 choices: [G,T,GSPLINE,K,KCROSS]
-            # smodel:
-            #   info: Point source Stokes parameters for source model (experimental).
+            smodel:
+                info: Point source Stokes parameters for source model (experimental).
+                dtype: List[float]
             calmode:
                 info: Type of solution ('ap', 'p', 'a')
                 dtype: str

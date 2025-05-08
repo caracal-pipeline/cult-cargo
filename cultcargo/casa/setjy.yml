@@ -37,6 +37,21 @@ cabs:
             spix:
                 info: Spectral index (including higher terms) of I fluxdensity (default 0.0)
                 dtype: Union[float, List[float]]
+            polindex:
+                info: Coefficients of the frequency-dependent linear polarization index (polarization fraction) 
+                dtype: List[float]
+            model:
+                info: File location for field model
+                dtype: File
+            polangle:
+                info: Coefficients of the frequency-dependent linear polarization angle (in radians)
+                dtype: List[float]
+            rotmeas:
+                info: Rotation measure (in rad/m^2)
+                dtype: float
+            interpolation:
+                info: Method to be used to interpolate in time
+                dtype: str
             reffreq:
                 info: Reference frequency for spix (default 1 GHz)
                 dtype: str
