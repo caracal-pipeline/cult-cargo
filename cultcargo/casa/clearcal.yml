@@ -8,7 +8,8 @@ cabs:
         command: casatasks.clearcal
         _use: lib.misc.casa6.command-data
         inputs:
-            _use: lib.params.casa.base-inputs
+            _use: lib.params.casa.ms-selectdata-inputs
+            _scrub: [selectdata]   # not used by this task
             addmodel: 
                info:  Add MODEL_DATA scratch column
                dtype: bool
