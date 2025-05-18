@@ -1,5 +1,12 @@
 FROM {REGISTRY}/python-base:{VERSION}-{BUNDLE_VERSION}
 
+# add casacore-tools
+RUN apt-get update && apt-get install apt-utils && \
+    apt-get install -y casacore-tools \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/cache/apt/archives 
+
+
 # add useful astro stuff
 # RUN python{VERSION} -m 
 RUN uv python pin python{VERSION}
