@@ -53,7 +53,9 @@ cabs:
                 required: true
             transfer:
                 info: Transfer field name(s) (transfer flux scale TO)
-                dtype: str
+                dtype: Union[str, List[str]]
+                policies:
+                 repeat: ','
             listfile:
                 info: Name of listfile that contains the fit information
                 dtype: str 
