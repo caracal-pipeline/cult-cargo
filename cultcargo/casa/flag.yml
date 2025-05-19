@@ -341,3 +341,14 @@ cabs:
             overwrite:
                 info: Overwrite the existing parameter file given in outfile, default is true
                 dtype: bool
+            flagversions-table:
+                info: flagversions table generated alongside the MS
+                dtype: Directory
+                implicit: "{current.ms}.flagversions"
+                must_exist: false   # created on the fly if not existing
+                writable: true
+                policies:
+                    skip: true
+                # need writing to parent dir in case it needs to be created. Should this be done automatically by stimela?
+                path_policies:
+                    write_parent: true
