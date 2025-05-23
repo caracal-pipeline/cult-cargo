@@ -88,6 +88,9 @@ lib:
         nmiter:
           info: Max number of major clean iterations
           dtype: int
+        field:
+          info: Image the given field id(s). A comma-separated list of field ids can be provided. When multiple fields are given, all fields should have the same phase centre. Specifying '-field all' will image all fields in the measurement set. Default: first field (id 0).
+          dtype: Union[str, int]
         fits-mask:
           dtype: File
         threshold:
