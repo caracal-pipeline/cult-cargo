@@ -36,14 +36,23 @@ cabs:
           positional: true
           repeat: repeat
       mean:
+        info: take mean of input images
         dtype: bool
       diff:
+        info: take difference of 2 input images
         dtype: bool
       prod:
+        info: product of input images
         dtype: bool
       force:
+        info: overwrite output file even if it exists
         dtype: bool
         default: true
+      zoom:
+        info: zoom into central region of NPIX x NPIX size
+        dtype: int
+
     outputs:
       output:
+        info: Name of output FITS file
         dtype: File
