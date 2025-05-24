@@ -89,7 +89,7 @@ lib:
           info: Taper the weights with a Gaussian function. This will reduce the contribution of long baselines. The beamsize is by default in asec, but a unit can be specified ("2amin").
           dtype: str
         niter:
-          info: Maximum number of clean iterations to perform. Default: 0 (=no cleaning)
+          info: Maximum number of minor clean iterations to perform. Default: 0 (=no cleaning)
           dtype: int
         nmiter:
           info: Maximum number of major clean (inversion/prediction) iterations. Default: 20. A value of 0 means no limit.
@@ -214,6 +214,7 @@ lib:
           dtype: float
         maxuvw-m:
           info: Set the max baseline distance in meters.
+          dtype: float
         deconvolution-threads:
           info: Limit the deconvolution process to this number of threads
           dtype: int
