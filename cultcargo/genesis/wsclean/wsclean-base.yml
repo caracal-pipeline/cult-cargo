@@ -10,7 +10,7 @@ lib:
           policies:
             positional: true
             repeat: list
-        prefix
+        prefix:
           info: Prefix of output products
           dtype: str
           nom_de_guerre: name
