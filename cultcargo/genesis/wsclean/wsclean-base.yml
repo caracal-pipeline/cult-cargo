@@ -10,7 +10,7 @@ lib:
           policies:
             positional: true
             repeat: list
-        prefix:
+        prefix
           info: Prefix of output products
           dtype: str
           nom_de_guerre: name
@@ -51,7 +51,7 @@ lib:
           info: Make PSF only
           dtype: bool
         weight:
-          info: "Weighting: natural, uniform (default), briggs. When using Briggs, add the robustness parameter as a number"
+          info: "Weighting - natural, uniform (default), briggs. When using Briggs, add the robustness parameter as a number"
           dtype: Union[str, Tuple[str, float]]
           policies:
             split: " "
@@ -117,10 +117,10 @@ lib:
           dtype: str
           choices: [rms, rms-with-min]
         gain:
-          info: Cleaning gain: Ratio of peak that will be subtracted in each iteration. Default is 0.1
+          info: Cleaning gain - Ratio of peak that will be subtracted in each iteration. Default is 0.1
           dtype: float
         mgain:
-          info: Cleaning gain for major iterations: Ratio of peak that will be subtracted in each major iteration. To use major iterations, 0.85 is a good value. Default is 1.0
+          info: Cleaning gain for major iterations. Ratio of peak that will be subtracted in each major iteration. To use major iterations, 0.85 is a good value. Default is 1.0
           dtype: float
         baseline-averaging:
           info: Enable baseline-dependent averaging. The specified size is in number of wavelengths (i.e., uvw-units). One way to calculate this is with <baseline in nr. of lambdas> * 2pi * <acceptable integration in s> / (24*60*60).
