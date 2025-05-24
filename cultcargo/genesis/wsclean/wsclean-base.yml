@@ -68,7 +68,7 @@ lib:
           info: Clean on different scales. This is a new algorithm. Default is off. This parameter invokes the optimized multiscale algorithm published by Offringa & Smirnov (2017).
           dtype: bool
         multiscale-scales:
-          info: Sets a list of scales to use in multi-scale cleaning. If unset, WSClean will select the delta (zero) scale, scales starting at four times the synthesized PSF, and increase by a factor of two until the maximum scale is reached or the maximum number of scales is reached. Example: -multiscale-scales 0,5,12.5
+          info: Sets a list of scales to use in multi-scale cleaning. If unset, WSClean will select the delta (zero) scale, scales starting at four times the synthesized PSF, and increase by a factor of two until the maximum scale is reached or the maximum number of scales is reached. Example is -multiscale-scales 0,5,12.5
           dtype: List[int]
           policies:
             repeat: ','
@@ -92,7 +92,7 @@ lib:
           info: Maximum number of minor clean iterations to perform. Default is 0 (=no cleaning)
           dtype: int
         nmiter:
-          info: Maximum number of major clean (inversion/prediction) iterations. Default: 20. A value of 0 means no limit.
+          info: Maximum number of major clean (inversion/prediction) iterations. Default is 20. A value of 0 means no limit.
           dtype: int
         fits-mask:
           info: Use the specified fits-file as mask during cleaning.
@@ -141,7 +141,7 @@ lib:
           info: Pad images by the given factor during inversion to avoid aliasing. Default is 1.2 (=20%).
           dtype: float
         nwlayers:
-          info: Number of w-layers to use. Default: minimum suggested #w-layers for first MS.
+          info: Number of w-layers to use. Default is minimum suggested #w-layers for first MS.
           dtype: int
         nwlayers-factor:
           info: Use automatic calculation of the number of w-layers, but multiple that number by the given factor. This can e.g. be useful for increasing w-accuracy.
@@ -186,7 +186,7 @@ lib:
           info: Add date and time to each line in the output.
           dtype: bool
         interval:
-          info: Only image the given time interval. Indices specify the timesteps, end index is exclusive. Default: image all time steps.
+          info: Only image the given time interval. Indices specify the timesteps, end index is exclusive. Default is image all time steps.
           dtype: List[int]
           required: false
           policies:
