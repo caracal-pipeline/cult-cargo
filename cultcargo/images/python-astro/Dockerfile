@@ -33,5 +33,8 @@ RUN python{VERSION} -c "from astropy.coordinates import EarthLocation; EarthLoca
 # this now disables astropy downloads so should be done last 
 COPY astropy.cfg  /var/config/astropy
 
+# change permissions inside image
+RUN chmod -R a+rX /var/config/astropy /var/cache/astropy
+
 CMD python{VERSION}
 
