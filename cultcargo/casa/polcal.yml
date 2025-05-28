@@ -30,6 +30,9 @@ cabs:
             preavg:
                 info: Pre-averaging interval (sec)
                 dtype: float
+            smodel:
+                info: Point source Stokes parameters for source model (experimental).
+                dtype: List[float]
             refant:
                 info: Reference antenna. You may use any antenna that is working for the whole duration of the observation.
                 dtype: str 
