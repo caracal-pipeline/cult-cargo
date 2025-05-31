@@ -278,7 +278,7 @@ images:
       #     ADD killMS-useapp-meerklass killMS-branch
       #   package: -e ./DDFacet-branch ./killMS-branch
       '0.8':
-        package: DDFacet==0.8.0.0 killMS==3.2.0
+        package: DDFacet[fits-beam-support]==0.8.0.0 killMS==3.2.0
         extra_deps: ninja
 
   mosaic-queen:
