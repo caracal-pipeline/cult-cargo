@@ -119,6 +119,8 @@ cabs:
     outputs:
       outfile_gaul:
         dtype: File
+        required: false
       outfile_srl:
         dtype: File
+        required: false
 
