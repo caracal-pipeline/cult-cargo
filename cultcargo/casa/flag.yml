@@ -57,6 +57,10 @@ cabs:
                 # need writing to parent dir in case it needs to be created. Should this be done automatically by stimela?
                 path_policies:
                     write_parent: true
+        outputs:
+            version-list:
+                info: will contain a dict of flagversions, for mode='list'
+                dtype: List
         management:
             wranglers:
                 "\\d+ flag versions found:":
