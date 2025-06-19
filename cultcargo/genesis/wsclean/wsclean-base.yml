@@ -16,99 +16,415 @@ lib:
           nom_de_guerre: name
           required: true
         column:
+          info: Default is CORRECTED_DATA if it exists, otherwise DATA will be used.
           dtype: str
           nom_de_guerre: data-column
+        model-column:
+          info: Column to which the predicted data is written. Default is MODEL_DATA.
+          dtype: str
+        model-storage-manager:
+          info: If a new model column needs to be written, create the model using this storage manager. Supported types are "default" and "stokes-i".
+          dtype: str
+          choices: [default, stokes-i]
         nchan:
           info: Channels out
           dtype: int
           nom_de_guerre: channels-out
         deconvolution-channels:
-          info: Channels to use in deconvolution
+          info: Decrease the number of channels as specified by -channels-out to the given number for deconvolution. Only possible in combination with one of the -fit-spectral options.
           dtype: int
         channel-range:
           dtype: List[int]
           policies:
             repeat: list
+        channel-division-frequencies:
+          info: Split the bandwidth at the specified frequencies (in Hz) before the normal bandwidth division is performed.
+          dtype: List[float]
+          policies:
+            repeat: list
+        gap-channel-division:
+          info: In case of irregular frequency spacing, this option can be used to not try and split channels to make the output channel bandwidth similar, but instead to split largest gaps first.
+          dtype: bool
         pol:
           dtype: Union[str, List[str]]
           element_choices: [I,Q,U,V,QU,QUV,IQ,IV,IQU,IQUV,XX,XY,YX,YY,LL,LR,RL,RR]
           policies:
             repeat: ","
         join-polarizations:
+          info: Perform deconvolution by searching for peaks in the sum of squares of the polarizations, but subtract components from the individual images. Only possible when imaging two or four Stokes or linear parameters. Default is off.
           dtype: bool
         link-polarizations:
+          info: Links all polarizations to be cleaned from the given list - components are found in the given list, but cleaned from all polarizations.
           dtype: Union[str, List[str]]
           element_choices: [I,Q,U,V,QU,QUV,IQ,IV,IQU,IQUV,XX,XY,YX,YY,LL,LR,RL,RR]
           policies:
             repeat: ","
         intervals-out:
+          info: Number of intervals to image inside the selected global interval. Default is 1.
           dtype: int
+        interval:
+          info: Only image the given time interval. Indices specify the timesteps, end index is exclusive. Default is image all time steps.
+          dtype: List[int]
+          policies:
+            repeat: list
+        even-timesteps:
+          info: Only select even timesteps. Can be used together with -odd-timesteps to determine noise values.
+          dtype: bool
+        odd-timesteps:
+          info: Only select odd timesteps.
+          dtype: bool
+        field:
+          info: Image the given field id(s). A comma-separated list of field ids can be provided. When multiple fields are given, all fields should have the same phase centre. Specifying '-field all' will image all fields in the measurement set. Default is first field (id 0).
+          dtype: Union[str, List[int]]
+          policies:
+            repeat: ","
+        spws:
+          info: Selects only the spws given in the list. list should be a comma-separated list of integers. Default is all spws.
+          dtype: List[int]
+          policies:
+            repeat: ","
         threads:
-          info: Threads
+          info: Specify number of computing threads to use, i.e., number of cpu cores that will be used. Default is use all cpu cores.
           dtype: int
           nom_de_guerre: j
+        parallel-gridding:
+          info: Will execute multiple gridders simultaneously. This can make things faster in certain cases, but will increase memory usage.
+          dtype: int
+        parallel-reordering:
+          info: Process the reordering with multiple threads. Default is Use 4 threads.
+          dtype: int
+        no-work-on-master:
+          info: In MPI runs, do not use the master for gridding. This may be useful if the resources such as memory of the master are limited.
+          dtype: bool
+        channel-to-node:
+          info: In MPI runs, override the default channel-to-node assignment. The comma-separated list must contain a node index for each output channel.
+          dtype: List[int]
+          policies:
+            repeat: ","
+        max-mpi-message-size:
+          info: In MPI runs, use a different maximum message size. The default value is 2 GB. If size ends with g or m, the value is interpreted as gigabytes or megabytes.
+          dtype: str
+        mem: 
+          dtype: int
+          info: Limit memory usage to the given fraction of the total system memory. This is an approximate value. Default is 100.
+        abs-mem:
+          dtype: int
+          info: Like -mem, but this specifies a fixed amount of memory in gigabytes.
+        verbose:
+          info: Increase verbosity of output.
+          dtype: bool
+          nom_de_guerre: v
+        log-time:
+          info: Add date and time to each line in the output.
+          dtype: bool
+        quiet:
+          info: Do not output anything but errors.
+          dtype: bool
+        reorder:
+          info: Force reordering of Measurement Set. This can be faster when the measurement set needs to be iterated several times, such as with many major iterations or in channel imaging mode.
+          dtype: bool
+        no-reorder:
+          info: Disable reordering of Measurement Set. Default is only reorder when in channel imaging mode.
+          dtype: bool
+        temp-dir:
+          info: Set the temporary directory used when reordering files. Default is same directory as input measurement set.
+          dtype: Directory
+        reuse-reordered:
+          info: Reuse generated reordered temporary files (data, weights & metadata). These files can be generated by a previous run of wsclean (with -save-reordered) or with DP3's 'reorder' step. Default is false.
+          dtype: bool
+        save-reordered:
+          info: Keep the reordered files instead of deleting them when finished. Implicitly sets -reorder.
+          dtype: bool
+        update-model-required:
+          info: These options specify whether the model data column is required to contain valid model data after imaging. Default is true.
+          dtype: bool
+        no-update-model-required:
+          info: Do not require the model data column to contain valid model data after imaging. It can save time to not update the model data column.
+          dtype: bool
+        no-dirty:
+          info: Do not save the dirty image.
+          dtype: bool
+        save-first-residual:
+          info: Save the residual after the first iteration.
+          dtype: bool
+        save-weights:
+          info: Save the gridded weights in the a fits file named <image-prefix>-weights.fits.
+          dtype: bool
+        save-uv:
+          info: Save the gridded uv plane, i.e., the FFT of the residual image. The UV plane is complex, hence two images will be output.
+          dtype: bool
+        reuse-psf:
+          info: Load the psf(s) from the given prefix and skip the inversion for the psf image.
+          dtype: str
+        reuse-dirty:
+          info: Load the dirty from the given prefix and skip the inversion for the dirty image.
+          dtype: str
+        make-psf:
+          info: Always make the psf, even when no cleaning is performed.
+          dtype: bool
         make-psf-only:
-          info: Make PSF only
+          info: Only make the psf, no images are made.
           dtype: bool
         weight:
-          info: "Weighting - natural, uniform (default), briggs. When using Briggs, add the robustness parameter as a number"
+          info: Weightmode can be natural, uniform, briggs. Default is uniform. When using Briggs' weighting, add the robustness parameter, like "-weight briggs 0.5".
           dtype: Union[str, Tuple[str, float]]
           policies:
             split: " "
             repeat: list
+        super-weight:
+          info: Increase the weight gridding box size, similar to Casa's superuniform weighting scheme. Default is 1.0. The factor can be rational and can be less than one for subpixel weighting.
+          dtype: float
+        mf-weighting:
+          info: In spectral mode, calculate the weights as if the image was made using MF. This makes sure that the sum of channel images equals the MF weights.
+          dtype: bool
+        no-mf-weighting:
+          info: Opposite of -mf-weighting; can be used to turn off MF weighting in -join-channels mode.
+          dtype: bool
+        weighting-rank-filter:
+          info: Filter the weights and set high weights to the local mean. The level parameter specifies the filter level.
+          dtype: float
+        weighting-rank-filter-size:
+          info: Set size of weighting rank filter. Default is 16.
+          dtype: int
+        taper-gaussian:
+          info: Taper the weights with a Gaussian function. This will reduce the contribution of long baselines. The beamsize is by default in asec, but a unit can be specified ("2amin").
+          dtype: str
+        taper-tukey:
+          info: Taper the outer weights with a Tukey transition. Lambda specifies the size of the transition; use in combination with -maxuv-l.
+          dtype: float
+        taper-inner-tukey:
+          info: Taper the weights with a Tukey transition. Lambda specifies the size of the transition; use in combination with -minuv-l.
+          dtype: float
+        taper-edge:
+          info: Taper the weights with a rectangle, to keep a space of lambda between the edge and gridded visibilities.
+          dtype: float
+        taper-edge-tukey:
+          info: Taper the edge weights with a Tukey window. Lambda is the size of the Tukey transition.
+          dtype: float
+        use-weights-as-taper:
+          info: Will not use visibility weights when determining the imaging weights.
+          dtype: bool
+        store-imaging-weights:
+          info: Will store the imaging weights in a column named 'IMAGING_WEIGHT_SPECTRUM'.
+          dtype: bool
         size:
-          info: Image size in pixels
+          info: Set the output image size in number of pixels (without padding).
           dtype: Union[int, Tuple[int, int]]
           required: true
           policies:
             repeat: list
             format_list: ["{0}", "{1}"]
             format_list_scalar: ["{0}", "{0}"]
-        multiscale:
-          info: Clean on different scales. This is a new algorithm. Default is off. This parameter invokes the optimized multiscale algorithm published by Offringa & Smirnov (2017).
-          dtype: bool
-        multiscale-scales:
-          info: Sets a list of scales to use in multi-scale cleaning. If unset, WSClean will select the delta (zero) scale, scales starting at four times the synthesized PSF, and increase by a factor of two until the maximum scale is reached or the maximum number of scales is reached. Example is -multiscale-scales 0,5,12.5
-          dtype: List[int]
-          policies:
-            repeat: ','
-        multiscale-max-scales:
-          info: Set the maximum number of scales that WSClean should use in multiscale cleaning. Only relevant when -multiscale-scales is not set. Default is unlimited.
-          dtype: int
-        multiscale-gain:
-          info: Size of step made in the subminor loop of multi-scale. Default currently 0.2, but shows sign of instability. A value of 0.1 might be more stable.
-          dtype: float
-        multiscale-scale-bias:
-          info: Parameter to prevent cleaning small scales in the large-scale iterations. A higher bias will give more focus to larger scales. Defaults is 0.6
+        padding:
+          info: Pad images by the given factor during inversion to avoid aliasing. Default is 1.2 (=20%).
           dtype: float
         scale:
           info: Scale of a pixel. Default unit is degrees, but can be specificied, e.g. -scale 20asec. Default is 0.01deg.
           dtype: Union[str, float]
           required: true
-        taper-gaussian:
-          info: Taper the weights with a Gaussian function. This will reduce the contribution of long baselines. The beamsize is by default in asec, but a unit can be specified ("2amin").
+        predict:
+          info: Only perform a single prediction for an existing image. Doesn't do any imaging or cleaning. The input images should have the same name as the model output images would have in normal imaging mode.
+          dtype: bool
+        continue:
+          info: Will continue an earlier WSClean run. Earlier model images will be read and model visibilities will be subtracted to create the first dirty residual. For this to work, the earlier run should have updated the model data (and thus mgain should not have been set to 1). Default is off.
+          dtype: bool
+        subtract-model:
+          info: Subtract the model from the data column in the first iteration. This can be used to reimage an already cleaned image, e.g. at a different resolution.
+          dtype: bool
+        gridder:
+          info: Set gridder type - direct-ft, idg, wgridder, tuned-wgridder, or wstacking. Default is wgridder.
           dtype: str
+          choices:
+            - direct-ft
+            - idg
+            - wgridder
+            - tuned-wgridder
+            - wstacking
+        shift:
+          info: Shift the phase centre to the given location. The shift is along the tangential plane.
+          dtype: List[str]
+          policies:
+            repeat: list
+        facet-regions:
+          info: Split the image into facets using the facet regions defined in the facets.reg file.
+          dtype: File
+        feather-size:
+          info: Set the size of the feathered facet boundaries. Setting this to zero will disable feathering.
+          dtype: int
+        no-min-grid-resolution:
+          info: Disable performing prediction and inversion at the Nyquist resolution and upscaling the image to the requested image size afterwards.
+          dtype: bool
+        min-grid-resolution:
+          info: Perform prediction and inversion at the Nyquist resolution and upscale the image to the requested image size afterwards. This speeds up inversion and prediction considerably, but makes aliasing slightly worse. Default is on.
+          dtype: bool
+        visibility-weighting-mode:
+          info: Specify visibility weighting modi. Affects how the weights (normally) stored in WEIGHT_SPECTRUM column are applied.
+          dtype: str
+          choices: [normal, squared, unit]
+        baseline-averaging:
+          info: Enable baseline-dependent averaging. The specified size is in number of wavelengths (i.e., uvw-units). One way to calculate this is with <baseline in nr. of lambdas> * 2pi * <acceptable integration in s> / (24*60*60).
+          dtype: float
+        simulate-noise:
+          info: Will replace every visibility by a Gaussian distributed value with given standard deviation before imaging.
+          dtype: float
+        simulate-baseline-noise:
+          info: Like -simulate-noise, but the stddevs are provided per baseline, in a text file with antenna1 and antenna2 indices and the stddev per line.
+          dtype: File
+        idg-mode:
+          info: Sets the IDG mode. Default is cpu. Hybrid is recommended when a GPU is available.
+          dtype: str
+          choices: [cpu, gpu, hybrid]
+        wstack-nwlayers:
+          info: Number of w-layers to use. Default is minimum suggested #w-layers for first MS.
+          dtype: int
+          nom_de_guerre: nwlayers
+        wstack-nwlayers-factor:
+          info: Use automatic calculation of the number of w-layers, but multiple that number by the given factor. This can e.g. be useful for increasing w-accuracy.
+          dtype: float
+          nom_de_guerre: nwlayers-factor
+        wstack-nwlayers-for-size:
+          info: Use the minimum suggested w-layers for an image of the given size. Can e.g. be used to increase accuracy when predicting small part of full image.
+          dtype: List[int]
+          policies:
+            repeat: list
+        wstack-grid-mode:
+          info: Kernel and mode used for gridding. Default is kb.
+          dtype: str
+          choices: [nn, kb, rect, kb-no-sinc, gaus, bn]
+        wstack-kernel-size:
+          info: Gridding antialiasing kernel size. Default is 7.
+          dtype: int
+        wstack-oversampling:
+          info: Oversampling factor used during gridding. Default is 1023.
+          dtype: int
+        wgridder-accuracy:
+          info: Set the w-gridding accuracy. Default is 1e-4. Useful range is 1e-2 to 1e-6.
+          dtype: float
+        compound-tasks:
+          info: Schedule compound gridding tasks which contain all facets for a single image.
+          dtype: bool
+        shared-facet-reads:
+          info: When parallel gridding with multiple facets read data only once per compound gridding task into a shared data buffer and share this buffer for the gridders of all facets within the task. Implicitly sets -compound-tasks.
+          dtype: bool
+        aterm-config:
+          info: Specify a parameter set describing how a-terms should be applied. Applying a-terms is only possible when IDG is enabled.
+          dtype: File
+        grid-with-beam:
+          info: Apply a-terms to correct for the primary beam. This is only possible when IDG is enabled.
+          dtype: bool
+        beam-aterm-update:
+          info: Set the ATerm update time in seconds. The default is every 300 seconds.
+          dtype: int
+        aterm-kernel-size:
+          info: Kernel size reserved for aterms by IDG.
+          dtype: float
+        apply-facet-solutions:
+          info: Apply solutions from the provided (h5) file per facet when gridding facet based images. Provided file is assumed to be in H5Parm format.
+          dtype: List[Union[File, str]]
+          policies:
+            repeat: list
+        no-solution-directions-check:
+          info: Disable the check that requires the number of solution directions to be equal to the number of directions in the region file.
+          dtype: bool
+        scalar-visibilities:
+          info: Only read the visibilities as a single polarization (e.g. Stokes I). When imaging a single polarization and when the solutions are also scalar, this option may make IO faster.
+          dtype: bool
+        diagonal-visibilities:
+          info: Will read only diagonal visibilities (e.g. xx/yy) and apply solutions separately to these visibilities.
+          dtype: bool
+        apply-facet-beam:
+          info: Apply beam gains to facet center when gridding facet based images or direction dependent psfs.
+          dtype: bool
+        facet-beam-update:
+          info: Set the facet beam update time in seconds. The default is every 120 seconds.
+          dtype: int
+        save-aterms:
+          info: Output a fits file for every aterm update, containing the applied image for every station.
+          dtype: bool
+        apply-primary-beam:
+          info: Calculate and apply the primary beam and save images for the Jones components, with weighting identical to the weighting as used by the imager. Only available for instruments supported by EveryBeam.
+          dtype: bool
+        reuse-primary-beam:
+          info: If a primary beam image exists on disk, reuse those images.
+          dtype: bool
+        use-differential-lofar-beam:
+          info: Assume the visibilities have already been beam-corrected for the reference direction.
+          dtype: bool
+        primary-beam-limit:
+          info: Level at which to trim the beam when performing image-based beam correction. Default is 0.005.
+          dtype: float
+        scalar-beam:
+          info: In the case of Stokes I imaging, this will take the average of 1/XX and 1/YY instead of the inverted Mueller matrix.
+          dtype: bool
+        mwa-path:
+          info: Set path where to find the MWA beam file(s).
+          dtype: Directory
+        save-psf-pb:
+          info: When applying beam correction, also save the primary-beam corrected PSF image.
+          dtype: bool
+        pb-grid-size:
+          info: Specify the grid size in number of pixels at which to evaluate the primary beam. Default is 32.
+          dtype: int
+        dd-psf-grid:
+          info: This parameter enables direction-dependent psfs. Select the grid size (number of cells in both directions). Default is 1 1 (no direction-dependent psfs).
+          dtype: List[int]
+          policies:
+            repeat: list
+        beam-model:
+          info: Specify the beam model, only relevant for SKA and LOFAR. Available models are Hamaker, Lobes, OskarDipole, OskarSphericalWave. Default is Hamaker for LOFAR and OskarSphericalWave for SKA.
+          dtype: str
+          choices: [Hamaker, Lobes, OskarDipole, OskarSphericalWave]
+        beam-mode:
+          info: Manually specify the beam mode. Only relevant for simulated SKA measurement sets. Available modes are array_factor, element and full. Default is full.
+          dtype: str
+          choices: [array_factor, element, full]
+        beam-normalisation-mode:
+          info: Manually specify the normalisation of the beam. Only relevant for simulated SKA measurement sets. Available modes are none, preapplied, full, and amplitude. Default is preapplied.
+          dtype: str
+          choices: [none, preapplied, full, amplitude]
+        dry-run:
+          info: Parses the command line and quits afterwards. No imaging is done.
+          dtype: bool
+        maxuvw-m:
+          info: Set the max baseline distance in meters.
+          dtype: float
+        minuvw-m:
+          info: Set the min baseline distance in meters.
+          dtype: float
+        maxuv-l:
+          info: Set the max uv distance in lambda.
+          dtype: float
+        minuv-l:
+          info: Set the min uv distance in lambda.
+          dtype: float
+        maxw:
+          info: Do not grid visibilities with a w-value higher than the given percentage of the max w, to save speed. Default is grid everything.
+          dtype: float
         niter:
-          info: Maximum number of minor clean iterations to perform. Default is 0 (=no cleaning)
+          info: Maximum number of clean iterations to perform. Default is 0 (=no cleaning).
           dtype: int
         nmiter:
-          info: Maximum number of major clean (inversion/prediction) iterations. Default is 20. A value of 0 means no limit.
+          info: Maximum number of major clean (inversion/prediction) iterations. Default is 12. A value of 0 means no limit.
           dtype: int
-        fits-mask:
-          info: Use the specified fits-file as mask during cleaning.
-          dtype: File
-        threshold:
-          info: Stopping clean thresholding in Jy. Default is 0.0
-          dtype: float
         auto-threshold:
-          info: Estimate noise level using a robust estimator and stop at sigma x stddev.
+          info: Relative clean threshold. Estimate noise level using a robust estimator and stop at sigma x stddev.
           dtype: float
+        abs-threshold:
+          info: Absolute stopping clean thresholding in Jy. The auto-threshold parameter should normally be preferred over -abs-threshold.
+          dtype: float
+          nom_de_guerre: threshold
         auto-mask:
-          info: Construct a mask from found components and when a threshold of sigma is reached, continue cleaning with the mask down to the normal threshold.
+          info: Relative stopping threshold for the mask generation stage. Construct a mask from found components and when the threshold is reached, continue cleaning with the mask down to the normal threshold.
+          dtype: float
+        abs-auto-mask:
+          info: Absolute stopping threshold for the mask generation stage. See -auto-mask.
           dtype: float
         local-rms:
           info: Instead of using a single RMS for auto thresholding/masking, use a spatially varying RMS image.
           dtype: bool
+        local-rms-strength:
+          info: A value between 0 and (normally) 1 that balances the effect of local RMS. Default is 1.
+          dtype: float
         local-rms-window:
           info: Size of window for creating the RMS background map, in number of PSFs. Default is 25 psfs.
           dtype: int
@@ -117,118 +433,153 @@ lib:
           dtype: str
           choices: [rms, rms-with-min]
         gain:
-          info: Cleaning gain - Ratio of peak that will be subtracted in each iteration. Default is 0.1
+          info: Cleaning gain - Ratio of peak that will be subtracted in each iteration. Default is 0.1.
           dtype: float
         mgain:
-          info: Cleaning gain for major iterations. Ratio of peak that will be subtracted in each major iteration. To use major iterations, 0.85 is a good value. Default is 1.0
-          dtype: float
-        baseline-averaging:
-          info: Enable baseline-dependent averaging. The specified size is in number of wavelengths (i.e., uvw-units). One way to calculate this is with <baseline in nr. of lambdas> * 2pi * <acceptable integration in s> / (24*60*60).
+          info: Cleaning gain for major iterations - Ratio of peak that will be subtracted in each major iteration. To use major iterations, 0.85 is a good value. Default is 1.0.
           dtype: float
         join-channels:
-          info: Perform cleaning by searching for peaks in the MF image, but subtract components from individual channels. This will turn on mf-weighting by default. Default is off.
+          info: Perform deconvolution by searching for peaks in the MF image, but subtract components from individual channels. This will turn on mf-weighting by default. Default is off.
+          dtype: bool
+        spectral-correction:
+          info: Enable correction of the given spectral function inside deconvolution. Example is -spectral-correction 150e6 83.084,-0.699,-0.110
+          dtype: List[Union[float, str]]
+          policies:
+            repeat: list
+        no-fast-subminor:
+          info: Do not use the subminor loop optimization during (non-multiscale) cleaning. Default is use the optimization.
+          dtype: bool
+        multiscale:
+          info: Clean on different scales. Default is off. This parameter invokes the optimized multiscale algorithm published by Offringa & Smirnov (2017).
+          dtype: bool
+        multiscale-scale-bias:
+          info: Parameter to prevent cleaning small scales in the large-scale iterations. A lower bias will give more focus to larger scales. Default is 0.6
+          dtype: float
+        multiscale-max-scales:
+          info: Set the maximum number of scales that WSClean should use in multiscale cleaning. Only relevant when -multiscale-scales is not set. Default is unlimited.
+          dtype: int
+        multiscale-scales:
+          info: Sets a list of scales to use in multi-scale cleaning. If unset, WSClean will select the delta (zero) scale, scales starting at four times the synthesized PSF, and increase by a factor of two until the maximum scale is reached or the maximum number of scales is reached. Example is -multiscale-scales 0,5,12.5
+          dtype: List[float]
+          policies:
+            repeat: ','
+        multiscale-shape:
+          info: Sets the shape function used during multi-scale clean. Either 'tapered-quadratic' (default) or 'gaussian'.
+          dtype: str
+          choices: [tapered-quadratic, gaussian]
+        multiscale-gain:
+          info: Size of step made in the subminor loop of multi-scale. Default currently 0.2, but shows sign of instability. A value of 0.1 might be more stable.
+          dtype: float
+        multiscale-convolution-padding:
+          info: Size of zero-padding for convolutions during the multi-scale cleaning. Default is 1.1
+          dtype: float
+        asp:
+          info: Use the adaptive scale pixel algorithm.
+          dtype: bool
+        no-multiscale-fast-subminor:
+          info: Disable the 'fast subminor loop' optimization, that will only search a part of the image during the multi-scale subminor loop. The optimization is on by default.
+          dtype: bool
+        python-deconvolution:
+          info: Run a custom deconvolution algorithm written in Python. See manual for the interface.
+          dtype: File
+        iuwt:
+          info: Use the IUWT deconvolution algorithm.
+          dtype: bool
+        iuwt-snr-test:
+          info: Stop IUWT when the SNR decreases. This might help limitting divergence, but can occasionally also stop the algorithm too early.
+          dtype: bool
+        no-iuwt-snr-test:
+          info: Do not stop IUWT when the SNR decreases. Default is no SNR test.
+          dtype: bool
+        moresane-ext:
+          info: Use the MoreSane deconvolution algorithm, installed at the specified location.
+          dtype: Directory
+        moresane-arg:
+          info: Pass the specified arguments to moresane. Note that multiple parameters have to be enclosed in quotes.
+          dtype: str
+        moresane-sl:
+          info: MoreSane --sigmalevel setting for each major loop iteration. Useful to start at high levels and go down with subsequent loops, e.g. 20,10,5
+          dtype: List[float]
+          policies:
+            repeat: ","
+        save-source-list:
+          info: Saves the found clean components as a BBS/DP3 text sky model. This parameter enables Gaussian shapes during multi-scale cleaning (-multiscale-shape gaussian).
+          dtype: bool
+        clean-border:
+          info: Set the border size in which no cleaning is performed, in percentage of the width/height of the image. With an image size of 1000 and clean border of 1%, each border is 10 pixels. Default is 0%
+          dtype: float
+        fits-mask:
+          info: Use the specified fits-file as mask during cleaning.
+          dtype: File
+        casa-mask:
+          info: Use the specified CASA mask as mask during cleaning.
+          dtype: File
+        horizon-mask:
+          info: Use a mask that avoids cleaning emission beyond the horizon. Distance is an angle (e.g. "5deg") that (when positive) decreases the size of the mask to stay further away from the horizon.
+          dtype: str
+        no-negative:
+          info: Do not allow negative components during cleaning. Not the default.
+          dtype: bool
+        negative:
+          info: Default on - opposite of -no-negative.
+          dtype: bool
+        stop-negative:
+          info: Stop on negative components. Not the default.
           dtype: bool
         fit-spectral-pol:
           info: Fit a polynomial over frequency to each clean component. This has only effect when the channels are joined with -join-channels.
           dtype: int
-        fit-beam:
-          info: Determine beam shape by fitting the PSF (default if PSF is made).
-          dtype: bool
-        elliptical-beam:
-          info: Allow the beam to be elliptical. Default.
-          dtype: bool
-        padding:
-          info: Pad images by the given factor during inversion to avoid aliasing. Default is 1.2 (=20%).
-          dtype: float
-        nwlayers:
-          info: Number of w-layers to use. Default is minimum suggested #w-layers for first MS.
+        fit-spectral-log-pol:
+          info: Like fit-spectral-pol, but fits a logarithmic polynomial over frequency instead.
           dtype: int
-        nwlayers-factor:
-          info: Use automatic calculation of the number of w-layers, but multiple that number by the given factor. This can e.g. be useful for increasing w-accuracy.
-          dtype: float
-        save-source-list:
-          info: Saves the found clean components as a BBS/NDPPP text sky model. This parameter enables Gaussian shapes during multi-scale cleaning (-multiscale-shape gaussian).
-          dtype: bool
-        store-imaging-weights:
-          info: Will store the imaging weights in a column named 'IMAGING_WEIGHT_SPECTRUM'.
+        force-spectrum:
+          info: Uses the fits file to force spectral indices (or other/more terms) during the deconvolution.
+          dtype: File
+        squared-channel-joining:
+          info: Use with -join-channels to perform peak finding in the sum of squared values over channels, instead of the normal sum. This is useful for imaging QU polarizations with non-zero rotation measures.
           dtype: bool
         parallel-deconvolution:
           info: Deconvolve subimages in parallel. Subimages will be at most of the given size.
           dtype: int
-        parallel-gridding:
-          info: Will execute multiple gridders simultaneously. This can make things faster in certain cases, but will increase memory usage.
+        deconvolution-threads:
+          info: Number of threads to use during deconvolution. On machines with a large nr of cores, this may be used to decrease the memory usage.
           dtype: int
-        parallel-reordering:
-          info: Process the reordering with multipliple threads.
-          dtype: int
-        no-reorder:
-          info: Force or disable reordering of Measurement Set. This can be faster when the measurement set needs to be iterated several times, such as with many major iterations or in channel imaging mode. Default is only reorder when in channel imaging mode.
-          dtype: bool
-        reorder:
-          info: Force or disable reordering of Measurement Set. This can be faster when the measurement set needs to be iterated several times, such as with many major iterations or in channel imaging mode. Defaults is only reorder when in channel imaging mode.
-          dtype: bool
-        predict:
-          info: Only perform a single prediction for an existing image. Doesn't do any imaging or cleaning. The input images should have the same name as the model output images would have in normal imaging mode.
-          dtype: bool
-        no-update-model-required:
-          info: These two options specify wether the model data column is required to contain valid model data after imaging. It can save time to not update the model data column.
-          dtype: bool
-        continue:
-          info: Will continue an earlier WSClean run. Earlier model images will be read and model visibilities will be subtracted to create the first dirty residual. CS should have been used in the earlier run, and model data should have been written to the measurement set for this to work. Default is off.
-          dtype: bool
-        subtract-model:
-          info: Subtract the model from the data column in the first iteration. This can be used to reimage an already cleaned image, e.g. at a different resolution.
-          dtype: bool
-        use-wgridder:
-          info: Use the w-gridding gridder developed by Martin Reinecke.
-          dtype: bool
-        log-time:
-          info: Add date and time to each line in the output.
-          dtype: bool
-        interval:
-          info: Only image the given time interval. Indices specify the timesteps, end index is exclusive. Default is image all time steps.
-          dtype: List[int]
-          required: false
+        restore:
+          info: Restore the model image onto the residual image and save it in output image. By default, the beam parameters are read from the residual image.
+          dtype: List[File]
           policies:
             repeat: list
-        no-dirty:
-          info: Do not save the dirty image.
-          dtype: bool
-        make-psf:
-          info: Always make the psf, even when no cleaning is performed.
-          dtype: bool
-        simulate-noise:
-          info: Will replace every visibility by a Gaussian distributed value with given standard deviation before imaging.
-          dtype: Union[float, str]
-        taper-inner-tukey:
-          info: Taper the weights with a Tukey transition. Lambda specifies the size of the transition; use in combination with -minuv-l.
-          dtype: float
-        minuv-l:
-          info: Set the min uv distance in lambda.
-          dtype: float
-        maxuv-l:
-          info: Set the max uv distance in lambda.
-          dtype: float
-        minuvw-m:
-          info: Set the min baseline distance in meters.
-          dtype: float
-        maxuvw-m:
-          info: Set the max baseline distance in meters.
-          dtype: float
-        deconvolution-threads:
-          info: Limit the deconvolution process to this number of threads
-          dtype: int
-        mem: 
-          dtype: int
-          info: "Limit memory usage to the given percentage of the total system memory. This is an approximate value. Default is 100"
-        abs-mem:
-          dtype: int
-          info: "Like -mem, but this specifies a fixed amount of memory in gigabytes"
-        field:
-          info: Image the given field id(s). A comma-separated list of field ids can be provided. When multiple fields are given, all fields should have the same phase centre. Specifying '-field all' will image all fields in the measurement set. Default is first field (id 0).
-          dtype: Union[str, List[int]]
+        restore-list:
+          info: Restore a source list onto the residual image and save it in output image.
+          dtype: List[File]
           policies:
-            repeat: ","
+            repeat: list
+        beam-size:
+          info: Set a circular beam size (FWHM) in arcsec for restoring the clean components. This is the same as -beam-shape <size> <size> 0.
+          dtype: float
+        beam-shape:
+          info: Set the FWHM beam shape for restoring the clean components. Defaults units for maj and min are arcsec, and degrees for PA.
+          dtype: List[Union[str, float]]
+          policies:
+            repeat: list
+        fit-beam:
+          info: Determine beam shape by fitting the PSF (default if PSF is made).
+          dtype: bool
+        no-fit-beam:
+          info: Do not determine beam shape from the PSF.
+          dtype: bool
+        beam-fitting-size:
+          info: Use a fitting box the size of <factor> times the theoretical beam size for fitting a Gaussian to the PSF.
+          dtype: float
+        theoretic-beam:
+          info: Write the beam in output fits files as calculated from the longest projected baseline. This method results in slightly less accurate beam size/integrated fluxes, but provides a beam size without making the PSF for quick imaging. Default is off.
+          dtype: bool
+        circular-beam:
+          info: Force the beam to be circular - bmin will be set to bmaj.
+          dtype: bool
+        elliptical-beam:
+          info: Allow the beam to be elliptical. Default.
+          dtype: bool
 
       base-outputs:
         source-list:
@@ -242,4 +593,3 @@ lib:
           mkdir: true
           must_exist: false
           required: false
-
