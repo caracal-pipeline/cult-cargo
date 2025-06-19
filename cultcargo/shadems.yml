@@ -31,6 +31,10 @@ cabs:
                 dtype: MS
                 policies:
                     positional: true
+            dir:
+                info: "Send all plots to this output directory"
+                dtype: Directory
+                must_exist: false
             xaxis:
                 info: 'Xaxis to plot. Can be any MS column name, also: CHAN, FREQ, CORR, ROW,
                     WAVEL, U, V, W, UV, and, for complex columns, keywords such as: ''amp'', ''phase'',
