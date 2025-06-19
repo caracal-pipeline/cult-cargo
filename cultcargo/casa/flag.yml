@@ -68,6 +68,67 @@ cabs:
                 "name:.* comment:.*":
                     - HIGHLIGHT:green
 
+    casa.flagman.save:
+        name: casa.flagman.save
+        info: "Specialised CASA 'flagmanager' task for saving flags"
+        extra_info:
+            See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.flagging.flagmanager.html
+        _use: lib.misc.casa6.command-data
+        command: casatasks.flagmanager
+        inputs:
+            _use: lib.params.casa.base-inputs
+            mode:
+                implicit: 'save'
+            versionname:
+                info: flag version name
+            comment:
+                info: short description of the versionname
+            merge:
+                info: |
+                    Merge operation to use when saving the flags. Options available are: 'replace',
+                    and the experimental 'or', 'and'. Use the last two options at your own risk.
+                choices: [replace, or, and]
+        outputs:
+            flagversions-table:
+                info: A flagversions table generated alongside the MS.
+                dtype: Directory
+                implicit: "{current.ms}.flagversions/flags.{current.versionname}"
+                must_exist: true # Must exist after the cab is run.
+                writable: true
+                policies:
+                    skip: true  # Not an input to the command.
+                # Allow writing to parent, and create missing parents.
+                path_policies:
+                    mkdir_parent: true
+                    write_parent: true
+
+    casa.flagman.restore:
+        name: casa.flagman.restore
+        info: "Specialised CASA 'flagmanager' task for restoring flags"
+        extra_info:
+            See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.flagging.flagmanager.html
+        _use: lib.misc.casa6.command-data
+        command: casatasks.flagmanager
+        inputs:
+            _use: lib.params.casa.base-inputs
+            mode:
+                implicit: 'restore'
+            versionname:
+                info: flag version name
+            merge:
+                info: |
+                    Merge operation to use when saving the flags. Options available are: 'replace',
+                    and the experimental 'or', 'and'. Use the last two options at your own risk.
+                choices: [replace, or, and]
+            flagversions-table:
+                info: A flagversions table generated alongside the MS.
+                dtype: Directory
+                implicit: "{current.ms}.flagversions/flags.{current.versionname}"
+                must_exist: true   # The flagversion table must exist.
+                writable: true
+                policies:
+                    skip: true  # Not an input to the command.
+
     casa.flagsummary:
         name: casa.flagsummary
         info: "invoke CASA 'flagdata' to generate a flagging summary" 
