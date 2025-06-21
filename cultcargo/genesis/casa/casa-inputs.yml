@@ -103,8 +103,11 @@ lib:
                     singularity:
                         bind_dirs:
                             dot-casa:
-                                host: empty
+                                host: ephemeral:ram
                                 target: ~/.casa
+                        ephemeral:
+                            tmp: /tmp
+                            ram: /dev/shm
                                 
         casa6:
             command-data:
@@ -112,8 +115,12 @@ lib:
                     kind: python
                     interpreter_binary: python3.10
                     pre_command: |
-                        import warnings
+                        import warnings, logging, sys, casatools
                         warnings.filterwarnings("ignore", category=SyntaxWarning)
+                        ls = casatools.logsink()
+                        ls.setlogfile('')  # Disable file output
+                        ls.setglobal(True)
+                        ls.showconsole(True)
                 image: 
                     _use: vars.cult-cargo.images
                     name: casa6
@@ -121,5 +128,8 @@ lib:
                     singularity:
                         bind_dirs:
                             dot-casa:
-                                host: empty
+                                host: ephemeral:ram
                                 target: ~/.casa
+                        ephemeral:
+                            tmp: /tmp
+                            ram: /dev/shm
