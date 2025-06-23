@@ -114,6 +114,15 @@ lib:
                     pre_command: |
                         import warnings
                         warnings.filterwarnings("ignore", category=SyntaxWarning)
+                        from casatasks import casalog
+                        from pathlib import Path
+                        casalog_path = Path(casalog.logfile())
+                        casalog.showconsole(onconsole=True)
+                    post_command: |                        
+                        try:
+                            casalog_path.unlink(missing_ok=True)
+                        except FileNotFoundError:
+                            pass          
                 image: 
                     _use: vars.cult-cargo.images
                     name: casa6
