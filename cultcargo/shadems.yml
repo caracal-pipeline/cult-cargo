@@ -215,3 +215,9 @@ cabs:
             profile:
                 info: Enable dask profiling output.
                 dtype: bool
+        outputs:
+            dir:
+                info: "Send all plots to this output directory"
+                dtype: Directory
+                mkdir: true
+
