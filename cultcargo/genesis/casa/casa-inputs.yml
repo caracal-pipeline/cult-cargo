@@ -111,9 +111,21 @@ lib:
                 flavour:
                     kind: python
                     interpreter_binary: python3.10
-                    pre_command: |
-                        import warnings
-                        warnings.filterwarnings("ignore", category=SyntaxWarning)
+                    pre_commands:
+                        filter-warnings: |
+                            import warnings
+                            warnings.filterwarnings("ignore", category=SyntaxWarning)
+                        configure-casa-logs: |
+                            from casatasks import casalog
+                            from pathlib import Path
+                            casalog_path = Path(casalog.logfile())
+                            casalog.showconsole(onconsole=True)
+                    post_commands:
+                        remove-casa-logs: |
+                            try:
+                                casalog_path.unlink(missing_ok=True)
+                            except FileNotFoundError:
+                                pass
                 image: 
                     _use: vars.cult-cargo.images
                     name: casa6
