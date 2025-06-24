@@ -34,7 +34,7 @@ lib:
           info: Decrease the number of channels as specified by -channels-out to the given number for deconvolution. Only possible in combination with one of the -fit-spectral options.
           dtype: int
         channel-range:
-          dtype: List[int]
+          dtype: Tuple[int, int]
           policies:
             repeat: list
         channel-division-frequencies:
@@ -64,7 +64,7 @@ lib:
           dtype: int
         interval:
           info: Only image the given time interval. Indices specify the timesteps, end index is exclusive. Default is image all time steps.
-          dtype: List[int]
+          dtype: Tuple[int, int]
           policies:
             repeat: list
         even-timesteps:
