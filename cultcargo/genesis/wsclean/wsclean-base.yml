@@ -272,7 +272,7 @@ lib:
           dtype: str
           choices: [cpu, gpu, hybrid]
         wstack-nwlayers:
-          info: Number of w-layers to use. Default is minimum suggested #w-layers for first MS.
+          info: Number of w-layers to use. Default is minimum suggested w-layers for first MS.
           dtype: int
           nom_de_guerre: nwlayers
         wstack-nwlayers-factor:
