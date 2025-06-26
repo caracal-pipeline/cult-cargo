@@ -237,6 +237,9 @@ lib:
             - wgridder
             - tuned-wgridder
             - wstacking
+        use-wgridder:
+          info: deprecated option, use '-gridder wgridder' instead
+          dtype: bool
         shift:
           info: Shift the phase centre to the given location. The shift is along the tangential plane.
           dtype: List[str]

@@ -204,6 +204,8 @@ images:
         package: git+https://github.com/ratt-ru/tricolour
 
   smops:
+    assign:
+      extra_deps: git+https://github.com/caracal-pipeline/stimela@2.0rc4
     versions:
       '0.1.7':
         package: smops==0.1.7
@@ -227,8 +229,6 @@ images:
     assign:
       CMD: goquartical
     versions:
-      '0.2.2':
-        package: quartical==0.2.2
       '0.2.3':
         package: quartical==0.2.3
       '0.2.4':
