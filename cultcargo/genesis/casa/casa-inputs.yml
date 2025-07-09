@@ -103,8 +103,11 @@ lib:
                     singularity:
                         bind_dirs:
                             dot-casa:
-                                host: empty
+                                host: ephemeral:ram
                                 target: ~/.casa
+                        ephemeral:
+                            tmp: /tmp
+                            ram: /dev/shm
                                 
         casa6:
             command-data:
@@ -133,5 +136,8 @@ lib:
                     singularity:
                         bind_dirs:
                             dot-casa:
-                                host: empty
+                                host: ephemeral:ram
                                 target: ~/.casa
+                        ephemeral:
+                            tmp: /tmp
+                            ram: /dev/shm
