@@ -9,7 +9,7 @@ packages = [{include = "cultcargo"}]
 
 [tool.poetry.dependencies]
 python = ">=3.9 <3.14"
-stimela = "^2.1.4rc1"
+stimela = "^2.1.4rc2"
 requests = "^2.0"
 
 [tool.poetry.scripts]
