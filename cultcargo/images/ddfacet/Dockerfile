@@ -1,8 +1,10 @@
+# FROM {REGISTRY}/ddfacet:{VERSION}-cc0.2.0
+
+#{REGISTRY}/python-base:{default_python_version}-{BUNDLE_VERSION}
+
 # better than the lite python images -- otherwise numpy 2 causes kak
 FROM ubuntu:22.04
 
-# FROM {REGISTRY}/ddfacet:{VERSION}-cc0.1.2
-#{REGISTRY}/python-base:{default_python_version}-{BUNDLE_VERSION}
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBIAN_PRIORITY critical
