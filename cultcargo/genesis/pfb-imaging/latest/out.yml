@@ -11,13 +11,13 @@ product:
   dtype: str
   abbreviation: p
   default: I
-  info: Imaging products to produce. Options are I, Q, U, V. Only single Stokes products
-    are currently supported
+  info: String specifying which Stokes products to produce. Outputs are always 
+    be alphabetically ordered.
 fits-output-folder:
   dtype: str
   abbreviation: fitso
-  info: Optional path to write fits files to. Set to output-filename if not provided.
-    The same naming conventions apply.
+  info: Optional path to write fits files to. Set to output-filename if not 
+    provided. The same naming conventions apply.
 fits-mfs:
   dtype: bool
   default: true

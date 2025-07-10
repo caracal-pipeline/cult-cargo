@@ -22,8 +22,8 @@ inputs:
   l1-reweight-from:
     dtype: int
     default: 5
-    info: L1 reweighting will kick in either at convergence or after this many iterations.
-      Set to a negative value to disbale L1 reweighting.
+    info: L1 reweighting will kick in either at convergence or after this many 
+      iterations. Set to a negative value to disbale L1 reweighting.
   hess-norm:
     dtype: float
     abbreviation: hess-norm
@@ -33,8 +33,9 @@ inputs:
     default: psf
     abbreviation: hess-approx
     choices: [wgt, psf, direct]
-    info: Which Hessian approximation to use. Set to wgt for vis space approximation,
-      psf for zero-padded image space approximation and direct for direct inversion.
+    info: Which Hessian approximation to use. Set to wgt for vis space 
+      approximation, psf for zero-padded image space approximation and direct 
+      for direct inversion.
   rmsfactor:
     dtype: float
     default: 1.0
@@ -42,7 +43,8 @@ inputs:
   eta:
     dtype: float
     default: 1.0
-    info: Will use eta*wsum to regularise the inversion of the Hessian approximation.
+    info: Will use eta*wsum to regularise the inversion of the Hessian 
+      approximation.
   gamma:
     dtype: float
     default: 1.0
@@ -50,21 +52,17 @@ inputs:
   alpha:
     dtype: float
     default: 2
-    info: Controls how aggressively the l1reweighting is applied. Larger values correspond
-      to more agressive reweighting.
+    info: Controls how aggressively the l1reweighting is applied. Larger values 
+      correspond to more agressive reweighting.
   nbasisf:
     dtype: int
-    info: Number of basis functions to use while fitting the frequency axis. Default
-      is to use the number of non-null imaging bands i.e. interpolation.
+    info: Number of basis functions to use while fitting the frequency axis. 
+      Default is to use the number of non-null imaging bands i.e. interpolation.
   positivity:
     dtype: int
     default: 1
-    # choices:
-    #   - 0
-    #   - 1
-    #   - 2
-    info: How to apply positivity constraint 0 -> no positivity, 1 -> normal positivity
-      constraint 2 -> strong positivity i.e. all pixels in a band > 0
+    info: How to apply positivity constraint 0 -> no positivity, 1 -> normal 
+      positivity constraint 2 -> strong positivity i.e. all pixels in a band > 0
   niter:
     dtype: int
     default: 10
@@ -73,17 +71,18 @@ inputs:
   nthreads:
     dtype: int
     abbreviation: nt
-    info: Total number of threads to use. Defaults to half the total number available.
+    info: Total number of threads to use. Defaults to half the total number 
+      available.
   tol:
     dtype: float
     default: 5e-4
-    info: Tolerance at which to terminate algorithm. Will stop when norm(x-xp)/norm(x)
-      < tol
+    info: Tolerance at which to terminate algorithm. Will stop when 
+      norm(x-xp)/norm(x) < tol
   diverge-count:
     dtype: int
     default: 5
-    info: Will terminate the algorithm if the rms increases this many times. Set to
-      larger than niter to disable this check.
+    info: Will terminate the algorithm if the rms increases this many times. Set
+      to larger than niter to disable this check.
   skip-model:
     dtype: bool
     default: false
@@ -91,9 +90,9 @@ inputs:
   rms-outside-model:
     dtype: bool
     default: false
-    info: Mask residual where model is non-zero when computing rms. This is not recommended
-      for largely non-empty fields.
-  init_factor:
+    info: Mask residual where model is non-zero when computing rms. This is not 
+      recommended for largely non-empty fields.
+  init-factor:
     dtype: float
     default: 0.5
     info: Reduce the regularisation strength by this fraction at the outset.

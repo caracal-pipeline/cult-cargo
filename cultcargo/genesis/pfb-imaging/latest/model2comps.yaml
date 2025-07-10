@@ -5,17 +5,21 @@ inputs:
     info: Allow overwrite of existing model
   mds:
     dtype: str
-    info: An optional input model to append to the model. Will be rendered to the
-      same resolution as the model in the dds.
+    info: An optional input model to append to the model. Will be rendered to 
+      the same resolution as the model in the dds.
+  from-fits:
+    dtype: str
+    info: An optional fits input model. An mds will be created that matches the 
+      model resolution.
   nbasisf:
     dtype: int
-    info: Order of interpolating polynomial for frequency axis. One less than the
-      number of bands by default.
+    info: Order of interpolating polynomial for frequency axis. One less than 
+      the number of bands by default.
   nbasist:
     dtype: int
     default: 1
-    info: Order of interpolating polynomial for time axis. This is hypothetical for
-      the time being.
+    info: Order of interpolating polynomial for time axis. This is hypothetical 
+      for the time being.
   nthreads:
     dtype: int
     abbreviation: nt
@@ -45,8 +49,8 @@ inputs:
     info: Multiple of the identity to add to the hessian for stability
   model-out:
     dtype: str
-    info: Optional explicit output name. Otherwise the default naming convention is
-      used.
+    info: Optional explicit output name. Otherwise the default naming convention
+      is used.
   out-format:
     dtype: str
     default: zarr
@@ -56,8 +60,8 @@ inputs:
     info: Format to dump model to.
   out-freqs:
     dtype: str
-    info: A string flow:fhigh:step of frequencies in hertz where the output cube needs
-      to be evaluated.
+    info: A string flow:fhigh:step of frequencies in hertz where the output cube
+      needs to be evaluated.
 
   _include:
     - (.)out.yml

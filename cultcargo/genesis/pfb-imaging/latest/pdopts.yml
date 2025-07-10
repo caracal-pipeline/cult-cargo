@@ -11,7 +11,8 @@ pd-maxit:
 pd-verbose:
   dtype: int
   default: 1
-  info: Verbosity of primal dual algorithm. Set to > 1 for \ debugging, 0 for silence
+  info: Verbosity of primal dual algorithm. Set to > 1 for \ debugging, 0 for 
+    silence
   abbreviation: pdverb
 pd-report-freq:
   dtype: int

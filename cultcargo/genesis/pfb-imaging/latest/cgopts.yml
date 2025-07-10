@@ -16,8 +16,8 @@ cg-minit:
 cg-verbose:
   dtype: int
   default: 1
-  info: Verbosity of conjugate gradient algorithm. Set to > 1 for \ debugging, 0 for
-    silence
+  info: Verbosity of conjugate gradient algorithm. Set to > 1 for \ debugging, 0
+    for silence
   abbreviation: cgverb
 cg-report-freq:
   dtype: int

@@ -7,11 +7,11 @@ inputs:
     - (.)dist.yml
     - (.)out.yml
   xds:
-    info: Optional explicit path to xds. Set using output-filename and product by
-      default.
-  mds:
-    info: Optional explicit path to mds. Set using output-filename, product and suffix
+    info: Optional explicit path to xds. Set using output-filename and product 
       by default.
+  mds:
+    info: Optional explicit path to mds. Set using output-filename, product and 
+      suffix by default.
   suffix:
     dtype: str
     default: main
@@ -34,8 +34,8 @@ inputs:
   l1-reweight-from:
     dtype: int
     default: 5
-    info: L1 reweighting will kick in either at convergence or after this many iterations.
-      Set to a negative value to disbale L1 reweighting.
+    info: L1 reweighting will kick in either at convergence or after this many 
+      iterations. Set to a negative value to disbale L1 reweighting.
   hess-norm:
     dtype: float
     abbreviation: hess-norm
@@ -45,8 +45,9 @@ inputs:
     default: direct
     abbreviation: hess-approx
     choices: [wgt, psf, direct]
-    info: Which Hessian approximation to use. Set to wgt for vis space approximation,
-      psf for zero-padded image space approximation and direct for direct inversion.
+    info: Which Hessian approximation to use. Set to wgt for vis space 
+      approximation, psf for zero-padded image space approximation and direct 
+      for direct inversion.
   rmsfactor:
     dtype: float
     default: 1.0
@@ -58,8 +59,8 @@ inputs:
   alpha:
     dtype: float
     default: 2
-    info: Controls how aggressively the l1reweighting is applied. Larger values correspond
-      to more agressive reweighting.
+    info: Controls how aggressively the l1reweighting is applied. Larger values 
+      correspond to more agressive reweighting.
   positivity:
     dtype: int
     default: 1
@@ -77,13 +78,13 @@ inputs:
   tol:
     dtype: float
     default: 5e-4
-    info: Tolerance at which to terminate algorithm. Will stop when norm(x-xp)/norm(x)
-      < tol
+    info: Tolerance at which to terminate algorithm. Will stop when 
+      norm(x-xp)/norm(x) < tol
   diverge-count:
     dtype: int
     default: 5
-    info: Will terminate the algorithm if the rms increases this many times. Set to
-      larger than niter to disable this check.
+    info: Will terminate the algorithm if the rms increases this many times. Set
+      to larger than niter to disable this check.
   field-of-view:
     dtype: float
     abbreviation: fov
@@ -110,20 +111,20 @@ inputs:
     info: Size of PSF relative to dirty image
   target:
     dtype: str
-    info: This can be predefined celestial objects known to astropy or a string in
-      the format 'HH:MM:SS,DD:MM:SS' (note the , delimiter)
+    info: This can be predefined celestial objects known to astropy or a string 
+      in the format 'HH:MM:SS,DD:MM:SS' (note the , delimiter)
   l2-reweight-from:
     dtype: int
     default: 10
-    info: Start doing L2 reweights from this iteration onwards. L2 reweights will
-      also be triggered if the algorithm converges, L1 reweighting has already kicked
-      in and l2-reweight-dof is set.
+    info: Start doing L2 reweights from this iteration onwards. L2 reweights 
+      will also be triggered if the algorithm converges, L1 reweighting has 
+      already kicked in and l2-reweight-dof is set.
   l2-reweight-dof:
     dtype: float
     default: 3.5
-    info: The degrees of freedom parameter for performing L2 reweighting. L2 reweighting
-      is triggered if L1 reweighting is active and convergence is reached and will
-      be applied a maximum of max-l2-reweight times.
+    info: The degrees of freedom parameter for performing L2 reweighting. L2 
+      reweighting is triggered if L1 reweighting is active and convergence is 
+      reached and will be applied a maximum of max-l2-reweight times.
   max-l2-reweight:
     dtype: int
     default: 5
