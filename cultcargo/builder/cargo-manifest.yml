@@ -264,7 +264,7 @@ images:
       '0.0.5':
         package: pfb-imaging==0.0.5
       '0.0.6':
-        package: git+https://github.com/ratt-ru/pfb-imaging@v0.0.6-dev
+        package: pfb-imaging==0.0.6
       master:
         package: git+https://github.com/ratt-ru/pfb-imaging
 
