@@ -10,5 +10,5 @@ do-wgridding:
 double-accum:
   dtype: bool
   default: true
-  info: Accumulate onto grid using double precision. Only has an affect when using
-    single precision.
+  info: Accumulate onto grid using double precision. Only has an affect when 
+    using single precision.

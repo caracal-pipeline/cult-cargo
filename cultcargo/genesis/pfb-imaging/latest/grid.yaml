@@ -1,6 +1,7 @@
 inputs:
   xds:
-    info: Optional explicit path to xds. Set using output-filename and suffix by default.
+    info: Optional explicit path to xds. Set using output-filename and suffix by
+      default.
   suffix:
     dtype: str
     default: main
@@ -12,8 +13,8 @@ inputs:
   overwrite:
     dtype: bool
     default: false
-    info: Allow overwriting of image space data products. Specify suffix to create
-      a new data set.
+    info: Allow overwriting of image space data products. Specify suffix to 
+      create a new data set.
   transfer-model-from:
     dtype: str
     abbreviation: tmf
@@ -21,8 +22,9 @@ inputs:
   use-best-model:
     dtype: bool
     default: false
-    info: If this flag is set MODEL_BEST will be used as the model unless transfer-model-from
-      is specified. By default MODEL will be used as the model.
+    info: If this flag is set MODEL_BEST will be used as the model unless 
+      transfer-model-from is specified. By default MODEL will be used as the 
+      model.
   robustness:
     dtype: float
     abbreviation: rob
@@ -78,19 +80,20 @@ inputs:
   filter-counts-level:
     dtype: float
     default: 5.0
-    info: Set minimum counts in the uniform weighting grid to the median divided by
-      this value. This is useful to avoid artificially up-weighting nearly empty uv-cells.
+    info: Set minimum counts in the uniform weighting grid to the median divided
+      by this value. This is useful to avoid artificially up-weighting nearly 
+      empty uv-cells.
   target:
     dtype: str
-    info: This can be predefined celestial objects known to astropy or a string in
-      the format 'HH:MM:SS,DD:MM:SS' (note the , delimiter)
+    info: This can be predefined celestial objects known to astropy or a string 
+      in the format 'HH:MM:SS,DD:MM:SS' (note the , delimiter)
   l2-reweight-dof:
     dtype: float
     abbreviation: dof
-    info: The degrees of freedom parameter for L2 reweighting. The default (None)
-      means no reweighting. A sensible value for this parameter depends on the level
-      of RFI in the data. Small values (eg. 2) result in aggressive reweighting and
-      should be avoided if the model is still incomplete.
+    info: The degrees of freedom parameter for L2 reweighting. The default 
+      (None) means no reweighting. A sensible value for this parameter depends 
+      on the level of RFI in the data. Small values (eg. 2) result in aggressive
+      reweighting and should be avoided if the model is still incomplete.
   _include:
     - (.)gridding.yml
     - (.)dist.yml

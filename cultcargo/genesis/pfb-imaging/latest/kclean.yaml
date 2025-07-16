@@ -2,7 +2,8 @@ inputs:
   suffix:
     dtype: str
     default: main
-    info: Can be used to specify a custom name for the image space data products.
+    info: Can be used to specify a custom name for the image space data 
+      products.
   mask:
     dtype: str
     abbreviation: mask
@@ -10,16 +11,18 @@ inputs:
   dirosion:
     dtype: int
     default: 1
-    info: Perform dilation followed by erosion with structure element of this width
+    info: Perform dilation followed by erosion with structure element of this 
+      width
   mop-flux:
     dtype: bool
     default: true
-    info: Trigger PCG based flux mop if minor cycle stalls, the final threshold is
-      reached or on the final iteration.
+    info: Trigger PCG based flux mop if minor cycle stalls, the final threshold 
+      is reached or on the final iteration.
   mop-gamma:
     dtype: float
     default: 0.65
-    info: Step size for flux mop. Should be between (0,1). A value of 1 is most aggressive.
+    info: Step size for flux mop. Should be between (0,1). A value of 1 is most 
+      aggressive.
   niter:
     dtype: int
     default: 5
@@ -28,16 +31,17 @@ inputs:
   nthreads:
     dtype: int
     abbreviation: nt
-    info: Total number of threads to use. Defaults to half the total number available.
+    info: Total number of threads to use. Defaults to half the total number 
+      available.
   threshold:
     dtype: float
-    info: Absolute threshold at which to stop cleaning. By default it is set automatically
-      using sigmathreshold parameter
+    info: Absolute threshold at which to stop cleaning. By default it is set 
+      automatically using rmsfactor parameter
     abbreviation: th
   rmsfactor:
     dtype: float
     default: 3.0
-    info: Multiple of the rms at which to terminate the minor cycle
+    info: Multiple of the rms at which to stop cleaning
   gamma:
     dtype: float
     default: 0.1
@@ -92,8 +96,8 @@ inputs:
     dtype: int
     default: 1
     abbreviation: cgverb
-    info: Verbosity of conjugate gradient algorithm. Set to > 1 for debugging, 0 for
-      silence
+    info: Verbosity of conjugate gradient algorithm. Set to > 1 for debugging, 0
+      for silence
   cg-report_freq:
     dtype: int
     default: 100

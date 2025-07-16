@@ -11,7 +11,8 @@ pm-maxit:
 pm-verbose:
   dtype: int
   default: 1
-  info: Verbosity of primal power method. Set to > 1 for \ debugging, 0 for silence
+  info: Verbosity of primal power method. Set to > 1 for \ debugging, 0 for 
+    silence
   abbreviation: pmverb
 pm-report-freq:
   dtype: int
