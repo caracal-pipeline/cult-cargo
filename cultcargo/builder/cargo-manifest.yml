@@ -261,12 +261,14 @@ images:
     versions:
       # '0.0.4':  # deprecate, this was using different data structures
       #   package: pfb-imaging==0.0.4
+      master:
+        package: git+https://github.com/ratt-ru/pfb-imaging
       '0.0.5':
         package: pfb-imaging==0.0.5
       '0.0.6':
         package: pfb-imaging==0.0.6
-      master:
-        package: git+https://github.com/ratt-ru/pfb-imaging
+      latest:
+        package: pfb-imaging
 
   ddfacet:
     assign:
