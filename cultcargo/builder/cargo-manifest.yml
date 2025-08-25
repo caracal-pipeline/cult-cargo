@@ -283,9 +283,16 @@ images:
       #     ADD DDFacet-useapp-meerklass DDFacet-branch
       #     ADD killMS-useapp-meerklass killMS-branch
       #   package: -e ./DDFacet-branch ./killMS-branch
-      '0.8':
+      '0.8.0.1': 
         package: DDFacet[fits-beam-support]==0.8.0.1 killMS==3.2.1
         extra_deps: ninja
+
+  killms:
+    assign:
+      CMD: kMS.py --help
+    versions:
+      '3.2.2':
+        package: killMS==3.2.2
 
   mosaic-queen:
     assign:
