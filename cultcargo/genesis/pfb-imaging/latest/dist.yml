@@ -1,25 +1,29 @@
-host-address:
-  dtype: str
-  abbreviation: ha
-  info: Address where the distributed client lives. Uses LocalCluster if no 
-    address is provided and scheduler is set to distributed.
-nworkers:
-  dtype: int
-  default: 1
-  abbreviation: nw
-  info: Number of worker processes. Use with distributed scheduler.
-nthreads:
-  dtype: int
-  abbreviation: nt
-  info: Number of threads used to scale vertically (eg. for FFTs and gridding). 
-    Each dask thread can in principle spawn this many threads. Will attempt to 
-    use half the available threads by default.
 direct-to-workers:
-  dtype: bool
   default: true
-  info: Connect direct to workers i.e. bypass scheduler. Faster but then the 
-    dashboard isn't very useful.
-log-level:
+  dtype: bool
+  info: Connect direct to workers i.e. bypass scheduler. Faster but then the dashboard
+    isn't very useful.
+host-address:
+  abbreviation: ha
   dtype: str
+  info: Address where the distributed client lives. Uses LocalCluster if no address
+    is provided and scheduler is set to distributed.
+log-level:
+  choices:
+  - error
+  - warning
+  - info
+  - debug
   default: error
-  choices: [error, warning, info, debug]
+  dtype: str
+nthreads:
+  abbreviation: nt
+  dtype: int
+  info: Number of threads used to scale vertically (eg. for FFTs and gridding). Each
+    dask thread can in principle spawn this many threads. Will attempt to use half
+    the available threads by default.
+nworkers:
+  abbreviation: nw
+  default: 1
+  dtype: int
+  info: Number of worker processes. Use with distributed scheduler.
