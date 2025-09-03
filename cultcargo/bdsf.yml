@@ -123,4 +123,9 @@ cabs:
       outfile_srl:
         dtype: File
         required: false
+      outdir:
+        dtype: Directory
+        default: =CASES(IFSET(current.outfile_gaul), DIRNAME(current.outfile_gaul),
+                        IFSET(current.outfile_srl), DIRNAME(current.outfile_srl),
+                        UNSET)
 
