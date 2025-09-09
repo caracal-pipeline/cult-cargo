@@ -4,7 +4,7 @@ inputs:
   - (.)dist.yml
   - (.)cgopts.yml
   beam-model:
-    dtype: str
+    dtype: URI
     info: Path to beam model as an xarray dataset backed by zarr
   cell-size:
     dtype: float
