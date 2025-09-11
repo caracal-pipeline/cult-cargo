@@ -5,7 +5,7 @@ cabs:
   bdsf.catalog:
     name: bdsf.catalog
     info: Uses PyBDSF to source-find within an image and write source catalog(s) (https://pybdsf.readthedocs.io/)
-    image: 
+    image:
       _use: vars.cult-cargo.images
       name: bdsf
     command: |
@@ -93,7 +93,7 @@ cabs:
         info: Use adaptive rms_box when determining rms and mean maps
       src_radius_pix:
         dtype: int
-      trim_box: 
+      trim_box:
         dtype: Tuple[int, int, int, int]
         info: Do source detection on only a part of the image. Specify as (xmin, xmax, ymin, ymax) in pixels. E.g., trim_box = (120, 840, 15, 895). None => use entire image
       thresh_isl:
@@ -125,7 +125,10 @@ cabs:
         required: false
       outdir:
         dtype: Directory
-        default: =CASES(IFSET(current.outfile_gaul), DIRNAME(current.outfile_gaul),
-                        IFSET(current.outfile_srl), DIRNAME(current.outfile_srl),
-                        UNSET)
+        writable: true
+        default: =CASES(
+            IFSET(current.outfile_gaul), DIRNAME(current.outfile_gaul),
+            IFSET(current.outfile_srl), DIRNAME(current.outfile_srl),
+            UNSET
+          )
 
