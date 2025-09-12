@@ -4,7 +4,7 @@ inputs:
   - (.)dist.yml
   - (.)cgopts.yml
   beam-model:
-    dtype: str
+    dtype: URI
     info: Path to beam model as an xarray dataset backed by zarr
   cell-size:
     dtype: float
@@ -110,6 +110,9 @@ inputs:
   ny:
     dtype: int
     info: Number of y pixels
+  obs-label:
+    dtype: str
+    info: Optional observation label to include in the stacked cube
   output-filename:
     abbreviation: o
     dtype: str
@@ -194,7 +197,8 @@ inputs:
 outputs:
   dir-out:
     dtype: Directory
-    implicit: '{current.output-filename}_{current.product}.fds'
+    implicit: ='{current.output-filename}_{current.product}' + IF(current.stack, '.zarr',
+      '.fds')
     mkdir: false
     must_exist: true
 policies:
