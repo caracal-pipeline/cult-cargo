@@ -110,6 +110,9 @@ inputs:
   ny:
     dtype: int
     info: Number of y pixels
+  obs-label:
+    dtype: str
+    info: Optional observation label to include in the stacked cube
   output-filename:
     abbreviation: o
     dtype: str
