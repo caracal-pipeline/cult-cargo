@@ -40,4 +40,8 @@ cabs:
       memory-fraction:
         info: Fraction of system RAM that can be used. Used when setting automatically the chunk size.
         dtype: float
-        default: 0.1
+        default: 0.1        
+      num-workers:
+          info: Explicitly set the number of worker threads
+          dtype: int
+          default: 4
