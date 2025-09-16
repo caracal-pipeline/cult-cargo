@@ -105,3 +105,77 @@ cabs:
       nthread:
         dtype: int
         info: Number of threads to use.
+
+
+  quartical-plotter:
+    name: quartical-plotter
+    image:
+      _use: vars.cult-cargo.images
+      name: quartical
+    command: goquartical-plot
+    info: Rudimentary plotter for QuartiCal gain solutions
+    policies:
+      prefix: '--'
+    inputs:
+      input-path:
+        dtype: Directory
+        must_exist: true
+        required: true
+        policies:
+          positional: true
+        info: Path to input gains, e.g. path/to/dir/G. Accepts valid s3 urls.
+      output-path:
+        dtype: Directory
+        mkdir: true
+        must_exist: false
+        required: true
+        policies:
+          positional: true
+        info: Path to desired output location.
+      plot-var:
+        dtype: str
+        default: gains
+        info: Name of data variable to plot.
+      flag-var:
+        dtype: str
+        info: Name of data variable to use as flags.
+      xaxis:
+        dtype: str
+        default: gain_time
+        choices: [gain_time, gain_freq, param_time, param_freq]
+        info: Coordinate to use for x-axis.
+      transform:
+        dtype: str
+        info: Transform to apply to data before plotting.
+      iter-attrs:
+        dtype: List[str]
+        default: [FIELD_ID, DATA_DESC_ID, SCAN_NUMBER]
+        info: Attributes over which to iterate. Omission results in concatenation along omitted axis.
+      iter-axes:
+        dtype: List[str]
+        default: [antenna, direction, correlation]
+        info: Axes over which to iterate when generating plots.
+      mean-axis:
+        dtype: str
+        info: Axis to plot mean over as a heavier line.
+      colourize-axis:
+        dtype: str
+        info: Axis to colour by.
+      time-range:
+        dtype: List[float]
+        info: Time range to plot.
+      freq-range:
+        dtype: List[float]
+        info: Frequency range to plot.
+      nworker:
+        dtype: int
+        default: 1
+        info: Number of processes to use while plotting.
+      colourmap:
+        dtype: str
+        default: plasma
+        info: Colourmap to use with --colourize-axis.
+      fig-size:
+        dtype: List[float]
+        default: [5,5]
+        info: Figure size in inches, width and height.
