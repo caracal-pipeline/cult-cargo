@@ -42,6 +42,6 @@ cabs:
         dtype: float
         default: 0.1        
       num-workers:
-        info: Explicitly set the number of worker threads
+        info: Explicitly set the number of worker threads.
         dtype: int
         default: 4
