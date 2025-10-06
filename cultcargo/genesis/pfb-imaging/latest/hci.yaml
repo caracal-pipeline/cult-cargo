@@ -66,12 +66,18 @@ inputs:
   inject-transients:
     dtype: str
     info: YAML file containing transients to inject into the data.
+  integrations-per-chunk:
+    abbreviation: ipc
+    default: 16
+    dtype: int
+    info: Number of time integrations per chunk in the output dataset. Default is
+      to use ncpu  dataset per scan.
   integrations-per-image:
     abbreviation: ipi
     default: 1
     dtype: int
-    info: Number of time integrations per image. Default (-1, 0, None) -> dataset
-      per scan.
+    info: Number of time integrations per image. Default of one results in snapshot
+      imaging.
   l2-reweight-dof:
     dtype: float
     info: The degrees of freedom parameter for L2 reweighting. The default (None)
@@ -82,6 +88,10 @@ inputs:
     abbreviation: ldir
     dtype: str
     info: Directory to write logs and performance reports to.
+  max-simul-chunks:
+    default: 4
+    dtype: int
+    info: Maximum number of chunks to process simultaneously
   memory-reporting:
     default: false
     dtype: bool
@@ -110,6 +120,11 @@ inputs:
   ny:
     dtype: int
     info: Number of y pixels
+  object-store-memory:
+    dtype: float
+    info: Amount of memory in GB allocated to Ray's object store. By default this
+      should be set to 30% of available system memory. You may want to increase this
+      if processing a large number if chunks simultaneously.
   obs-label:
     dtype: str
     info: Optional observation label to include in the stacked cube
