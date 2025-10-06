@@ -1,8 +1,5 @@
-# needs pip install "ruamel.yaml<0.18.0" for newer pythoin versions
 import requests
-from ruamel.yaml import YAML
-yaml = YAML()
-yaml.indent(mapping=2, sequence=4, offset=2)
+import yaml
 import cultcargo
 
 mpath = cultcargo.__file__.rstrip('__init__.py') + 'genesis/pfb-imaging/latest'
@@ -19,9 +16,7 @@ for r in response.json():
         # get file content
         config = requests.get(f'{content_path}/{name}')
         # round trip to get correct formatting
-        data = yaml.load(config.text)
+        data = yaml.safe_load(config.text)
         # dump to yaml
         with open(f'{mpath}/{name}', 'w') as f:
-            yaml.dump(data, f)
-
-print('Done')
+            yaml.dump(data, f, default_flow_style=False, indent=2)
