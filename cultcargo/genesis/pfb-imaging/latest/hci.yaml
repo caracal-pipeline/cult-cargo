@@ -197,9 +197,6 @@ inputs:
     dtype: str
     info: This can be predefined celestial objects known to astropy or a string in
       the format 'HH:MM:SS,DD:MM:SS' (note the , delimiter)
-  temp-dir:
-    dtype: Directory
-    info: A temporary directory to store ephemeral files
   transfer-model-from:
     abbreviation: tmf
     dtype: str
@@ -218,5 +215,8 @@ outputs:
     implicit: current.output-filename
     mkdir: false
     must_exist: true
+  temp-dir:
+    dtype: Directory
+    info: A temporary directory to store ephemeral files
 policies:
   pass_missing_as_none: true

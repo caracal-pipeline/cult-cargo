@@ -262,7 +262,7 @@ images:
       # '0.0.4':  # deprecate, this was using different data structures
       #   package: pfb-imaging==0.0.4
       master:
-        package: git+https://github.com/ratt-ru/pfb-imaging
+        package: git+https://github.com/ratt-ru/pfb-imaging@tmpdirout
       '0.0.5':
         package: pfb-imaging==0.0.5
       '0.0.6':
