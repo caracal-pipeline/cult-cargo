@@ -205,12 +205,14 @@ inputs:
     dtype: bool
     info: Whether to produce an image of the weighted grid or not.
 outputs:
-  dir-out:
+  output-dataset:
     abbreviation: o
     dtype: Directory
     info: Basename of output
     mkdir: false
     must_exist: true
+    path_policies:
+      write_parent: true
     required: true
   temp-dir:
     dtype: Directory
