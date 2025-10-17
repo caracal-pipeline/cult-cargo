@@ -4,7 +4,7 @@ import cultcargo
 
 mpath = cultcargo.__file__.rstrip('__init__.py') + 'genesis/pfb-imaging/latest'
 
-branch = 'tmpdirout'
+branch = 'main'
 content_path = f'https://raw.githubusercontent.com/ratt-ru/pfb-imaging/{branch}/pfb/parser'
 
 # returns list of files in subfolder
