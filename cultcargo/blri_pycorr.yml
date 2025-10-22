@@ -9,7 +9,7 @@ cabs:
       name: blri_pycorr
 
     command: blri_pycorr
-    info: "Aiming to provide an optimised python library for desirable radio interferometry tasks"
+    info: A software correlator with optional upchannelisation for transforming RAW voltage data into visibilities
 
     policies:
       prefix: '--'
@@ -38,22 +38,18 @@ cabs:
       polarisations:
         info: The polarisation characters for each polarisation, as a string (e.g. 'xy')
         dtype: str
-        default: None
         required: false
       frequency-mhz-begin:
         info: The lowest frequency (MHz) of the fine-spectra to analyse (at least 1 channel will be processed)
         required: false
         dtype: float
-        default: None
       frequency-mhz-end:
         info: The highest frequency (MHz) of the fine-spectra to analyse (at least 1 channel will be processed)
         dtype: float
-        default: None
         required: false
       frequency-selection-percentage:
         info: A decimal percentage of the bandwidth to process [0.0, 1.0]
         dtype: float
-        default: None
         required: false
       frequency-selection-center:
         info: Specifies the center of the sub-band, when processing a percentage of the bandwidth [0.0, 1.0]
@@ -100,6 +96,5 @@ cabs:
       output-filepath:
         info: The path to which the output will be written (instead of alongside the raw_filepath)
         dtype: Directory
-        default: None
         required: false
 
