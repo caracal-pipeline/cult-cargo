@@ -128,11 +128,6 @@ inputs:
   obs-label:
     dtype: str
     info: Optional observation label to include in the stacked cube
-  output-filename:
-    abbreviation: o
-    dtype: str
-    info: Basename of output
-    required: true
   output-format:
     default: zarr
     info: zarr or fits output
@@ -210,11 +205,17 @@ inputs:
     dtype: bool
     info: Whether to produce an image of the weighted grid or not.
 outputs:
-  dir-out:
+  output-dataset:
+    abbreviation: o
     dtype: Directory
-    implicit: ='{current.output-filename}_{current.product}' + IF(current.stack, '.zarr',
-      '.fds')
+    info: Basename of output
     mkdir: false
     must_exist: true
+    path_policies:
+      write_parent: true
+    required: true
+  temp-dir:
+    dtype: Directory
+    info: A temporary directory to store ephemeral files
 policies:
   pass_missing_as_none: true
