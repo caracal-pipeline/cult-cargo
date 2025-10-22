@@ -15,7 +15,7 @@
 |**meqtrees**|**kern9**-cc0.2.1||
 |**mosaic-queen**|cc0.2.1|**1.1.1**-cc0.2.1&nbsp;&nbsp;**master**-cc0.2.1|
 |**msutils**|cc0.2.1|**1.2.0**-cc0.2.1&nbsp;&nbsp;**master**-cc0.2.1|
-|**pfb-imaging**|cc0.2.1|**0.0.5**-cc0.2.1&nbsp;&nbsp;**0.0.6**-cc0.2.1&nbsp;&nbsp;**0.0.7**-cc0.2.1&nbsp;&nbsp;**master**-cc0.2.1|
+|**pfb-imaging**|cc0.2.1|**0.0.5**-cc0.2.1&nbsp;&nbsp;**0.0.6**-cc0.2.1&nbsp;&nbsp;**0.0.7**-cc0.2.1&nbsp;&nbsp;**0.0.8**-cc0.2.1&nbsp;&nbsp;**master**-cc0.2.1|
 |**python-astro**|**3.11**-cc0.2.1|**3.10**-cc0.2.1&nbsp;&nbsp;**3.12**-cc0.2.1&nbsp;&nbsp;**3.8**-cc0.2.1&nbsp;&nbsp;**3.9**-cc0.2.1|
 |**python-base**|**3.11**-cc0.2.1|**3.10**-cc0.2.1&nbsp;&nbsp;**3.12**-cc0.2.1&nbsp;&nbsp;**3.8**-cc0.2.1&nbsp;&nbsp;**3.9**-cc0.2.1|
 |**quartical**|cc0.2.1|**0.2.3**-cc0.2.1&nbsp;&nbsp;**0.2.4**-cc0.2.1&nbsp;&nbsp;**0.2.5**-cc0.2.1&nbsp;&nbsp;**0.2.6dev**-cc0.2.1&nbsp;&nbsp;**master**-cc0.2.1|
