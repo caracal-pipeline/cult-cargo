@@ -332,7 +332,7 @@ images:
       master:
         package: git+https://github.com/caracal-pipeline/RFInder.git
 
-  blri:
+  blri_pycorr:
     assign:
       extra_deps: -U python-casacore pyuvdata
     versions:
