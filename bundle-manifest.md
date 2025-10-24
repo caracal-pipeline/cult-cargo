@@ -5,6 +5,7 @@
 |**aimfast**|**master**-cc0.2.1|**1.3.4**-cc0.2.1|
 |**base-cult**|**kern-9**-cc0.2.1|**kern-7**-cc0.2.1&nbsp;&nbsp;**kern-8**-cc0.2.1&nbsp;&nbsp;**kern-dev**-cc0.2.1|
 |**bdsf**|**1.12.0**-cc0.2.1||
+|**blri_pycorr**|**master**-cc0.2.1||
 |**breizorro**|cc0.2.1|**0.1.1**-cc0.2.1&nbsp;&nbsp;**master**-cc0.2.1|
 |**casa**|**5.8.0**-cc0.2.1|**4.7.2**-cc0.2.1&nbsp;&nbsp;**_base**-cc0.2.1|
 |**casa6**|**6.7**-cc0.2.1|**6.6**-cc0.2.1|
