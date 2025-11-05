@@ -65,7 +65,13 @@ def make_stimela_schema(params: Dict[str, Any], inputs: Dict[str, Parameter], ou
             must_exist = True
         # residual and model images only generated when cleaning 
         else:
-            must_exist = params.get('niter', 0) > 0
+            niter = params.get("niter", 0)
+            niter = (
+                int(niter)
+                if isinstance(niter, str) and niter.isdigit()
+                else int(niter or 0)
+            )
+            must_exist = niter > 0
         # psf images are not per-Stokes, all others are
         for st in (stokes if imagetype != "psf" else ["I"]):
             # define name/description/filename components for this Stokes 
