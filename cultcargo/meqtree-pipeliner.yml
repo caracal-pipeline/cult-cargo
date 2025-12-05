@@ -12,6 +12,11 @@ cabs:
       import os
       from omegaconf import OmegaConf
 
+      # Convert kebab-case keys into snake-case before passing to OmegaConf. 
+      # This conversion is not handled by OmegaConf for dictionary input. 
+      # The fix here only works because the keys of stimela's input dictionary 
+      # are always string, and there's no need to worry about recursivity
+      options = {k.replace("-", "_"): v for k, v in options.items()}
       options = OmegaConf.create(options)
 
       modes = {
