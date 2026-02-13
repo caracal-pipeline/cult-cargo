@@ -21,7 +21,7 @@
 |**python-base**|**3.11**-cc0.2.1|**3.10**-cc0.2.1&nbsp;&nbsp;**3.12**-cc0.2.1&nbsp;&nbsp;**3.8**-cc0.2.1&nbsp;&nbsp;**3.9**-cc0.2.1|
 |**quartical**|cc0.2.1|**0.2.3**-cc0.2.1&nbsp;&nbsp;**0.2.4**-cc0.2.1&nbsp;&nbsp;**0.2.5**-cc0.2.1&nbsp;&nbsp;**0.2.6dev**-cc0.2.1&nbsp;&nbsp;**master**-cc0.2.1|
 |**rfinder**|**master**-cc0.2.1||
-|**shadems**|cc0.2.1|**0.5.3**-cc0.2.1&nbsp;&nbsp;**master**-cc0.2.1|
+|**shadems**|cc0.2.1|**0.5.3**-cc0.2.1&nbsp;&nbsp;**0.5.4**-cc0.2.1&nbsp;&nbsp;**master**-cc0.2.1|
 |**smops**|cc0.2.1|**0.1.7**-cc0.2.1&nbsp;&nbsp;**master**-cc0.2.1|
 |**spimple**|**base**-cc0.2.1|**master**-cc0.2.1|
 |**sunblocker**|**master**-cc0.2.1|**1.0.1**-cc0.2.1|
