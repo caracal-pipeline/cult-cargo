@@ -1,6 +1,8 @@
 cabs:
   meqsim:
-    info: Runs MeqTrees turbo-sim.py script (http://meqtrees.net)
+    info: 
+      Runs MeqTrees turbo-sim.py script (http://meqtrees.net).
+      Parameters passed through the cab take precedence over the TDL config.
     flavour:
       kind: python-code
         #interpreter_binary: python
@@ -39,16 +41,25 @@ cabs:
           commands.append(f"ms_sel.input_column={options.input_column}")
 
       if hasattr(options, "primary_beam_enable"):
-        commands += [
-          "me.e_enable=1",
-          "me.p_enable=1",
-          "me.e_all_stations=1",
-          "me.e_module=Siamese_OMS_pybeams_fits",
-          f"pybeams_fits.sky_rotation={1 if options.primary_beam_pa_rotation else 0}",
-          f"pybeams_fits.l_axis={options.primary_beam_l_axis}",
-          f"pybeams_fits.m_axis={options.primary_beam_m_axis}",
-          f"pybeams_fits.filename_pattern={options.primary_beam_path_pattern}",
-      ]
+        if options.primary_beam_enable:
+          commands += [
+            "me.e_enable=1",
+            "me.p_enable=1",
+            "me.e_all_stations=1",
+            "me.e_module=Siamese_OMS_pybeams_fits",
+            f"pybeams_fits.sky_rotation={1 if options.primary_beam_pa_rotation else 0}",
+            f"pybeams_fits.l_axis={options.primary_beam_l_axis}",
+            f"pybeams_fits.m_axis={options.primary_beam_m_axis}",
+            f"pybeams_fits.filename_pattern={options.primary_beam_path_pattern}",
+        ]
+        else:
+          # Make sure primary beam is disable.
+          # It can happen that the TDL config is supplied and has beam enable.
+          # This should take precedence over the TDL config.
+          commands += [
+            "me.e_enable=0",
+            "me.p_enable=0",
+          ]
 
       config = options.get("config", "/meqConfs/tdlconf-sim.profiles")
       opts = [f"--config {config}"]
