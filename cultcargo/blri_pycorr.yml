@@ -63,7 +63,7 @@ cabs:
         required: false
       dtype:
         info: The numpy.dtype to load the GUPPI RAW data as (passed as an argument to `numpy.dtype()`)
-        dtype: str§
+        dtype: str
         default: float32
         required: false
       unsorted-raw-filepaths:
