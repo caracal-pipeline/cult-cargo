@@ -16,10 +16,9 @@ cabs:
 
     inputs:
       input_filepaths:
-        dtype: List[str]
+        dtype: File
         info: The path to the input files be it GUPPI RAW file stem or all filepaths; Seticore Stamps filepath
         policies:
-          repeat: list
           positional: true
       telescope-info-filepath:
         info: The path to telescope information (YAML/TOML or BFR5['telinfo'])
@@ -35,10 +34,16 @@ cabs:
         dtype: int
         default: 1
         required: false
+      dedispersion:
+        info: Dedrifting/dedispersion rate in Hz/s to apply after upchannelisation by upchannelisation-rate
+        dtype: float
+        default: 0.0
+        required: false
       polarisations:
         info: The polarisation characters for each polarisation, as a string (e.g. 'xy')
         dtype: str
         required: false
+        default: 'xy'
       frequency-mhz-begin:
         info: The lowest frequency (MHz) of the fine-spectra to analyse (at least 1 channel will be processed)
         required: false
@@ -95,6 +100,6 @@ cabs:
     outputs:
       output-filepath:
         info: The path to which the output will be written (instead of alongside the raw_filepath)
-        dtype: Directory
+        dtype: File
         required: false
 
