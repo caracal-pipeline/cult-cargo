@@ -40,7 +40,7 @@ cabs:
       info: Also make mosaics of associated files; space-separated list, e.g., masks, models, or residuals.
     regrid:
       dtype: bool
-      action: store_true
+      default: true
       info: Use montage for regridding images and beams.
     force-regrid:
       dtype: bool
