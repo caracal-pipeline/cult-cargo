@@ -6,7 +6,7 @@ import os.path
 import re
 import subprocess
 import shutil
-from typing import List, Dict, Optional, Any
+from typing import List, Dict, Optional, Any, Union
 from dataclasses import dataclass
 from omegaconf import OmegaConf
 from rich.console import Console
@@ -29,7 +29,7 @@ DEFAULT_MANIFEST = os.path.join(os.path.dirname(__file__), "cargo-manifest.yml")
 
 @dataclass
 class ImageInfo(object):
-    versions: Dict[str, Dict[str, Any]]              # mapping of versions
+    versions: Dict[str, Any]              # mapping of versions
     assign: Optional[Dict[str, Any]] = None       # optional assignments
     latest: Optional[str] = None                  # latest version -- use last 'versions' entry if not given
     dockerfile: Optional[str] = None
@@ -264,19 +264,31 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
                     f"image [bold]{image}[/bold] [{i_image}/{len(imagenames)}]: "
                     f"version [bold]{version}[/bold] [{i_version}/{len(versions)}]")
 
-                if version == "latest":
-                    image_version = BUNDLE_VERSION
-                else:
-                    image_version = f"{version}-{BUNDLE_VERSION}"
+                image_version = BUNDLE_VERSION if version == "latest" else f"{version}-{BUNDLE_VERSION}"
+                version_vars = image_vars.copy()
+                legacy_version = None
 
                 version_info = image_info.versions[version]
-                version_vars = image_vars.copy()
-                version_vars.update(**version_info)
+                # setting version content to "ccX.Y.Z" will cause the image to be tagged as a reference to a 
+                # legacy image "version-ccX.Y.Z". Setting to "=FOO" will use FOO as the legacy version directly without
+                # prefixing version
+                if version_info is None:
+                    legacy_version = None
+                elif type(version_info) is str:
+                    if version_info.startswith("="):
+                        legacy_version = version_info[1:]
+                    else:
+                        legacy_version = version_info if version == "latest" else f"{version}-{version_info}"
+                # else version content is variables to be assigned
+                else:
+                    legacy_version = None
+                    version_vars.update(**version_info)
+
                 version_vars["VERSION"] = version
                 version_vars["IMAGE_VERSION"] = image_version
 
-                is_exp = version_info.get('experimental')
-                exp_deps = version_info.get('experimental_dependencies', [])
+                is_exp = version_vars.get('experimental')
+                exp_deps = version_vars.get('experimental_dependencies', [])
 
                 if is_exp or exp_deps:
                     if not experimental:
@@ -289,17 +301,11 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
                             print(f"  [red]ERROR: dependency {dep} doesn't exist[/red]")
                             sys.exit(1)
 
-                dockerfile = version_info.get('dockerfile') or image_info.dockerfile or 'Dockerfile'
+                dockerfile = version_vars.get('dockerfile', 'Dockerfile')
                 dockerfile = dockerfile.format(**version_vars)
                 full_image = f"{registry}/{image}:{image_version}"
 
-                # find Dockerfile for this image
-                dockerpath = os.path.join(path, dockerfile)
-                print(f"[bold]{image}:{image_version}[/bold] defined by {dockerpath}")
-                if not os.path.exists(dockerpath):
-                    print(f"  {dockerpath} doesn't exist")
-                    sys.exit(1)
-                build_dir = os.path.dirname(dockerpath)
+                build_dir = path
                 remote_image_exists = True
 
                 # check if remote image exists
@@ -336,12 +342,25 @@ def build_cargo(manifest: str, do_list=False, build=False, push=False, all=False
                     if remote_image_exists and not no_cache:
                         print(f"Pulling {full_image} from registry")
                         run(f"docker pull {full_image}")
-                    # substitute Dockerfile and build
-                    content = open(dockerpath, "rt").read().format(**version_vars)
-                    if verbose:
-                        print(f"Dockerfile:", style="bold")
-                        print(f"{content}", style="dim", highlight=True)
-                    run(f"docker build {no_cache} -t {full_image} -f- {build_dir}", cwd=build_dir, input=content)
+                    # if legacy is specified, just tag the legacy image
+                    if legacy_version is not None:
+                        legacy_full_image = f"{registry}/{image}:{legacy_version}"
+                        print(f"Pulling legacy image {legacy_full_image} from registry")
+                        run(f"docker pull {legacy_full_image}", cwd=build_dir)
+                        print(f"Tagging {legacy_full_image} as {image_version}")
+                        run(f"docker tag {legacy_full_image} {full_image}", cwd=build_dir)
+                    # else substitute Dockerfile and build
+                    else:
+                        dockerpath = os.path.join(path, dockerfile)
+                        print(f"[bold]{image}:{image_version}[/bold] defined by {dockerpath}")
+                        if not os.path.exists(dockerpath):
+                            print(f"  {dockerpath} doesn't exist")
+                            sys.exit(1)
+                        content = open(dockerpath, "rt").read().format(**version_vars)
+                        if verbose:
+                            print(f"Dockerfile:", style="bold")
+                            print(f"{content}", style="dim", highlight=True)
+                        run(f"docker build {no_cache} -t {full_image} -f- {build_dir}", cwd=build_dir, input=content)
                     # is this the latest version that needs to be tagged
                     if image_version == tag_latest.get(image):
                         run(f"docker tag {registry}/{image}:{image_version} {registry}/{image}:{BUNDLE_VERSION}")
