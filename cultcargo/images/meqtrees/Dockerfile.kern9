@@ -54,7 +54,7 @@ RUN mkdir /code/build && \
     rm -r /code/build &&  \
     ldconfig
 
-RUN pip install omegaconf stimela>=2.0
+RUN pip install omegaconf stimela>=2.0 astro-pyxis
 ADD . /meqConfs
 
 RUN python -c 'from Timba import mequtils'

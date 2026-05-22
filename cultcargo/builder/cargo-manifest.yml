@@ -17,6 +17,7 @@ assign:
   pre_install: ''
   post_install: ''
   extra_deps: ''
+  pip_install_flags: ''
   default_pip_base_image: python-base
   default_python_version: '3.12'
 
@@ -25,8 +26,8 @@ images:
   # These are suitable as base images for binary installs
   base-cult:
     versions:
-      'kern-7': cc0.2.0
-      'kern-8': cc0.2.0
+      'kern-7': cc0.2.1
+      'kern-8': cc0.2.1
       'kern-dev':
         kern_version: dev
       'kern-9': 
@@ -38,8 +39,8 @@ images:
   # These are suitable as base images for pip installs
   python-base:
     versions:
-      '3.8': cc0.2.0
-      '3.9': cc0.2.0
+      '3.8': cc0.2.1
+      '3.9': cc0.2.1
       '3.10': 
       '3.11': 
       '3.13':    
@@ -49,8 +50,8 @@ images:
   # This is the default image stimela uses for python cabs
   python-astro:
     versions:
-      '3.8': cc0.2.0
-      '3.9': cc0.2.0
+      '3.8': cc0.2.1
+      '3.9': cc0.2.1
       '3.10': 
       '3.11': 
       '3.13':    
@@ -59,11 +60,14 @@ images:
   # Package-specific images follow
 
   aimfast:
+    assign:
+      default_python_version: '3.9'
+      pip_install_flags: '--no-build-isolation' 
     versions:
       '1.3.4': 
         package: aimfast==1.3.4
-      master:
-        package: git+https://github.com/Athanaseus/aimfast.git
+      # master:
+      #   package: git+https://github.com/Athanaseus/aimfast.git
 
   meqtrees:
     versions:
@@ -75,24 +79,17 @@ images:
       kern_version: 9
       target_cpu: haswell
     versions:
-      '2.10.1-kern7': cc0.2.0
-      '3.1-kern8': cc0.2.0
-      '3.0.1-haswell': cc0.2.0
-      '3.1-haswell': cc0.2.0
-      '3.2-haswell': cc0.2.0
-      '3.3-haswell': cc0.2.0
-      '3.4-haswell': cc0.2.0
-      '3.5-skylake': cc0.2.0 
-      '3.5-haswell': cc0.2.0
-      '3.6-skylake': 
-        package_version: 3.6
-        target_cpu: skylake
-        kern_version: dev
-        dockerfile: Dockerfile.build
-      '3.6-haswell':
-        package_version: 3.6
-        kern_version: dev
-        dockerfile: Dockerfile.build
+      '2.10.1-kern7': cc0.2.1
+      '3.1-kern8': cc0.2.1
+      '3.0.1-haswell': cc0.2.1
+      '3.1-haswell': cc0.2.1
+      '3.2-haswell': cc0.2.1
+      '3.3-haswell': cc0.2.1
+      '3.4-haswell': cc0.2.1
+      '3.5-skylake': cc0.2.1 
+      '3.5-haswell': cc0.2.1
+      '3.6-skylake': cc0.2.1
+      '3.6-haswell': cc0.2.1
       '3.7-skylake':
         package_version: 3.7
         target_cpu: skylake
@@ -104,19 +101,15 @@ images:
         dockerfile: Dockerfile.build
 
   casa:
-    assign:
-      url: https://casa.nrao.edu/download/distro/casa/release/el7
     versions:
-      _base:
-        dockerfile: Dockerfile.base
-      '4.7.2': cc0.2.0
-      '5.8.0': cc0.2.0
+      '4.7.2': cc0.2.1
+      '5.8.0': cc0.2.1
 
   casa6:
     versions:
       # '6.5':  # deprecated
       #     wheel_version: 6.5.6.22
-      '6.6': cc0.2.0
+      '6.6': cc0.2.1
       '6.7':
           wheel_version: 6.7.5.18
 
@@ -144,15 +137,17 @@ images:
         package: git+https://github.com/ratt-ru/breizorro
 
   shadems:
+    assign:
+      default_python_version: '3.10'
     versions:
       '0.5.3': 
-        package: shadems==0.5.3
+        package: shadems==0.5.3 pyarrow dask[dataframe]\<2025.1
       '0.5.4':
-        package: shadems==0.5.4
+        package: shadems==0.5.4 pyarrow dask[dataframe]\<2025.1
       latest:
-        package: shadems
+        package: shadems pyarrow dask[dataframe]\<2025.1
       master:
-        package: git+https://github.com/ratt-ru/shadeMS
+        package: git+https://github.com/ratt-ru/shadeMS pyarrow dask[dataframe]\<2025.1
 
   crystalball:
     assign:
@@ -169,7 +164,7 @@ images:
 
   tricolour:
     versions:
-      '0.1.8.2': cc0.2.0
+      '0.1.8.2': cc0.2.1
       '0.2.1':
         package: tricolour==0.2.1
       latest:
@@ -184,7 +179,7 @@ images:
       default_python_version: '3.10'
     versions:
       '0.1.7':
-        package: smops==0.1.7
+        package: smops==0.1.7 
       latest:
         package: smops
       master:
@@ -204,10 +199,9 @@ images:
   quartical:
     assign:
       CMD: goquartical
-      # astlib causing kak with setuptools>=82. Also, astlib is fossilized kak anyway and we need to lose it
-      pre_install: RUN uv pip -n install --system setuptools==81
     versions:
-      '0.2.3': cc0.2.0
+      '0.2.3': 
+        package: quartical==0.2.4 
       '0.2.4': 
         package: quartical==0.2.4 
       '0.2.5': 
@@ -224,9 +218,8 @@ images:
       CMD: gocubical --help
       default_python_version: 3.9
     versions:
-      '1.6.4': cc0.2.0
-      latest:
-        package: cubical
+      '1.6.4': cc0.2.1
+      latest: cc0.2.1
       master:
         package: git+https://github.com/ratt-ru/CubiCal
 
@@ -234,14 +227,11 @@ images:
     assign:
       CMD: pfb --help
     versions:
-      # '0.0.4':  # deprecate, this was using different data structures
-      #   package: pfb-imaging==0.0.4
       master:
         package: git+https://github.com/ratt-ru/pfb-imaging
-      '0.0.6':
-        package: pfb-imaging==0.0.6
-      '0.0.7':
-        package: pfb-imaging==0.0.7
+      '0.0.5': cc0.2.1
+      '0.0.6': cc0.2.1
+      '0.0.7': cc0.2.1
       '0.0.8':
         package: pfb-imaging==0.0.8
       '0.0.9':
@@ -282,7 +272,7 @@ images:
     assign:
       pre_install: RUN apt update && apt install -y montage && rm -rf /var/lib/apt/lists/* && rm -rf /var/cache/apt/archives
     versions:
-      '1.1.1': cc0.2.0
+      '1.1.1': cc0.2.1
       '2.0.2':
         package: mosaic-queen==2.0.2
       latest:
@@ -296,8 +286,10 @@ images:
     versions:
       '0.0.5':
         package: spimple==0.0.5
-      master:
-        package: git+https://github.com/landmanbester/spimple.git
+      ## master fails with ModuleNotFoundError: No module named 'hip_cargo.callbacks'
+      # master:
+      #   CMD: spimple --help
+      #   package: git+https://github.com/landmanbester/spimple.git
       base:
         package: git+https://github.com/landmanbester/spimple.git@dropzweights
 
@@ -305,7 +297,7 @@ images:
     assign:
       CMD: python -c 'import sunblocker'
     versions:
-      '1.0.1': cc0.2.0
+      '1.0.1': cc0.2.1
       master:
         package: git+https://github.com/gigjozsa/sunblocker.git
 
@@ -314,9 +306,10 @@ images:
       master:
         package: git+https://github.com/caracal-pipeline/RFInder.git
 
-  blri_pycorr:
+  blri-pycorr:
     assign:
-      extra_deps: -U python-casacore pyuvdata
+      CMD: blri_pycorr --help
+      extra_deps: "-U python-casacore pyuvdata seticore@git+https://github.com/MydonSolutions/seticore.git#subdirectory=python"
     versions:
       master:
         package: git+https://github.com/MydonSolutions/BLRI.git@add-dedispersion
