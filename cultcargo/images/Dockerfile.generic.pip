@@ -5,7 +5,7 @@ FROM {REGISTRY}/{default_pip_base_image}:{default_python_version}-{BUNDLE_VERSIO
 RUN uv python pin python{default_python_version}
 
 # because 82 fucked us all
-RUN uv pip -n install --system setuptools==81 
+RUN uv pip -n install --system setuptools\<82 
 
 RUN uv pip -n install --system {pip_install_flags} {package} {extra_deps}
 
