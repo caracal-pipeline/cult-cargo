@@ -63,7 +63,7 @@ images:
     versions:
       '1.3.4':
         package: aimfast==1.3.4
-      ## new master incoming so stay with 1.3.4
+      ## new master incoming so stay with 1.3.4 as latest version in cc0.2.1
       # master:
       #   package: git+https://github.com/Athanaseus/aimfast.git
 
@@ -192,17 +192,10 @@ images:
         package: crystalball  
 
   tricolour:
-    # versions:
-    #   # '0.1.8.1': 
-    #   #   dockerfile: Dockerfile.linked-image
-    #   #   link_older_image: tricolour:cc0.1.3
-    # will re-enable this when tricolour has numpy 2 under control again
-    #
     assign:
       default_python_version: '3.9'
     versions:
       master:
-        # pre_install: RUN pip install -U
         default_python_version: '3.10'
         package: git+https://github.com/ratt-ru/tricolour
       '0.1.8.2':
@@ -245,7 +238,7 @@ images:
         package: quartical==0.2.5
       latest:
         package: quartical
-      ## no master -- stop at 0.2.5 for cc0.2.1
+      ## no master -- let 0.2.5 be latest for cc0.2.1
       # master:
       #   default_python_version: '3.12'
       #   package: git+https://github.com/ratt-ru/QuartiCal
@@ -322,7 +315,7 @@ images:
     assign:
       CMD: spimple-spifit --help
     versions:
-      ## ModuleNotFoundError: No module named 'hip_cargo.callbacks'
+      ## ModuleNotFoundError: No module named 'hip_cargo.callbacks', so disabling master in 0.2.1
       # master:
       #   CMD: spimple --help
       #   package: git+https://github.com/landmanbester/spimple.git
