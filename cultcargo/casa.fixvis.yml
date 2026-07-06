@@ -1,0 +1,49 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.fixvis:
+    name: casa.fixvis
+    info: Recalculates (u, v, w) and/or changes Phase Center
+    command: fixvis
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: ''
+      replace:
+        _: '-'
+    inputs:
+      msname:
+        info: Name of the input visibility set.
+        dtype: MS
+        required: true
+        nom_de_guerre: vis
+      output-msname:
+        info: Name of the output visibility set.  (Can be the same as vis.)
+        dtype: MS
+        default: false
+        required: true
+        nom_de_guerre: outputvis
+      datacolumn:
+        info: When applying a phase center shift, modify visibilities only in this/these
+          column(s). Comma separated list
+        dtype: str
+        default: all
+      field:
+        info: Fields to operate on. ''  = all.
+        dtype: str
+        default: ''
+      refcode:
+        info: Reference frame to convert UVW coordinates to
+        dtype: str
+      reuse:
+        info: Base UVW calculation on the old values?
+        dtype: bool
+        default: true
+      phasecenter:
+        info: Use this direction as phase center
+        dtype: str
+      distances:
+        info: (experimental) List of the distances (as quanta) of the fields selected
+          by field.
+        dtype: list:str

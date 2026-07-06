@@ -1,0 +1,77 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  rmsynth1d:
+    name: rmsynth1d
+    info: "Run RM-synthesis on Stokes I, Q and U spectra (1D) stored in an ASCII file.\
+      \ The Stokes I spectrum is first fit with a polynomial and the resulting model\
+      \ used to create fractional q = Q/I and u = U/I spectra. The ASCII file should\
+      \ the following columns, in a space separated format: \n [freq_Hz, I, Q, U,\
+      \ I_err, Q_err, U_err] \n OR \n [freq_Hz, Q, U, Q_err, U_err] \n To get outputs,\
+      \ one or more of the following flags must be set: -S, -p, -v."
+    command: rmsynth1d
+    image:
+      _use: vars.cult-cargo.images
+      name: rm-tools
+    policies:
+      prefix: '-'
+    inputs:
+      dataFile:
+        info: ASCII file containing Stokes spectra & errors.
+        dtype: File
+        required: true
+      t:
+        info: fit a Gaussian to the RMSF
+        dtype: bool
+        default: false
+        required: true
+      f:
+        info: absolute max Faraday depth sampled
+        dtype: str
+        default: Auto
+      l:
+        info: Width of Faraday depth channel. (overrides -s NSAMPLES flag)
+        dtype: str
+        default: Auto
+      s:
+        info: number of samples across the RMSF lobe
+        dtype: int
+        default: 10
+      w:
+        info: weighting [inverse 'variance'] or 'uniform' (all 1s).
+        dtype: str
+        choices:
+        - variance
+        - uniform
+      o:
+        info: Polynomial order to fit to I spectrum
+        dtype: int
+        default: 2
+      i:
+        info: Ignore the Stokes I spectrum
+        dtype: bool
+        default: false
+      b:
+        info: Use 64-bit floating point precision [False (uses 32-bit)]
+        dtype: bool
+        default: false
+      p:
+        info: Show the plots
+        dtype: bool
+        default: false
+      v:
+        info: Verbose output
+        dtype: bool
+        default: false
+      S:
+        info: Save the arrays and plots
+        dtype: bool
+        default: false
+      D:
+        info: Turn on debugging messages & plots
+        dtype: bool
+        default: false
+      U:
+        info: Intensity units of the data.
+        dtype: str
+        default: Jy/beam

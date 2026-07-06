@@ -1,0 +1,32 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  flagstats:
+    name: flagstats
+    info: Extract flag statistics for a set of fields and antennas from an MS
+    command: msutils
+    image:
+      _use: vars.cult-cargo.images
+      name: msutils
+    policies:
+      prefix: ' '
+    inputs:
+      msname:
+        info: MS name
+        dtype: MS
+      fields:
+        info: Field(s)
+        dtype: list:str
+      antennas:
+        info: Antennas
+        dtype: list:str
+      plot:
+        info: Plot flag statistic summary
+        dtype: bool
+    outputs:
+      outfile:
+        info: Output file (JSON format)
+        dtype: File
+      htmlfile:
+        info: Output plots html file
+        dtype: File

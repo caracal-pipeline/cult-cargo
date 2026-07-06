@@ -1,0 +1,164 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  equolver:
+    name: equolver
+    info: Convolve fits images and data cubes to the same resolution
+    command: equolver
+    image:
+      _use: vars.cult-cargo.images
+      name: equolver
+    policies:
+      prefix: --
+    inputs:
+      threads:
+        info: Number of threads
+        dtype: int
+      verb:
+        info: Switch to enable verbose output
+        dtype: bool
+      inc_cubes:
+        info: 'Input cubes: names or list of names, python style'
+        dtype: str
+      bin_bmaj:
+        info: Beam major axis default value(s), format see verbose description
+        dtype: str
+      bin_bmaj_replace:
+        info: Switch to enforce usage of default value(s) bin_bmaj
+        dtype: bool
+      bin_bmin:
+        info: Beam minor axis default value(s), format see verbose description
+        dtype: str
+      bin_bmin_replace:
+        info: Switch to enforce usage of default value(s) bin_bmin
+        dtype: bool
+      bin_bpa:
+        info: Beam position angle default value(s), format see verbose description
+        dtype: str
+      bin_bpa_replace:
+        info: Switch to enforce usage of default value(s) bin_bpa
+        dtype: bool
+      bin_restfreq:
+        info: Rest frequency default value(s), format see verbose description
+        dtype: str
+      bin_restfreq_replace:
+        info: Switch to enforce usage of default value(s) bin_restfreq
+        dtype: bool
+      bin_normfreq:
+        info: Frequency in Hz to normalize beam to if mode is 'frequency'
+        dtype: float
+      genbstats_suppress:
+        info: Switch to suppress generation of beam statistics
+        dtype: bool
+      bst_parameter:
+        info: "Parameter name ('all', \bmaj', 'bmin', 'bpa', 'bsa', 'ceb')"
+        dtype: str
+      bst_scaling:
+        info: Scaling type ('all', 'constant', 'frequency')
+        dtype: str
+      bst_stype:
+        info: Type of statistics to calculate ('all', 'minimum', 'maximum', 'average',
+          'stdev', 'median', 'mad', 'madstdev', 'percentile', 'percents', 'commonbeam')
+        dtype: str
+      bst_sample:
+        info: Sample(s) to calculate statistics on ('all', 'cube', 'chan', 'total')
+        dtype: str
+      bst_percents:
+        info: Percents for the percentile statistics
+        dtype: float
+      bst_tolerance:
+        info: Tolerance for searching the common beam
+        dtype: float
+      bst_nsamps:
+        info: Number of edges of beam for common beam
+        dtype: int
+      bst_epsilon:
+        info: Epsilon to search for common beam
+        dtype: float
+      bst_maxiter:
+        info: Maximum iterations to search for common beam
+        dtype: int
+      hist_sample:
+        info: Sample to plot 'cube', 'chan', or 'total'
+        dtype: str
+      hist_scaling:
+        info: Scaling to use ('frequency' or 'constant')
+        dtype: str
+      hist_overwrite:
+        info: 'Allow overwriting files produced before? (''True'': yes)'
+        dtype: bool
+      gentarget_suppress:
+        info: Switch to suppress the generation of target beams
+        dtype: bool
+      tar_bmaj_inter:
+        info: Beam major axis intercept (variable format)
+        dtype: str
+      tar_bmaj_slope:
+        info: Beam major axis slope (variable format)
+        dtype: str
+      tar_bmaj_absc:
+        info: Beam major axis abscissae (variable format)
+        dtype: str
+      tar_bmin_inter:
+        info: Beam minor axis intercept (variable format)
+        dtype: str
+      tar_bmin_slope:
+        info: Beam minor axis slope (variable format)
+        dtype: str
+      tar_bmin_absc:
+        info: Beam minor axis abscissae (variable format)
+        dtype: str
+      tar_bpa_inter:
+        info: Beam position angle axis intercept (variable format)
+        dtype: str
+      tar_bpa_slope:
+        info: Beam position angle axis slope (variable format)
+        dtype: str
+      tar_bpa_absc:
+        info: Beam position angle abscissae (variable format)
+        dtype: str
+      tar_scaling:
+        info: Use 1/F scaling when calculating the target array, either 'frequency'
+          or 'input'
+        dtype: str
+      gentrans_suppress:
+        info: Switch to suppress the generation of transformed cubes
+        dtype: bool
+      tra_modelnames:
+        info: Input fits file names, containing the models.
+        dtype: str
+      tra_residualnames:
+        info: Input fits file names, containing the residuals.
+        dtype: str
+      tra_mode:
+        info: '''scale'', ''mask'', ''hybrid'', ''max'''
+        dtype: str
+      tra_tol:
+        info: tolerance to determine if convolution failed
+        dtype: float
+      tra_maxker:
+        info: Maximum value that the FT of the convolution kernel can assume, will
+          assume failure if larger
+        dtype: float
+      tra_no_commonbeam:
+        info: Switch to suppress common (average) beam information in header
+        dtype: bool
+      tra_no_indibeam:
+        info: Switch to suppress individual beam information in header
+        dtype: bool
+      tra_no_hdmode:
+        info: Switch to suppress information about scaling/convolution in header
+        dtype: bool
+      tra_overwrite:
+        info: Switch to overwrite output if existent'
+        dtype: bool
+    outputs:
+      hist_plotname:
+        info: Name of static plot
+        dtype: str
+      hist_interactive:
+        info: Name of interactive plot
+        dtype: str
+      tra_fitsnames:
+        info: Output fits file names.
+        dtype: str

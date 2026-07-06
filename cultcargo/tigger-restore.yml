@@ -1,0 +1,85 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  tigger-restore:
+    name: tigger-restore
+    info: Restores sources from sky model into an input image, writes result to output
+      image. If an output image is not specified, makes a name for it automatically
+    command: tigger-restore
+    image:
+      _use: vars.cult-cargo.images
+      name: tigger
+    policies:
+      prefix: --
+    inputs:
+      input-image:
+        info: Input image
+        dtype: File
+      input-skymodel:
+        info: Sky model to restore to 'input-image'
+        dtype: File
+      force:
+        info: Forces overwrite of output model.
+        dtype: bool
+        default: false
+        nom_de_guerre: f
+      type:
+        info: Input model type
+        dtype: str
+        default: auto
+        choices:
+        - Tigger
+        - ASCII
+        - BBS
+        - NEWSTAR
+        - AIPSCC
+        - AIPSCCFITS
+        - Gaul
+        - auto
+      format:
+        info: Input format, for ASCII or BBS tables. For ASCII tables, default is
+          'name ra_h ra_m ra_s dec_d dec_m dec_s i q u v spi rm emaj_s emin_s pa_d
+          freq0 tags...'. For BBS tables, the default format is specified in the file
+          header.
+        dtype: str
+      tags:
+        info: Extract sources with the specified tags.
+        dtype: str
+      num-sources:
+        info: Only restore the NSRC brightest sources
+        dtype: int
+      scale:
+        info: Rescale model fluxes by given factor. If N is given, rescale N brightest
+          only.
+        dtype: list:float
+      restoring-beam:
+        info: Specify restoring beam size, overriding BMAJ/BMIN/BPA keywords in input
+          image. Use a single value (arcsec) for circular beam, or else supply major/minor
+          size and position angle (deg).
+        dtype: list:float
+      psf-file:
+        info: Determine restoring beam size by fitting PSF file, overriding BMAJ/BMIN/BPA
+          keywords in input image. 'clear' clear contents of FITS file before adding
+          in sources apply model primary beam function during restoration, if it's
+          defined, and source is not tagged 'nobeam'
+        dtype: File
+      beamgain:
+        info: Apply beamgain atribute during restoration, if it's defined, and source
+          is not tagged 'nobeam' 'ignore-nobeam' apply PB or beamgain even if source
+          is tagged 'nobeam'
+        dtype: float
+      freq:
+        info: Use this frequency (in MHz) (for spectral indices and primary beams)
+        dtype: float
+      verbose:
+        info: Set verbosity level (0 is silent, higher numbers mean more messages)
+        dtype: bool
+        default: false
+      timestamps:
+        info: Enable timestamps in debug messages (useful for timing)
+        dtype: bool
+        default: true
+    outputs:
+      output-image:
+        info: Input image
+        dtype: File

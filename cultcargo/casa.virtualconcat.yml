@@ -1,0 +1,45 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.virtualconcat:
+    name: casa.virtualconcat
+    info: Concatenate several visibility data sets
+    command: virtualconcat
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: ''
+      replace:
+        _: '-'
+    inputs:
+      msname:
+        info: Name of input visibility files
+        dtype: MS
+        required: true
+        nom_de_guerre: vis
+      output-msname:
+        info: Name of output measurement set
+        dtype: MS
+        nom_de_guerre: concatvis
+      freqtol:
+        info: Frequency shift tolerance for considering data as the same spwid
+        dtype: str
+      dirtol:
+        info: Direction shift tolerance for considering data as the same field
+        dtype: str
+      respectname:
+        info: If true, fields with a different name are not merged even if their direction
+          agrees
+        dtype: bool
+        default: false
+      copypointing:
+        info: Copy all rows of the POINTING table
+        dtype: bool
+        default: true
+      visweightscale:
+        info: List of the weight scaling factors to be applied to the individual MSs
+        dtype: list:float
+      keepcopy:
+        info: If true, a copy of the input MSs is kept in their original place
+        dtype: bool

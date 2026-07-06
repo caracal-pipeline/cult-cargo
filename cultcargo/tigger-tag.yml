@@ -1,0 +1,58 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  tigger-tag:
+    name: tigger-tag
+    info: 'Sets or changes tags of selected sources in the sky model. Use NAME (with
+      shell-style wildcards allowed) to select sources by name, or  =SELTAG to select
+      sources having the specified (non-zero) tag, or SELTAG<>SELVAL to select sources
+      by comparing a tag to a value, where ''<>''  represents a comparison operator,
+      and can be one of == (or =),!=,<=,<,>,>= (or the FORTRAN-  style operators .eq.,.ne.,.le.,.lt.,.gt.,.ge.).
+      SELVAL may also be followed by one of the characters  ''d'', ''m'' or ''s'',
+      in which case it will be converted from degrees, minutes or seconds into radians.
+      This is useful for selections such as ''r<5d''. Then, with a subset of sources
+      selected, use TAG=TYPE:VALUE (where TYPE is one of: bool, int, float, str, complex)
+      to set a tag on the selected sources to a value of a specific type, or TAG=VALUE
+      to determine type automatically, or +TAG to set a bool True tag, !TAG to set
+      a False tag, and /TAG to remove a tag.'
+    command: tigger-tag
+    image:
+      _use: vars.cult-cargo.images
+      name: tigger
+    policies:
+      prefix: --
+    inputs:
+      skymodel:
+        info: Input sky model
+        dtype: File
+        required: true
+        nom_de_guerre: input-skymodel
+      tag:
+        info: Tag
+        dtype: str
+        required: true
+      force:
+        info: Saves changes to model without prompting. Default is to prompt.
+        dtype: bool
+        default: false
+      transfer-tags:
+        info: Transfers tags from a reference 'input-skymodel' to the 'output-skymodel/output'.
+          That is, for every tag in the given list, finds all sources with those tags
+          in the reference LSM,  then applies these tags to all nearby sources in
+          LSM  (within a radius of 'tolerance' [ARCSEC]).  Saves the result to an
+          LSM file given by -o/--output.
+        dtype: bool
+        default: false
+      tolerance:
+        info: Tolerance for transfer tags. In arcseconds
+        dtype: float
+      debug:
+        info: (for debugging Python code) sets verbosity level of the named Python
+          context. May be used multiple times.
+        dtype: int
+    outputs:
+      output-skymodel:
+        info: Saves changes to different output model. Default is to save in place.
+        dtype: File
+        required: true
+        nom_de_guerre: output

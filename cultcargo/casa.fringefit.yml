@@ -1,0 +1,107 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.fringefit:
+    name: casa.fringefit
+    info: Phase offsets, groups delays and delay rates are calculated with respect
+      to a specified referance antenna by a two-dimensional FFT and subsequent least-squares
+      optimisation.
+    command: fringefit
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: '-'
+      replace:
+        _: '-'
+    inputs:
+      msname:
+        info: Name of input visibility file
+        dtype: MS
+        required: true
+        nom_de_guerre: vis
+      field:
+        info: Select field using field id(s) or field name(s)
+        dtype: str
+      spw:
+        info: Select spectral window/channels
+        dtype: str
+      selectdata:
+        info: Other data selection parameters
+        dtype: bool
+      timerange:
+        info: Select data based on time range
+        dtype: str
+      antenna:
+        info: Select data based on antenna/baseline
+        dtype: str
+      scan:
+        info: Scan number range
+        dtype: str
+      observation:
+        info: Select by observation ID(s)
+        dtype: str
+      msselect:
+        info: Optional complex data selection (ignore for now)
+        dtype: str
+      zerorates:
+        info: Zero delay-rates in solution tabl
+        dtype: bool
+      solint:
+        info: 'Solution interval: egs. ''inf'', ''60s'' (see help)'
+        dtype: str
+        default: inf
+      combine:
+        info: Data axes which to combine for solve (obs, scan, spw, and/or, field)
+        dtype: str
+      refant:
+        info: Reference antenna name(s)
+        dtype: str
+      minsnr:
+        info: Reject solutions below this SNR
+        dtype: float
+        default: 3.0
+      delaywindow:
+        info: Constrain FFT delay search to a window; a two-element list, units of
+          nanoseconds
+        dtype: list:float
+      ratewindow:
+        info: Constrain FFT rate search to a window; a two-element list, units of
+          nanoseconds
+        dtype: list:float
+      niter:
+        info: Maximum number of iterations for least-squares solver
+        dtype: int
+      globalsolve:
+        info: Refine estimates of delay and rate with global least-squares solver
+        dtype: bool
+        default: true
+      append:
+        info: Append solutions to the (existing) table
+        dtype: bool
+      docallib:
+        info: Use callib or traditional cal apply parameters
+        dtype: bool
+      callib:
+        info: Cal Library filename
+        dtype: File
+      gaintable:
+        info: Gain calibration table(s) to apply on the fly
+        dtype: list:File
+      gainfield:
+        info: Select a subset of calibrators from gaintable(s)
+        dtype: list:str
+      interp:
+        info: Temporal interpolation for each gaintable (=linear)
+        dtype: list:str
+      spwmap:
+        info: Spectral windows combinations to form for gaintables(s)
+        dtype: list:str
+      paran:
+        info: Apply parallactic angle correction on the fly
+        dtype: bool
+    outputs:
+      caltable:
+        info: Name of output gain calibration table
+        dtype: File
+        required: true

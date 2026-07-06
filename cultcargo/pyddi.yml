@@ -1,0 +1,59 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  pyddi:
+    name: pyddi
+    info: A tool designed to identify regions in an image that require direction-dependent
+      calibration
+    command: pyddi
+    image:
+      _use: vars.cult-cargo.images
+      name: pyddi
+    policies:
+      prefix: --
+    inputs:
+      image:
+        info: Image of interest.
+        dtype: File
+        required: true
+      psf-image:
+        info: The psf image.
+        dtype: File
+      catalog:
+        info: 'Sky model as LSM/txt. Must be in Tigger format: #format:name, ra_d,
+          dec_d, i'
+        dtype: File
+      flux-thresh:
+        info: Flux threshold. Regions in an image with flux > fth * noise are considered.
+        dtype: float
+        default: 10.0
+      variance-thresh:
+        info: Local variance threshold. Sources with varinace > vth * noise are considered.
+        dtype: float
+        default: 5.0
+      variance-size:
+        info: The size of the region to compute the local variance. E.g vsize=10,
+          gives a region of size = 10 * resolution. The resolution is in pixels.
+        dtype: int
+        default: 10
+      correlation-thresh:
+        info: Correlation threshold. Sources with correlation factor > cth are considered.
+        dtype: float
+        default: 0.5
+      correlation-size:
+        info: The size of the region to compute correlation. see vsize.
+        dtype: int
+        default: 10
+      group-pixels:
+        info: The size of the region to group the pixels, in terms of psf-size. The
+          psf is in degrees. e.g gpix=20, gives 20xpsf.
+        dtype: float
+        default: 20.0
+      use-catalog:
+        info: Use -catalog for the identification instead of -image.
+        dtype: bool
+        default: false
+      prefix:
+        info: The prefix for the output catalog useful when -use-catalog=False. It
+          returns pixel RA, DEC dnd flux of the brightest pixels.
+        dtype: str

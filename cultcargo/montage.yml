@@ -1,0 +1,68 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  montage:
+    name: montage
+    info: Combine FITS files into a mosaic
+    command: montage.mosiac
+    image:
+      _use: vars.cult-cargo.images
+      name: montage
+    policies:
+      prefix: '-'
+    inputs:
+      input_dir:
+        info: The directory containing the input FITS files
+        dtype: File
+      header:
+        info: The header to project to. If this is not specified, then an optimal
+          header is chosen.
+        dtype: str
+      image_table:
+        info: The table file containing the list of input images. This can be specified
+          to avoid recomputing it every time a mosaic is made from the same set of
+          input files.
+        dtype: File
+      mpi:
+        info: Whether to use MPI whenever possible (requires the MPI-enabled Montage
+          binaries to be installed).
+        dtype: bool
+      n_proc:
+        info: The number of processes to use if `mpi` is set to `True`
+        dtype: int
+      background_match:
+        info: Whether to include a background-matching step
+        dtype: bool
+      imglist:
+        info: A list of images to use (useful if not all the files inside `input_dir`
+          should be combined).
+        dtype: list:str
+      combine:
+        info: How to combine the images
+        dtype: str
+        choices:
+        - mean
+        - median
+        - count
+      exact_size:
+        info: Whether the output mosaic should match the input header exactly, or
+          whether the mosaic should be trimmed if possible.
+        dtype: bool
+      cleanup:
+        info: Whether to remove any temporary directories used for mosaicking
+        dtype: bool
+        default: 'true'
+      bitpix:
+        info: 'BITPIX value for the ouput FITS file (default is -32). Possible values
+          are: 8 (character or unsigned binary integer), 16 (16-bit integer), 32 (32-bit
+          integer), -32 (single precision floating point), -64 (double precision floating
+          point).'
+        dtype: int
+      level_only:
+        info: When doing background matching, whether to only allow changes in the
+          level of frames, not the slope.
+        dtype: bool
+    outputs:
+      output_dir:
+        info: Montage output directory
+        dtype: File

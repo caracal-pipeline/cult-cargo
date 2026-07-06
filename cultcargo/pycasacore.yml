@@ -1,0 +1,20 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  pycasacore:
+    name: pycasacore
+    info: Runs a user defined script in a python environment with python-casaore
+    command: python
+    image:
+      _use: vars.cult-cargo.images
+      name: meqtrees
+    policies:
+      prefix: ''
+    inputs:
+      msname:
+        info: MS to process
+        dtype: MS
+        required: true
+      script:
+        info: Custom script (string) to run within CASA
+        dtype: str

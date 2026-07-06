@@ -1,0 +1,34 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.polfromgain:
+    name: casa.polfromgain
+    info: Derive linear polarization from gain ratio
+    command: polfromgain
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: '-'
+      replace:
+        _: '-'
+    inputs:
+      msname:
+        info: Name of input visibility file
+        dtype: MS
+        required: true
+        nom_de_guerre: vis
+      tablein:
+        info: Input calibration table
+        dtype: File
+        required: true
+      paoffset:
+        info: Manual position angle offset
+        dtype: float
+    outputs:
+      caltable:
+        info: Output calibration table (forces polarization correction if specified)
+        dtype: File
+      save_result:
+        info: Output pickle file to the result from task
+        dtype: File

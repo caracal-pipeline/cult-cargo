@@ -1,0 +1,106 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  halofitting:
+    name: halofitting
+    info: Automatic flux density (and power) estimations of radio halos in galaxy
+      clusters
+    command: halofitting
+    image:
+      _use: vars.cult-cargo.images
+      name: halo-fdca
+    policies:
+      prefix: '-'
+    inputs:
+      object:
+        info: Cluster object name
+        dtype: str
+        required: true
+      d_file:
+        info: Image location (containing radio halo)
+        dtype: File
+        required: true
+      z:
+        info: Cluster redshift
+        dtype: float
+        required: true
+      model:
+        info: Model to use
+        dtype: str
+        default: circle
+        choices:
+        - circle
+        - ellipse
+        - rotated_ellipse
+        - skewed
+      frame:
+        info: 'Coordinate frame. Default: ICRS'
+        dtype: str
+      loc:
+        info: 'Sky coordinates of cluster. provide coordinates of the form: ''hh mm
+          ss.ss -dd mm ss.s'' in hourangle units. Default: None and image centre is
+          chosen.'
+        dtype: str
+      m:
+        info: Choose to include mask or not. If True, -m_file should be specified.
+        dtype: bool
+        default: true
+      m_file:
+        info: Mask file location
+        dtype: File
+        required: true
+      out_path:
+        info: 'Path to code output. Default: directory code is in.'
+        dtype: str
+      fov:
+        info: Declare if image size has to be decreased before MCMC-ing. Amount of
+          decreasement has been automatically set to 3.5*r_e.
+        dtype: bool
+        default: true
+      spectr_idx:
+        info: 'Set spectral index of cluster (S ~ nu^alpha). Used to calculate power
+          and extrapolate flux to arbitrary frequencies. Default: -1.2'
+        dtype: float
+      walkers:
+        info: Number of walkers to deploy in the MCMC algorithm.
+        dtype: int
+        default: 200
+      steps:
+        info: Number of evauations each walker has to do.
+        dtype: int
+        default: 1200
+      burntime:
+        info: 'Burn-in time for MCMC walkers. See emcee documentation for info. Default:
+          None. this is 1/4th of the steps.'
+        dtype: int
+      max_radius:
+        info: 'Maximum posiible radius cut-off. Fitted halos cannot have any r > max_radius.
+          In units of kpc. Default: None (implying image_size/2).'
+        dtype: float
+      gamma_prior:
+        info: 'Whether to use a gamma distribution as a prior for radii. Default is
+          False. For the gamma parameters: shape = 2.5, scale = 120 kpc.'
+        dtype: bool
+      k_exp:
+        info: 'Whether to use k exponent to change shape of exponential distribution.
+          Default: False'
+        dtype: bool
+      s:
+        info: 'Whether to save the mcmc sampler chain in a fits file. Default: True.'
+        dtype: bool
+      run_mcmc:
+        info: 'Whether to run a MCMC routine or skip it to go straight to processing.
+          can be done if a runned sample already exists in the output path. Default:
+          True'
+        dtype: bool
+      int_max:
+        info: 'Integration radius in r_e units. Default: inf'
+        dtype: float
+      freq:
+        info: 'Frequency in MHz to calculate flux in. When given, the spectral index
+          will be used. Default: image frequency '
+        dtype: float
+      rms:
+        info: 'Set manual rms noise level to be used by the code in uJy/beam Default:
+          rms calculated by code'
+        dtype: float

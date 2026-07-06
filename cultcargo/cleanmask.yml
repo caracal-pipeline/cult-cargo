@@ -1,0 +1,74 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  cleanmask:
+    name: cleanmask
+    info: Creates a binary mask from a FITS image
+    command: cleanmask
+    image:
+      _use: vars.cult-cargo.images
+      name: astropy
+    policies:
+      prefix: --
+    inputs:
+      image:
+        info: Name of FITS image from which to derive the mask
+        dtype: File
+        required: true
+      sigma:
+        info: The number of standard deviations to use when clipping image
+        dtype: float
+        default: 5
+      boxes:
+        info: Will divide image into this number of boxes, then perform sigma clipping
+          in each of these boxes
+        dtype: int
+        default: 11
+      iters:
+        info: The number of iterations to perform sigma clipping, or 0 to clip until
+          convergence is achieved.
+        dtype: int
+        default: 3
+      mask-value:
+        info: Value to use for masked regions
+        dtype: float
+        default: 0
+      overlap:
+        info: Overlap region. As a fraction of -nb/--boxes
+        dtype: float
+        default: 0
+      dilate:
+        info: Dilate mask. This is an attempt to include low surface brightness in
+          an image.
+        dtype: bool
+        default: true
+      diter:
+        info: Maximun dilation iterations per island
+        dtype: int
+        default: 20
+      no-negative:
+        info: Include negative pixels when creating mask
+        dtype: bool
+        default: false
+      tolerance:
+        info: Tolerance for dilating the mask. Will stop dilating if percentage difference
+          between dilations is smaller than this value.
+        dtype: float
+        default: 0.05
+      peak-fraction:
+        info: Clip image based on this fraction of the peak pixel in the image. Will
+          ingore sigma option
+        dtype: float
+      log-level:
+        info: Log level
+        dtype: str
+        default: INFO
+        choices:
+        - INFO
+        - DEBUG
+        - CRITICAL
+    outputs:
+      output:
+        info: Name of resulting binary mask
+        dtype: File
+        required: true

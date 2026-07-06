@@ -1,0 +1,21 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.rmtables:
+    name: casa.rmtables
+    info: 'This task removes tables if they are not being currently accessed via the
+      casapy process. Note: if you have multiple sessions running bad things could
+      happen if you remove a table being accessed by another process.'
+    command: rmtables
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: '-'
+      replace:
+        _: '-'
+    inputs:
+      tablenames:
+        info: Names of tables
+        dtype: list:File
+        required: true

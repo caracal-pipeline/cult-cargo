@@ -1,0 +1,97 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  mvftoms:
+    name: mvftoms
+    info: Convert HDF5 file(s) to MeasurementSet
+    command: mvftoms.py
+    image:
+      _use: vars.cult-cargo.images
+      name: katdal
+    policies:
+      prefix: --
+    inputs:
+      mvffiles:
+        info: MVF (.rdb) file(s)
+        dtype: list:File
+      archive-url:
+        info: archive URLs (including access tokens)
+        dtype: list:str
+      output-ms:
+        info: Output MS
+        dtype: MS
+        required: true
+      overwrite:
+        info: Delete MS file(s) if they already exist
+        dtype: bool
+      circular:
+        info: Produce quad circular polarisation. (RR, RL, LR, LL) *** Currently just
+          relabels the linear pols ****
+        dtype: bool
+        default: false
+      ref-ant:
+        info: Reference antenna (default is first one used by script)
+        dtype: str
+      tar:
+        info: Tar-ball the MS
+        dtype: bool
+        default: false
+      full-pol:
+        info: Produce a full polarisation MS in CASA canonical order (HH, HV, VH,
+          VV). Default is to produce HH,VV only
+        dtype: bool
+        default: true
+        nom_de_guerre: full_pol
+      verbose:
+        info: More verbose progress information
+        dtype: bool
+        default: true
+      stop-w:
+        info: Use W term to stop fringes for each baseline
+        dtype: bool
+        default: false
+      pols-to-use:
+        info: Select polarisation products to include in MS from HH,VV,HV,VH, default
+          is all available from HH,VV
+        dtype: str
+      keep-spaces:
+        info: Keep spaces in source names, default removes spaces
+        dtype: bool
+      uvfits:
+        info: Print command to convert MS to miriad uvfits in casapy
+        dtype: bool
+        default: false
+      no-auto:
+        info: MeasurementSet will exclude autocorrelation data
+        dtype: bool
+        default: false
+      channel-range:
+        info: Range of frequency channels to keep (zero-based inclusive 'first_chan,last_chan',
+          default is all channels)
+        dtype: str
+      elevation-range:
+        info: Flag elevations outside the range 'lowest_elevation,highest_elevation'
+        dtype: str
+      model-data:
+        info: Add MODEL_DATA and CORRECTED_DATA columns to the MS. MODEL_DATA initialised
+          to unity amplitude zero phase, CORRECTED_DATA initialised to DATA.
+        dtype: bool
+        default: false
+      flags:
+        info: List of online flags to apply (from 'static,cam,data_lost,ingest_rfi,cal_rfi,predicted_rfi',
+          default is all flags, '' will apply no flags)
+        dtype: str
+      dumptime:
+        info: Output time averaging interval in seconds, default is no averaging.
+        dtype: float
+        default: 0.0
+      chanbin:
+        info: Bin width for channel averaging in channels, default is no averaging
+        dtype: int
+        default: 0
+      quack:
+        info: Discard the first N dumps (which are frequently incomplete)
+        dtype: int
+      credentials_dir:
+        info: Folder contaning loggin credintials
+        dtype: File

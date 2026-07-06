@@ -1,0 +1,23 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.uvsub:
+    name: casa.uvsub
+    info: Subtract/add model from/to the corrected visibility data.
+    command: uvsub
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: ''
+      replace:
+        _: '-'
+    inputs:
+      msname:
+        info: Name of input visibility file (MS)
+        dtype: MS
+        nom_de_guerre: vis
+      reverse:
+        info: reverse the operation (add rather than subtract)
+        dtype: bool
+        default: false

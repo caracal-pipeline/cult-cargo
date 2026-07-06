@@ -1,0 +1,143 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  sharpener:
+    name: sharpener
+    info: A tool to extract a spectrum from continuum sources in a cube.
+    command: run_sharpener
+    image:
+      _use: vars.cult-cargo.images
+      name: sharpener
+    policies:
+      prefix: ''
+    inputs:
+      contname:
+        info: Name of continuum image to extract sources
+        dtype: File
+      cubename:
+        info: Name of cube image to extract spectrum of sources
+        dtype: File
+        required: true
+      label:
+        info: Prefix in the plots title
+        dtype: str
+        default: SHARP
+      catalog_file:
+        info: Name of catalog file used to locate sources in a cube
+        dtype: File
+      workdir:
+        info: Name of working directory
+        dtype: str
+        required: true
+      plot_format:
+        info: Format of plots produced
+        dtype: str
+        default: pdf
+      merge_plots:
+        info: Merge all the plots
+        dtype: bool
+        default: true
+      enable_abs_plot:
+        info: plot spectra from folder plot in workdir/sharpOut/plot/
+        dtype: bool
+        default: true
+      detailed_plot:
+        info: Detail plot showing specified number of channels per plot
+        dtype: bool
+        default: true
+      channels_per_plot:
+        info: Number of channels per plot
+        dtype: int
+        default: 50
+      enable_hanning:
+        info: Enable hanning for smoothing spectrum
+        dtype: bool
+        default: false
+      window:
+        info: Hanning window
+        dtype: int
+        default: 3
+      enable_polynomial_subtraction:
+        info: Subtract polynomial from spectrum to improve continuum subtraction
+        dtype: bool
+        default: false
+      degree_pol:
+        info: Degree of polynomial
+        dtype: bool
+        default: false
+      enable_sdss_match:
+        info: Enable sdss source matching
+        dtype: bool
+        default: false
+      freq_min:
+        info: Minimum frequency
+        dtype: float
+        default: 1130.0
+      freq_max:
+        info: Maximum frequency
+        dtype: float
+        default: 1430.0
+      plot_image:
+        info: Plot image
+        dtype: bool
+        default: true
+      match_cat:
+        info: Match catalog
+        dtype: bool
+        default: true
+      max_sep:
+        info: Maximum separation
+        dtype: float
+        default: 30.0
+      min_radio_flux:
+        info: Minimum radio flux
+        dtype: float
+        default: 0.0
+      sdss_query_timeout:
+        info: SDSS query timeout
+        dtype: int
+        default: 300
+      enable_simulate_continuum:
+        info: Simulate continuum from source catalog output
+        dtype: bool
+        default: false
+      enable_source_catalog:
+        info: Find sources in a f.o.v. from source_catalog
+        dtype: bool
+        default: false
+      catalog:
+        info: Type of catalog
+        dtype: str
+        required: true
+        choices:
+        - FIRST
+        - NVSS
+        - PYBDSF
+      thresh:
+        info: Threshold to select sources (mJy)
+        dtype: float
+        default: 50.0
+      width:
+        info: Field of view width (e.g. 5.5d)
+        dtype: str
+      enable_source_finder:
+        info: Find sources in continuum image using miriad imsad
+        dtype: bool
+        default: false
+      clip:
+        info: Source finding clip
+        dtype: float
+      enable_spec_ex:
+        info: Extract spectra from datacube
+        dtype: bool
+        default: true
+      chrom_aberration:
+        info: Chromatic aberration
+        dtype: bool
+        default: true
+      flag_chans:
+        info: Number of channels to flag
+        dtype: int
+      zunit:
+        info: Red shift units
+        dtype: str

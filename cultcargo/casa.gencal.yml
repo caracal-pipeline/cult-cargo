@@ -1,0 +1,52 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.gencal:
+    name: casa.gencal
+    info: Specify Calibration Values of Various Types
+    command: gencal
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: ' '
+      replace:
+        _: '-'
+    inputs:
+      msname:
+        info: Name of input visibility file
+        dtype: MS
+        required: true
+        nom_de_guerre: vis
+      caltype:
+        info: 'The calibration type: ''amp'',''ph'', ''sbd'',''mbd'',''antpos'',''antposvla'',''tsys''''evlagain'',''opac'',''gc'',''gceff'',''eff'''
+        dtype: str
+        choices:
+        - amp
+        - ph
+        - sbd
+        - mbd
+        - antpos
+        - antposvla
+        - tsys
+        - evlagain
+        - opac
+        - gc
+        - gceff
+        - eff
+      spw:
+        info: Calibration spw(s) selection
+        dtype: str
+      antenna:
+        info: Calibration antenna(s) selection
+        dtype: str
+      pol:
+        info: Calibration polarizations(s) selection
+        dtype: str
+      parameter:
+        info: The calibration values
+        dtype: list:float
+    outputs:
+      caltable:
+        info: The new/existing calibration table
+        dtype: File

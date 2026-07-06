@@ -1,0 +1,830 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  ddfacet:
+    name: ddfacet
+    info: 'DDFacet: a facet-based imager'
+    command: DDF.py
+    image:
+      _use: vars.cult-cargo.images
+      name: ddfacet
+    policies:
+      prefix: --
+    inputs:
+      Parset:
+        info: 'Custom parset file (note: all paths in the parset must be relative
+          to the mount points inside the container). Advance usage only.'
+        dtype: File
+      Data-MS:
+        info: Name(s) of database to image
+        dtype: MS
+      Data-ColName:
+        info: ColName to image
+        dtype: str
+        default: DATA
+      Data-ChunkHours:
+        info: Chunk data into time bins of x hours to conserve memory
+        dtype: float
+        default: 0
+      Data-Sort:
+        info: Sort the data by baseline-time order internally. Can improve processing
+          speed
+        dtype: bool
+        default: false
+      Predict-ColName:
+        info: MS column to write predict to. Can be left empty to disable
+        dtype: str
+      Predict-MaskSquare:
+        info: Use this field if you want to predict (in/out)side a square region.
+          Syntax is (MaskOutSide,NpixInside). For example setting (0,1000) will predict
+          the outer (1000x1000) square only
+        dtype: str
+      Predict-FromImage:
+        info: In --Image-Mode=Predict, will predict data from this image, rather than
+          --Data-InitDicoModel
+        dtype: File
+      Predict-InitDicoModel:
+        info: Resume deconvolution from given DicoModel
+        dtype: File
+      Predict-Overwrite:
+        info: Allow overwriting of predict column
+        dtype: bool
+        default: true
+      Selection-Field:
+        info: Default FIELD_ID to read
+        dtype: int
+        default: 0
+      Selection-DDID:
+        info: Default DATA_DESC_ID to read
+        dtype: int
+        default: 0
+      Selection-TaQL:
+        info: Additional TaQL selection string
+        dtype: str
+        default: ''''''
+      Selection-ChanStart:
+        info: First channel
+        dtype: int
+        default: 0
+      Selection-ChanEnd:
+        info: Last channel+1, -1 means up and including last channel
+        dtype: int
+        default: -1
+      Selection-FlagAnts:
+        info: List of antennas to be flagged, e.g. 'RS,CS017LBA'
+        dtype: str
+        default: ''''''
+      Selection-UVRangeKm:
+        info: Select baseline range km_min,km_max
+        dtype: str
+        default: ''''''
+      Selection-TimeRange:
+        info: Select time range, in hours, since start of MS. Format H0,H1
+        dtype: str
+        default: ''''''
+      Selection-DistMaxToCore:
+        info: Select antennas by specifying a maximum distance to core
+        dtype: str
+        default: ''''''
+      Output-Mode:
+        info: Output mode
+        dtype: str
+        default: Clean
+        choices:
+        - Dirty
+        - Clean
+        - Predict
+        - PSF
+      Output-Clobber:
+        info: Clobber output
+        dtype: bool
+        default: false
+      Output-RestoringBeam:
+        info: Output name for restoring beam
+        dtype: str
+      Output-Also:
+        info: Additionally output specified set of images. See Output-Images for arguments
+        dtype: str
+        default: ''''''
+      Output-Cubes:
+        info: Specify cubes to output. Any combination of MmRrIi are acceptable. See
+          Output-Images for explanation on types
+        dtype: str
+        default: ''''''
+      Output-Images:
+        info: 'Specify images to output. Combination of letter codes indicating what
+          images to save. Uppercase for intrinsic flux scale [D]irty, [M]odel, [C]onvolved
+          model, [R]esiduals, restored [I]mage; Lowercase for apparent flux scale  [d]irty,
+          [m]odel, [c]onvolved model, [r]esiduals, restored [i]mage; Other images:
+          [P]SF, [N]orm, [n]orm facets, [S] flux scale, [A]lpha (spectral index),
+          [X] mixed-scale (intrinsic model, apparent residuals, i.e. Cyrils original
+          output), [o] intermediate mOdels (Model_i), [e] intermediate rEsiduals (Residual_i),
+          [k] intermediate masK image, [z] intermediate auto mask-related noiZe image,
+          [g] intermediate dirty images (only if [Debugging] SaveIntermediateDirtyImages
+          is enabled). Use ''all'' to save all. (default: DdPAMRIikz)'
+        dtype: str
+        default: DdPAMRIikz
+      Image-NPix:
+        info: Number of pixels in output Image
+        dtype: int
+        default: 5000
+      Image-Cell:
+        info: Cell size of pixels in output image (in arcseconds)
+        dtype: float
+        default: 5.0
+      Image-PhaseCenterRADEC:
+        info: Manually specify image phase centre in format RA,DEC
+        dtype: str
+        default: ''''''
+      Image-SidelobeSearchWindow:
+        info: Manually specify sidelobe search window when fitting the restoring beam.
+          Specify number of pixels
+        dtype: float
+        default: 200
+      Facets-NFacets:
+        info: Number of facets to use
+        dtype: int
+        default: 3
+      Facets-CatNodes:
+        info: Override facet directions with catalogue
+        dtype: File
+      Facets-DiamMax:
+        info: Maximum facet size (deg). Larger facets will be broken up
+        dtype: float
+        default: 180.0
+      Facets-DiamMin:
+        info: Minimum facet size (deg). Smaller facets will be merged
+        dtype: float
+        default: 0.0
+      Facets-PSFOversize:
+        info: For cleaning, oversize PSF relative to the size of the facet
+        dtype: float
+        default: 1.0
+      Facets-PSFFacets:
+        info: 'Number of PSFs to create. 0: one per facet, 1: one PSF for entire field'
+        dtype: int
+        default: 0
+      Facets-Padding:
+        info: Facet padding factor. Value should be >>> 1.0 to account for anti-aliasing
+          filter rolloff.
+        dtype: float
+        default: 1.7
+      Weight-ColName:
+        info: Read data weights from specified column. Use WEIGHT_SPECTRUM or WEIGHT,
+          more rarely IMAGING_WEIGHT.
+        dtype: str
+        default: WEIGHT_SPECTRUM
+        choices:
+        - WEIGHT_SPECTRUM
+        - WEIGHT
+        - IMAGING_WEIGHT
+      Weight-Mode:
+        info: UV weighting mode
+        dtype: str
+        default: Briggs
+        choices:
+        - Natural
+        - Uniform
+        - Robust
+        - Briggs
+      Weight-MFS:
+        info: If True, MFS uniform/Briggs weighting is used (all channels binned onto
+          one uv grid). If 0, binning is per-band.
+        dtype: bool
+        default: true
+      Weight-Robust:
+        info: Briggs robustness parameter, from -2 (more uniform) to 2 (more natural)
+        dtype: float
+        default: 0.0
+      Weight-SuperUniform:
+        info: 'Super/subuniform weighting: FoV for weighting purposes is taken as
+          X*Image_Size'
+        dtype: float
+        default: 1.0
+      RIME-PolMode:
+        info: Gridding polarization mode (non-stokes I is only supported in Imager-Mode=Dirty)
+        dtype: str
+        default: I
+        choices:
+        - I
+        - V
+        - Q
+        - U
+        - IQ
+        - QI
+        - IU
+        - UI
+        - IV
+        - VI
+        - UQ
+        - QU
+        - QV
+        - VQ
+        - UV
+        - VU
+        - IQU
+        - IUQ
+        - UIQ
+        - UQI
+        - QUI
+        - QIU
+        - IQV
+        - IVQ
+        - VIQ
+        - VQI
+        - QVI
+        - QIV
+        - IUV
+        - IVU
+        - VIU
+        - VUI
+        - UVI
+        - UIV
+        - QUV
+        - QVU
+        - VQU
+        - VUQ
+        - UVQ
+        - UQV
+        - IQUV
+        - IQVU
+        - IUQV
+        - IUVQ
+        - IVQU
+        - IVUQ
+        - QIUV
+        - QIVU
+        - VIUQ
+        - VIQU
+        - UIVQ
+        - UIQV
+        - QUIV
+        - UQIV
+        - UVIQ
+        - VUIQ
+        - VQIU
+        - QVIU
+        - QUVI
+        - UQVI
+        - UVQI
+        - VUQI
+        - VQUI
+        - QVUI
+      RIME-FFTMachine:
+        info: FFTW engine
+        dtype: str
+        default: FFTW
+        choices:
+        - FFTW
+      RIME-ForwardMode:
+        info: Forward predict engine
+        dtype: str
+        default: BDA-degrid
+        choices:
+        - BDA-degrid
+        - Classic
+        - Montblanc
+      RIME-BackwardMode:
+        info: Backward inversion engine
+        dtype: str
+        default: BDA-grid
+        choices:
+        - BDA-grid
+      RIME-DecorrMode:
+        info: Decorrelation mode (undocumented ???)
+        dtype: str
+        default: ''''''
+      RIME-DecorrLocation:
+        info: Decorrelation location
+        dtype: str
+        default: Edge
+        choices:
+        - Center
+        - Edge
+      CF-OverS:
+        info: Convolution filter oversampling factor
+        dtype: int
+        default: 11
+      CF-Support:
+        info: AA convolution filter support
+        dtype: int
+        default: 7
+      CF-Nw:
+        info: Number of w-planes. Should be selected such that the projection error
+          at the edge of the facet is << 1 radian per w plane
+        dtype: int
+        default: 100
+      CF-wmax:
+        info: Overwrite maximum w (in metres) of the interferometer sampling. This
+          controlls the support needed for the w kernels and can bring down computational
+          costs if more error is tolerated on the longest baselines
+        dtype: float
+        default: 10000.0
+      Comp-GridDecorr:
+        info: Maximum tolerated BDA decorrelation response factor for degridding
+        dtype: float
+        default: 0.02
+      Comp-DegridDecorr:
+        info: Maximum tolerated BDA decorrelation response factor for degridding
+        dtype: float
+        default: 0.02
+      Comp-GridFoV:
+        info: FoV over which gridding decorrelation factor is computed
+        dtype: str
+        default: Facet
+        choices:
+        - Full
+        - Facet
+      Comp-DegridFoV:
+        info: FoV over which degridding decorrelation factor is computed
+        dtype: str
+        default: Facet
+        choices:
+        - Full
+        - Facet
+      Comp-Sparsification:
+        info: 'Apply sparsification compression to initial major cycles. Sparsification
+          refers to throwing away random visibilities. Supply a list of factors: e.g.
+          100,30,10 would mean only 1/100 of the data is used for the first major
+          cycle, 1/30 for the second, 1/10 for the third, and full data for the fourth
+          cycle onwards. This can substantially accelerate deconvolution of deep observations,
+          since, in these regimes, very little sensitivity is required for model construction
+          in the initial cycles.'
+        dtype: str
+        default: '0'
+      Parallel-NCPU:
+        info: Number of processes / threads to use in parallel mode. 0 - all available.
+          1 - disable parallelism
+        dtype: int
+        default: 0
+      Parallel-Affinity:
+        info: Pins parent process to specified core. This should be set to a vcore
+          that is not used by forked processes, this option is ignored when using
+          option 'disable' or 'disable_ht' for Parallel-Affinity.
+        dtype: str
+        default: '0'
+      Cache-Reset:
+        info: Reset all caches (including PSF and dirty image)
+        dtype: bool
+        default: true
+      Cache-SmoothBeam:
+        info: Reset cached smooth beam
+        dtype: str
+        default: reset
+      Cache-PSF:
+        info: Cache PSF data
+        dtype: str
+        default: auto
+        choices:
+        - 'off'
+        - reset
+        - auto
+        - force
+      Cache-Dirty:
+        info: Cache dirty image data
+        dtype: str
+        default: auto
+        choices:
+        - 'off'
+        - reset
+        - auto
+        - force
+        - forceresidual
+      Cache-VisData:
+        info: Cache visibility data and flags at runtime
+        dtype: str
+        default: auto
+        choices:
+        - 'off'
+        - auto
+        - force
+      Cache-LastResidual:
+        info: Cache last residual data (at end of last minor cycle)
+        dtype: bool
+        default: true
+      Cache-Dir:
+        info: Directory to store caches in. Default is to keep cache next to the MS,
+          but this can cause performance issues with e.g. NFS volumes. If you have
+          fast local storage, point to it.
+        dtype: str
+        default: ''''''
+      Cache-ResetWisdom:
+        info: Reset wisdom file
+        dtype: bool
+        default: true
+      Beam-Model:
+        info: Beam model to use.
+        dtype: str
+        choices:
+        - null
+        - LOFAR
+        - FITS
+      Beam-LOFARBeamMode:
+        info: LOFAR beam mode.
+        dtype: str
+        default: AE
+        choices:
+        - A
+        - AE
+      Beam-NBand:
+        info: N Number of channels over which same beam value is used. 0 means use
+          every channel.
+        dtype: int
+        default: 0
+      Beam-CenterNorm:
+        info: Normalize beam so that its amplitude at the centre is 1.
+        dtype: int
+        default: 0
+        choices:
+        - 0
+        - 1
+      Beam-Smooth:
+        info: BEAM_SMOOTH Compute the interpolated smooth beam
+        dtype: bool
+        default: false
+      Beam-SmoothNPix:
+        info: BEAM_SMOOTHNPIX Number of pixels the beam is evaluated and smoothed
+        dtype: int
+        default: 11
+      Beam-FITSFile:
+        info: 'PATTERN Beam FITS file pattern. A beam pattern consists of eight FITS
+          files, i.e. a real and imaginary part for each of the four Jones terms.
+          The following substitutions are performed to form up the eight filenames:
+          $(corr) or $(xy) is replaced by the Jones element label (e.g. "xx" or "rr"),
+          $(reim) is replaced by "re" or "im", $(realimag) is replaced by "real" or
+          "imag". Uppercase variables are replaced by uppercase values, e.g. $(REIM)
+          by "RE" or "IM". Correlation labels (XY or RL) are determined by reading
+          the MS, but may be overridden by the FITSFeed option.'
+        dtype: File
+        default: '''beam_$(corr)_$(reim).fits'''
+      Beam-FITSFeed:
+        info: If set, overrides correlation labels given by the MS.
+        dtype: str
+        choices:
+        - null
+        - xy
+        - XY
+        - rl
+        - RL
+      Beam-DtBeamMin:
+        info: MIN change in minutes on which the beam is re-evaluated
+        dtype: float
+        default: 5.0
+      Beam-FITSParAngleIncDeg:
+        info: DEG increment in PA in degrees at which the beam is to be re-evaluated
+          (on top of DtBeamMin)
+        dtype: float
+        default: 5.0
+      Beam-FITSLAxis:
+        info: AXIS L axis of FITS file. Minus sign indicates reverse coordinate convention.
+        dtype: str
+        default: -X
+      Beam-FITSMAxis:
+        info: AXIS M axis of FITS file. Minus sign indicates reverse coordinate convention.
+        dtype: str
+        default: Y
+      Beam-FITSVerbosity:
+        info: LEVEL set to >0 to have verbose output from FITS interpolator classes.
+        dtype: int
+        default: 0
+      Freq-BandMHz:
+        info: MHz Gridding cube frequency step. If 0, --Freq-NBand is used instead.
+        dtype: float
+        default: 0.0
+      Freq-DegridBandMHz:
+        info: MHz Degridding cube frequency step. If 0, --Freq- NDegridBand is used
+          instead.
+        dtype: float
+        default: 0.0
+      Freq-NBand:
+        info: N Number of image bands for gridding.
+        dtype: int
+        default: '1'
+      Freq-NDegridBand:
+        info: N Number of image bands for degridding. 0 means degrid each channel.
+        dtype: int
+        default: 0
+      DDESolutions-DDSols:
+        info: DDESOLUTIONS_DDSOLS (???)
+        dtype: File
+        default: ''''''
+      DDESolutions-GlobalNorm:
+        info: DDESOLUTIONS_GLOBALNORM (???)
+        dtype: str
+      DDESolutions-JonesNormList:
+        info: DDESOLUTIONS_JONESNORMLIST (???)
+        dtype: str
+        default: AP
+      DDESolutions-JonesMode:
+        info: (???)
+        dtype: str
+        default: Full
+        choices:
+        - Scalar
+        - Diag
+        - Full
+      DDESolutions-DDModeGrid:
+        info: DDESOLUTIONS_DDMODEGRID (???)
+        dtype: str
+        default: AP
+      DDESolutions-DDModeDeGrid:
+        info: DDESOLUTIONS_DDMODEDEGRID (???)
+        dtype: str
+        default: AP
+      DDESolutions-ScaleAmpGrid:
+        info: DDESOLUTIONS_SCALEAMPGRID (???)
+        dtype: bool
+        default: false
+      DDESolutions-ScaleAmpDeGrid:
+        info: DDESOLUTIONS_SCALEAMPDEGRID (???)
+        dtype: bool
+        default: false
+      DDESolutions-CalibErr:
+        info: DDESOLUTIONS_CALIBERR (???)
+        dtype: float
+        default: '10.0'
+      DDESolutions-Type:
+        info: ???
+        dtype: str
+        default: Nearest
+        choices:
+        - Krigging
+        - Nearest
+      DDESolutions-Scale:
+        info: DEG (???)
+        dtype: float
+        default: 1.0
+      DDESolutions-gamma:
+        info: DDESOLUTIONS_GAMMA (???)
+        dtype: float
+        default: 4.0
+      DDESolutions-RestoreSub:
+        info: DDESOLUTIONS_RESTORESUB (???)
+        dtype: str
+        default: 'False'
+      DDESolutions-ReWeightSNR:
+        info: DDESOLUTIONS_REWEIGHTSNR (???)
+        dtype: str
+        default: 0.0
+      Deconv-Mode:
+        info: Deconvolution algorithm.
+        dtype: str
+        default: HMP
+        choices:
+        - HMP
+        - Hogbom
+        - SSD
+        - SSD2
+        - GAClean
+      Deconv-MaxMajorIter:
+        info: N Max number of major cycles.
+        dtype: int
+        default: 20
+      Deconv-MaxMinorIter:
+        info: N Max number of (overall) minor cycle iterations (HMP, Hogbom).
+        dtype: int
+        default: 20000
+      Deconv-AllowNegative:
+        info: Allow negative components (HMP, Hogbom).
+        dtype: bool
+        default: true
+      Deconv-Gain:
+        info: GAIN Loop gain (HMP, Hogbom).
+        dtype: float
+        default: 0.1
+      Deconv-FluxThreshold:
+        info: Jy Absolute flux threshold at which deconvolution is stopped (HMP, Hogbom).
+        dtype: float
+        default: 0.0
+      Deconv-CycleFactor:
+        info: 'X Cycle factor: used to set a minor cycle stopping threshold based
+          on PSF sidelobe level (HMP, Hogbom). Use 0 to disable, otherwise 2.5 is
+          a reasonable value, but may lead to very shallow minor cycle.'
+        dtype: float
+        default: 0.0
+      Deconv-RMSFactor:
+        info: X Set minor cycle stopping threshold to X*{residual RMS} (HMP, Hogbom).
+        dtype: float
+        default: 0.0
+      Deconv-PeakFactor:
+        info: X Set minor cycle stopping threshold to X*{peak residual} (HMP, Hogbom).
+        dtype: float
+        default: 0.15
+      Deconv-NumRMSSamples:
+        info: N How many samples to draw for RMS computation. Use 0 to use all pixels
+          (most precise).
+        dtype: float
+        default: 10000
+      Deconv-ApproximatePSF:
+        info: SF when --Comp-Sparsification is on, use approximate (i.e. central facet)
+          PSF for cleaning while operating above the given sparsification factor (SF).
+          This speeds up HMP reinitialization in major cycles. A value of 1-10 is
+          sensible. Set to 0 to always use precise per-facet PSF.
+        dtype: str
+        default: 0
+      Deconv-PSFBox:
+        info: BOX determines the size of the PSF subtraction box used in CLEAN-style
+          deconvolution (if appropriate). Use "auto" (or "sidelobe") for a Clark-CLEAN-style
+          box taken out to a certain sidelobe (faster). Use "full" to subtract the
+          full PSF, Hogbom-style (more accurate, can also combine with --Image-PSFOversize
+          for maximum accuracy). Use an integer number to set an explicit box radius,
+          in pixels. (HMP)
+        dtype: str
+        default: auto
+      Mask-External:
+        info: FILENAME External clean mask image (FITS format)
+        dtype: File
+      Mask-Auto:
+        info: MASK_AUTO Use automatic masking
+        dtype: bool
+        default: false
+      Mask-SigTh:
+        info: set Threshold (in sigma) for automatic masking
+        dtype: float
+        default: 10
+      Mask-FluxImageType:
+        info: If Auto enabled, does the cut of SigTh either on the ModelConv or the
+          Restored
+        dtype: str
+        default: ModelConv
+        choices:
+        - ModelConv
+        - Restored
+      HMP-Alpha:
+        info: MIN,MAX,N String list of alphas to fit. e.g [-1.0, 1.0, 11]
+        dtype: str
+        default: '''[-1.0, 1.0, 11]'''
+      HMP-Scales:
+        info: LIST String list of scales to use e.g [0]
+        dtype: str
+        default: '''[0]'''
+      HMP-Ratios:
+        info: HMP_RATIOS (???)
+        dtype: str
+        default: '"['''']"'
+      HMP-NTheta:
+        info: N Number of PA steps to use.
+        dtype: int
+        default: 6
+      HMP-SolverMode:
+        info: 'Solver mode: pseudoinverse, or non-negative least squares.'
+        dtype: str
+        default: PI
+        choices:
+        - PI
+        - NNLS
+      HMP-AllowResidIncrease:
+        info: Allow the maximum residual to increase within the minor cycle
+        dtype: bool
+        default: true
+      HMP-Taper:
+        info: Weighting taper size for HMP fit. If 0, determined automatically.
+        dtype: float
+        default: 0
+      HMP-Support:
+        info: Basis function support size. If 0, determined automatically.
+        dtype: int
+        default: 0
+      HMP-Kappa:
+        info: HMP_KAPPA Regularization parameter. If stddev of per-alpha solutions
+          exceeds the maximum solution amplitude divided by Kappa, forces a fully-regularized
+          solution. Use 0 for no such regularization.
+        dtype: float
+        default: 1.0
+      Hogbom-PolyFitOrder:
+        info: HOGBOM_POLYFITORDER polynomial order for frequency fitting
+        dtype: int
+        default: 3
+      SSD2-PolyFreqOrder:
+        info: SSD2_POLYFITORDER polynomial order for frequency fitting
+        dtype: int
+        default: 3
+      Montblanc-TensorflowServerTarget:
+        info: URL for the TensorflowServer, e.g. grpc://tensorflow.server.com:8888/
+        dtype: str
+        default: ''''''
+      SSDClean-Parallel:
+        info: Enable parallel mode in SSD clean
+        dtype: bool
+        default: true
+      SSDClean-IslandDeconvMode:
+        info: SSDCLEAN_ISLANDDECONVMODE (???)
+        dtype: str
+        default: GA
+        choices:
+        - GA
+      SSDClean-SSDSolvePars:
+        info: SSDCLEAN_SSDSOLVEPARS (???)
+        dtype: str
+        default: '"[''S'', ''Alpha'']"'
+      SSDClean-SSDCostFunc:
+        info: SSDCLEAN_SSDCOSTFUNC (???)
+        dtype: str
+        default: '"[''Chi2'', ''MinFlux'']"'
+      SSDClean-BICFactor:
+        info: SSDCLEAN_BICFACTOR (???)
+        dtype: float
+        default: 0.0
+      SSDClean-ArtifactRobust:
+        info: SSDCLEAN_ARTIFACTROBUST (???)
+        dtype: bool
+        default: false
+      SSDClean-ConvFFTSwitch:
+        info: SSDCLEAN_CONVFFTSWITCH (???)
+        dtype: int
+        default: 1000
+      SSDClean-NEnlargePars:
+        info: SSDCLEAN_NENLARGEPARS (???)
+        dtype: int
+        default: 0
+      SSDClean-NEnlargeData:
+        info: SSDCLEAN_NENLARGEDATA (???)
+        dtype: int
+        default: 2
+      SSDClean-RestoreMetroSwitch:
+        info: SSDCLEAN_RESTOREMETROSWITCH (???)
+        dtype: int
+        default: 0
+      SSDClean-MinMaxGroupDistance:
+        info: SSDCLEAN_MINMAXGROUPDISTANCE (???)
+        dtype: str
+        default: '"[5, 50]"'
+      GAClean-NSourceKin:
+        info: GACLEAN_NSOURCEKIN (???)
+        dtype: str
+        default: '100'
+      GAClean-NMaxGen:
+        info: GACLEAN_NMAXGEN (???)
+        dtype: str
+        default: '100'
+      Log-Memory:
+        info: log memory use
+        dtype: bool
+        default: false
+      Log-Boring:
+        info: able progress bars and other pretty console output
+        dtype: bool
+        default: true
+      Log-Append:
+        info: append to log file if it exists (default truncates)
+        dtype: bool
+        default: false
+      Debug-PauseWorkers:
+        info: grid worker processes upon launch (with SIGSTOP). Useful to attach gdb
+          to workers.
+        dtype: bool
+        default: false
+      Debug-FacetPhaseShift:
+        info: L,M Shift in facet coordinates in arcseconds for l and m (this phase
+          steers the sky over the image plane).
+        dtype: str
+        default: '"[0.0, 0.0]"'
+      Debug-PrintMinorCycleRMS:
+        info: Compute and print RMS in minor cycle iterations.
+        dtype: bool
+        default: false
+      Debug-DumpCleanSolutions:
+        info: Dump intermediate minor cycle solutions to a file. Use 0 or 1, or give
+          an explicit list of things to dump
+        dtype: str
+        default: '0'
+      Debug-DumpCleanPostageStamps:
+        info: X,Y,R Also dump postage stamps when cleaning within a radius R of X,Y.
+          Implies --Debug-DumpCleanSolutions.
+        dtype: str
+      Debug-CleanStallThreshold:
+        info: Throw an exception when a fitted CLEAN component is below this threshold
+          in flux. Useful for debugging.
+        dtype: float
+        default: 0.0
+      Debug-MemoryGreedy:
+        info: Enable memory-greedy mode. Retain certain shared arrays in RAM as long
+          as possible.
+        dtype: bool
+        default: false
+      Debug-APPVerbose:
+        info: Verbosity level for multiprocessing.
+        dtype: int
+        default: '0'
+      Misc-RandomSeed:
+        info: N seed random number generator with explicit seed, if given. Useful
+          for reproducibility of the random-based optimizations (sparsification, etc.).
+        dtype: int
+      Noise-Image:
+        info: Noise image to compute sigma for stopping threshold (in case specified
+          it will replace Deconv-FluxThreshold)
+        dtype: File
+      Noise-Sigma:
+        info: Noise sigma for stopping deconvolution in the case where noise_image
+          is provided (new thresh = sigma*noise_image.std())
+        dtype: float
+        default: 3.0
+    outputs:
+      Output-Name:
+        info: Image name prefix
+        dtype: File
+        default: image
+      Cache-DirWisdomFFTW:
+        info: Directory in which to store the FFTW wisdom files
+        dtype: File
+        default: .fftw_wisdom

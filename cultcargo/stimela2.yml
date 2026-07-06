@@ -1,0 +1,30 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  stimela2:
+    name: stimela2
+    info: a workflow management framework for creating portable and reproducible data
+      processing pipelines
+    command: stimela run
+    image:
+      _use: vars.cult-cargo.images
+      name: stimela2
+    policies:
+      prefix: --
+    inputs:
+      recipe:
+        info: Recipe file
+        dtype: File
+      recipe-name:
+        info: Name of recipe to run
+        dtype: str
+      step:
+        info: Step(s) to run from recipe
+        dtype: list:str
+      params:
+        info: Parameter(s) to override defaults. e.g. ['ms=foo.ms', 'image_size=2048']
+        dtype: list:str
+    outputs:
+      support-files:
+        info: Support files
+        dtype: list:File

@@ -1,0 +1,47 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.ft:
+    name: casa.ft
+    info: Insert a source model  a visibility set
+    command: ft
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: ''
+      replace:
+        _: '-'
+    inputs:
+      msname:
+        info: Name of input MS.  Output goes to vis + '.contsub' (will be overwritten
+          if already exists)
+        dtype: MS
+        required: true
+        nom_de_guerre: vis
+      field:
+        info: Select field(s) using id(s) or name(s)
+        dtype: str
+      spw:
+        info: Spw selection
+        dtype: str
+      model:
+        info: Name of input model image(s)
+        dtype: list:File
+      nterms:
+        info: Number of terms used to model the sky frequency dependence
+        dtype: int
+        default: 1
+      reffreq:
+        info: ' Reference frequency (e.g. ''1.5e+9'' or ''1.5GHz'')'
+        dtype: str
+      complist:
+        info: Name of component list
+        dtype: File
+      incremental:
+        info: Add to the existing model visibility
+        dtype: bool
+      usescratch:
+        info: If True predicted  visibility  is stored in MODEL_DATA column
+        dtype: bool
+        default: false

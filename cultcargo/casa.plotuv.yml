@@ -1,0 +1,61 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa47_plotuv:
+    name: casa47_plotuv
+    info: Plot the uv distribution
+    command: plotuv
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: ''
+    inputs:
+      msname:
+        info: Name of measurement set
+        dtype: MS
+        nom_de_guerre: vis
+      field:
+        info: Select field using ID(s) or name(s)
+        dtype: str
+        default: ''
+      antenna:
+        info: Select data based on antenna/baseline
+        dtype: str
+        default: ''
+      spw:
+        info: Select spectral window/channels
+        dtype: str
+        default: ''
+      observation:
+        info: Select by observation ID(s)
+        dtype: str
+        default: ''
+      array:
+        info: Select (sub)array(s) by array ID number
+        dtype: str
+        default: ''
+      maxnpts:
+        info: Maximum number of points per plot.
+        dtype: int
+        default: 100000
+      colors:
+        info: a list of matplotlib color codes
+        dtype: list:str
+        default:
+        - r
+        - y
+        - g
+        - b
+      symb:
+        info: A matplotlib plot symbol code
+        dtype: str
+        default: ','
+      ncycles:
+        info: How many times to cycle through colors per plot.
+        dtype: int
+        default: 1
+    outputs:
+      figfile:
+        info: Save the plotted figure to this file
+        dtype: File

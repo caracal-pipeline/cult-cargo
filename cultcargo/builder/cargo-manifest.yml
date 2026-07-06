@@ -150,6 +150,22 @@ images:
       '6.7':
           wheel_version: 6.7.0.31
 
+  # classic (pre-3.0) simms, kept for backward compatibility -- runs inside CASA 6
+  simms-classic:
+    assign:
+      CMD: simms --help
+    versions:
+      '1.2.0':
+        package: simms==1.2.0
+
+  # simms 3.0 (skysim/telsim CLI) -- ubuntu 24.04 / python 3.12, installed off master
+  simms:
+    assign:
+      CMD: simms --help
+    versions:
+      master:
+        package: git+https://github.com/wits-cfa/simms
+
   bdsf:
     assign:
       default_pip_base_image: python-astro

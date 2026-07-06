@@ -1,0 +1,29 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  owlcat_plotelev:
+    name: owlcat_plotelev
+    info: Plots elevation tracks from an measurement set
+    command: plot-elevation-tracks.py
+    image:
+      _use: vars.cult-cargo.images
+      name: owlcat
+    policies:
+      prefix: --
+    inputs:
+      msname:
+        info: Name of Measurement set
+        dtype: MS
+        required: true
+      list:
+        info: lists fields found in MS, then exits
+        dtype: bool
+      display:
+        info: Display plot on screen
+        dtype: bool
+        default: false
+    outputs:
+      output-name:
+        info: Output filename
+        dtype: File
+        default: lst-elev.png

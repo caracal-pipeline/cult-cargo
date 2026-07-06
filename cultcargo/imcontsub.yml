@@ -1,0 +1,61 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  imcontsub:
+    name: imcontsub
+    info: Image-plane continuum subtraction
+    command: imcontsub
+    image:
+      _use: vars.cult-cargo.images
+      name: contsub
+    policies:
+      prefix: --
+    inputs:
+      infits:
+        info: Input FITS cube
+        dtype: File
+        required: true
+      order:
+        info: Order of B-spline
+        dtype: list:int
+      segments:
+        info: Width of spline segments in km/s
+        dtype: list:float
+      mask-image:
+        info: Mask image
+        dtype: File
+      sigma-clip:
+        info: Sigma clip
+        dtype: list:float
+      fit-model:
+        info: Fit model. **NOT IMPLEMENTED. ONLY B-Spline is available**
+        dtype: str
+        default: spline
+        choices:
+        - spline
+      cont-fit-tol:
+        info: Minimum percentage of valid spectrum data points required to do a fit.
+          Spectra below this tolerance will be set to NaN. Leaving this usnet may
+          result in poor or NaN spectra in the output cubes
+        dtype: float
+      overwrite:
+        info: Overwrite outputs if they exist.
+        dtype: bool
+        default: false
+      width:
+        info: Field of view width to query online catalog in degrees e.g. '1.0d'
+        dtype: str
+      ra-chunks:
+        info: Chunks along ra-axis
+        dtype: int
+        default: 128
+      nworkers:
+        info: Maximum number of CPUs to use
+        dtype: int
+        default: 4
+      output-prefix:
+        info: Prefix for output products
+        dtype: str
+      rest-freq:
+        info: Rest frequency in MHz
+        dtype: float

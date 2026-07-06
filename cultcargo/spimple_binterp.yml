@@ -1,0 +1,41 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  spimple binterp:
+    name: spimple binterp
+    info: Beam intrepolation tool.
+    command: spimple-binterp
+    image:
+      _use: vars.cult-cargo.images
+      name: spimple
+    policies:
+      prefix: --
+    inputs:
+      image:
+        info: Input image name
+        dtype: str
+        required: true
+      nthreads:
+        info: Number of threads to use
+        dtype: int
+      beam-model:
+        info: Fits beam model to use. Only real and imageinary beam models currently
+          supported
+        dtype: str
+      add-convolved-residuals:
+        info: Add in the convolved residuals before fitting components
+        dtype: bool
+      field:
+        info: Field Id
+        dtype: int
+      sparsify-time:
+        info: Used to select a subset of time. Default is 10
+        dtype: int
+      corr-type:
+        info: Correlation typ i.e. linear or circular.
+        dtype: str
+    outputs:
+      output-filename:
+        info: Path to output directory
+        dtype: str
+        required: true

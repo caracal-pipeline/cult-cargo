@@ -1,0 +1,25 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  shadems_direct:
+    name: shadems_direct
+    info: Rapid Measurement Set plotting with xarray-ms and datashader.
+    command: shadems
+    image:
+      _use: vars.cult-cargo.images
+      name: shadems
+    policies:
+      prefix: --
+    inputs:
+      ms:
+        info: Measurement set to plot
+        dtype: MS
+        required: true
+      args:
+        info: Plot specification(s)
+        dtype: list:str
+        required: true
+      ignore_errors:
+        info: If true, do not return error code if plot(s) fail
+        dtype: bool
+        default: false

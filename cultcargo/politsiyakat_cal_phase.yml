@@ -1,0 +1,66 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  politsiyakat_cal_phase:
+    name: politsiyakat_cal_phase
+    info: Routines for automated post-1GC error detection and mitigation
+    command: python -m politsiyakat
+    image:
+      _use: vars.cult-cargo.images
+      name: politsiyakat
+    policies:
+      prefix: --
+    inputs:
+      msname:
+        info: Measurement set
+        dtype: MS
+      data_column:
+        info: Data column in MS
+        dtype: str
+        default: DATA
+        nom_de_guerre: data_column
+      field:
+        info: Field(s)
+        dtype: str
+        nom_de_guerre: field
+      cal_field:
+        info: Calibrator Field(s), subset of 'field'
+        dtype: str
+        nom_de_guerre: cal_field
+      nrows_chunk:
+        info: Number of ms rows to process on each run
+        dtype: int
+        default: 5000
+      scan_to_scan_threshold:
+        info: Scan to scan variation threshold
+        dtype: float
+        default: 2.5
+      baseline_to_group_threshold:
+        info: baseline to group variation threshold
+        dtype: float
+        default: 3
+      dpi:
+        info: plot dpi
+        dtype: float
+        default: 300
+      plot_size:
+        info: subplot size
+        dtype: float
+        default: 6.0
+      nio_threads:
+        info: Maximum number of io threads to use
+        dtype: int
+        default: 1
+      nproc_threads:
+        info: Maximum number of process threads to use
+        dtype: int
+        default: 1
+      simulate:
+        info: simulate, output diagnostics don't flag
+        dtype: bool
+        default: false
+    outputs:
+      output_dir:
+        info: Output directory
+        dtype: File
+        default: ./

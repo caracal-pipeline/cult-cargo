@@ -1,0 +1,48 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  eidos:
+    name: eidos
+    info: Create primary beam model of MeerKAT
+    command: eidos
+    image:
+      _use: vars.cult-cargo.images
+      name: eidos
+    policies:
+      prefix: --
+    inputs:
+      pixels:
+        info: Number of pixels on one side
+        dtype: int
+        default: 256
+        required: true
+      freq:
+        info: A single freq, or the start, end freqs, and channel width in MHz
+        dtype: str
+        required: true
+      diameter:
+        info: Diameter of the required beam
+        dtype: float
+        default: 6.0
+      coefficients-file:
+        info: Coefficients file name
+        dtype: File
+      coeff:
+        info: 'Which coefficients to use: mh for MeerKAT holography, me for MeerKAT
+          EM simulation and vh for VLA holography?'
+        dtype: str
+        required: true
+        choices:
+        - me
+        - mh
+      output-eight:
+        info: Output complex volatge beams (8 files)
+        dtype: bool
+        default: true
+      normalise:
+        info: normalise the E-Jones wrt central pixels
+        dtype: bool
+    outputs:
+      prefix:
+        info: Prefix for output beam file(s)
+        dtype: File

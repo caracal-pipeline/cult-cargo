@@ -1,0 +1,124 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.plotcal:
+    name: casa.plotcal
+    info: An all-purpose plotter for calibration results
+    command: plotcal
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: '-'
+      replace:
+        _: '-'
+    inputs:
+      caltable:
+        info: Name of input calibration table
+        dtype: File
+        required: true
+      xaxis:
+        info: Value to plot along x axis (time,chan,freq,antenna,antenna1,antenna2,scan,amp,phase,real,imag,snr,tsys,delay,spgain)
+        dtype: str
+        choices:
+        - time
+        - chan
+        - freq
+        - antenna
+        - antenna1
+        - antenna2
+        - scan
+        - amp
+        - phase
+        - real
+        - imag
+        - snr
+        - tsys
+        - delay
+        - spgain
+      yaxis:
+        info: Value to plot along y axis (time,chan,freq,antenna,antenna1,antenna2,scan,amp,phase,real,imag,snr,tsys,delay,spgain)
+        dtype: str
+        choices:
+        - time
+        - chan
+        - freq
+        - antenna
+        - antenna1
+        - antenna2
+        - scan
+        - amp
+        - phase
+        - real
+        - imag
+        - snr
+        - tsys
+        - delay
+        - spgain
+      poln:
+        info: Antenna polarization to plot (RL,R,L,XY,X,Y,/)
+        dtype: str
+        choices:
+        - RL
+        - R
+        - L
+        - XY
+        - X
+        - Y
+        - /
+      field:
+        info: 'field names or index of calibrators: ''''==>all'
+        dtype: str
+      antenna:
+        info: 'antenna/baselines: ''''==>all, antenna = ''3,VA04'''
+        dtype: str
+      spw:
+        info: 'spectral window:channels: ''''==>all, spw=''1:5~57'''
+        dtype: str
+      timerange:
+        info: 'time range: ''''==>all'
+        dtype: str
+      subplot:
+        info: Panel number on display screen (yxn)
+        dtype: int
+      overplot:
+        info: Overplot solutions on existing display
+        dtype: bool
+        default: false
+      clearpanel:
+        info: Specify if old plots are cleared or not (ignore)
+        dtype: str
+      iteration:
+        info: Iterate plots on antenna,time,spw,field
+        dtype: str
+      plotrange:
+        info: 'plot axes ranges: [xmin,xmax,ymin,ymax]'
+        dtype: list:float
+      showflags:
+        info: If true, show flagged solutions
+        dtype: bool
+        default: false
+      plotsymbol:
+        info: pylab plot symbol
+        dtype: str
+        default: o
+      plotcolor:
+        info: initial plotting color
+        dtype: str
+        default: blue
+      markersize:
+        info: Size of plotted marks
+        dtype: float
+        default: 5.0
+      fontsize:
+        info: Font size for labels
+        dtype: float
+        default: 10.0
+      showgui:
+        info: Show plot on gui
+        dtype: bool
+        default: false
+    outputs:
+      figfile:
+        info: '''''= no plot hardcopy, otherwise supply name'
+        dtype: File

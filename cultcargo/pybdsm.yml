@@ -1,0 +1,565 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  pybdsm:
+    name: pybdsm
+    info: Source finding in radio images
+    command: python
+    image:
+      _use: vars.cult-cargo.images
+      name: pybdsf
+    policies:
+      prefix: ' '
+    inputs:
+      image:
+        info: Input image file name
+        dtype: File
+        nom_de_guerre: filename
+      adaptive_rms_box:
+        info: Use adaptive rms_box when determining rms and mean maps
+        dtype: bool
+        default: false
+      adaptive_thresh:
+        info: Sources with pixels above adaptive_thresh*clipped_rms will be considered
+          as bright sources. Minimum is 10.0.
+        dtype: float
+      rms_box_bright:
+        info: Box size, step size for rms/mean map calculation near bright sources.
+          Specify as (box, step) in pixels.
+        dtype: list:int
+      atrous_do:
+        info: Decompose Gaussian residual image into multiple scales
+        dtype: bool
+        default: false
+      atrous_bdsm_do:
+        info: Perform source extraction on each wavelet scale
+        dtype: bool
+        default: false
+      atrous_jmax:
+        info: Max allowed wavelength order, 0 => calculate inside program
+        dtype: int
+        default: 0
+      atrous_lpf:
+        info: Low pass filter, either 'b3' or 'tr', for B3 spline or Triangle
+        dtype: str
+        default: b3
+        choices:
+        - b3
+        - tr
+      atrous_orig_isl:
+        info: Restrict wavelet Gaussians to islands found in original image
+        dtype: bool
+        default: false
+      atrous_sum:
+        info: Fit to the sum of remaining wavelet scales
+        dtype: bool
+        default: true
+      use_scipy_fft:
+        info: Use fast SciPy FFT for convolution
+        dtype: bool
+        default: true
+      beam:
+        info: FWHM of restoring beam. Specify as (maj, min, pos ang E of N) in degrees.
+          E.g., beam = (0.06, 0.02, 13.3). None => get from header
+        dtype: list:float
+      flagging_opts:
+        info: Show options for Gaussian flagging
+        dtype: bool
+        default: false
+      flag_bordersize:
+        info: Flag Gaussian if centre is outside border - flag_bordersize pixels
+        dtype: int
+      flag_maxsize_bm:
+        info: Flag Gaussian if area greater than flag_maxsize_bm times beam area
+        dtype: float
+        default: 25
+      flag_maxsize_fwhm:
+        info: Flag Gaussian if fwhm-contour times factor extends beyond island
+        dtype: float
+        default: 0.5
+      flag_maxsize_isl:
+        info: Flag Gaussian if x, y bounding box around sigma-contour is factor times
+          island bbox
+        dtype: float
+        default: 2.0
+      flag_maxsnr:
+        info: Flag Gaussian if peak is greater than flag_maxsnr times image value
+          at the peak
+        dtype: float
+        default: 1.5
+      flag_minsize_bm:
+        info: Flag Gaussian if peak is greater than flag_maxsnr times image value
+          at the peak
+        dtype: float
+        default: 0.7
+      flag_minsnr:
+        info: Flag Gaussian if peak is less than flag_minsnr times thresh_pix times
+          local rms
+        dtype: float
+        default: 0.6
+      flag_smallsrc:
+        info: Flag sources smaller than flag_minsize_bm times beam area
+        dtype: bool
+        default: false
+      frequency:
+        info: Frequency in Hz of input image. E.g., frequency = 74e6. None => get
+          from header.
+        dtype: float
+      mean_map:
+        info: 'Background mean map: ''default'' => calc whether to use or not, ''zero''
+          => 0, ''const'' => clipped mean, ''map'' => use 2-D map'
+        dtype: str
+        default: default
+        choices:
+        - default
+        - zero
+        - const
+        - map
+      beam_sp_derive:
+        info: If True and beam_spectrum is None, then assume header beam is for median
+          frequency and scales with frequency for channels
+        dtype: bool
+        default: false
+      multi_chan_beam:
+        info: Get beams for each channel in FITS header. Eg. BMAJ1, BMAJ1, BPA1; BMAJ2,
+          BMIN2, BPA2
+        dtype: bool
+        default: false
+      beam_spectrum:
+        info: FWHM of synthesized beam per channel. Specify as [(bmaj_ch1, bmin_ch1,
+          bpa_ch1), (bmaj_ch2, bmin_ch2, bpa_ch2), etc.] in degrees. E.g., beam_spectrum
+          = [(0.01, 0.01, 45.0), (0.02,0.01, 34.0)] for two channels. None => all
+          equal to beam
+        dtype: list:list
+      collapse_av:
+        info: List of channels to average if collapse_mode = 'average', starting from
+          0. E.g., collapse_av = [0, 1, 5]. [] => all
+        dtype: list:int
+      collapse_ch0:
+        info: Number of the channel for source extraction, if collapse_mode = 'single',
+          starting from 0
+        dtype: int
+        default: 0
+      collapse_mode:
+        info: 'Collapse method: ''average'' or ''single''. Average channels or take
+          single channel to perform source detection on'
+        dtype: str
+        default: average
+        choices:
+        - average
+        - single
+      collapse_wt:
+        info: 'Weighting: ''unity'' or ''rms''. Average channels with weights = 1
+          or 1/rms_clip^2 if collapse_mode = ''average'''
+        dtype: str
+        default: unity
+      frequency_sp:
+        info: Frequency in Hz of channels in input image when more than one channel
+          is present. E.g., frequency_sp = [74e6, 153e6]. None => get from header
+        dtype: list:float
+      rms_box:
+        info: Box size, step size for rms/mean map calculation. Specify as (box, step)
+          in pixels. E.g., rms_box = (40, 10) => box of 40x40 pixels, step of 10 pixels.
+          None => calculate inside program
+        dtype: list:int
+      output_opts:
+        info: Show output options
+        dtype: bool
+        default: false
+      indir:
+        info: Directory of input FITS files. If not set, get from filename
+        dtype: File
+      opdir_overwrite:
+        info: '''overwrite''/''append'': If output_all=True, delete existing files
+          or append a new directory'
+        dtype: str
+        default: overwrite
+      output_all:
+        info: Write out all files automatically to directory 'filename_pybdsm'
+        dtype: bool
+        default: false
+      print_timing:
+        info: Print basic timing information
+        dtype: bool
+        default: false
+      quiet:
+        info: Suppress text output to screen. Output is still sent to the log file
+          as usual
+        dtype: bool
+        default: false
+      savefits_meanim:
+        info: Save background mean image as fits file
+        dtype: bool
+        default: false
+      savefits_normim:
+        info: Save norm image as fits file
+        dtype: bool
+        default: false
+      savefits_rankim:
+        info: Save island rank image as fits file
+        dtype: bool
+        default: false
+      savefits_residim:
+        info: Save residual image as fits file
+        dtype: bool
+        default: false
+      savefits_rmsim:
+        info: Save background rms image as fits file
+        dtype: bool
+        default: false
+      solnname:
+        info: Name of the run, to be prepended to the name of the output directory.
+          E.g., solname='Run_1'
+        dtype: str
+      verbose_fitting:
+        info: Print out extra information during fitting
+        dtype: bool
+        default: false
+      polarisation_do:
+        info: Find polarisation properties
+        dtype: bool
+        default: false
+      pi_fit:
+        info: Check the polarized intesity (PI) image for sources not found in Stokes
+          I
+        dtype: bool
+        default: false
+      pi_thresh_isl:
+        info: Threshold for PI island boundary in number of sigma above the mean.
+          Uses thresh_isl if not set.
+        dtype: float
+      pi_thresh_pix:
+        info: 'Source detection threshold for PI image: threshold for the island peak
+          in number of sigma above the mean. Uses thresh_pix if not set.'
+        dtype: float
+      psf_vary_do:
+        info: Calculate PSF variation across image
+        dtype: bool
+        default: false
+      psf_fwhm:
+        info: FWHM of the PSF. Specify as (maj, min, pos ang E of N) in degrees. E.g.,
+          psf_fwhm = (0.06, 0.02, 13.3). Estimates from the image if not set
+        dtype: list:float
+      psf_high_snr:
+        info: SNR above which all sources are taken to be unresolved. E.g., psf_high_snr
+          = 20.0. If unset, no such selection is made
+        dtype: float
+      psf_itess_method:
+        info: 0 = normal, 1 = 0 + round, 2 = LogSNR, 3 =SqrtLogSNR
+        dtype: int
+        default: 0
+      psf_kappa2:
+        info: Kappa for clipping for analytic fit
+        dtype: float
+        default: 2.0
+      psf_nsig:
+        info: Kappa for clipping within each bin
+        dtype: float
+        default: 3.0
+      psf_over:
+        info: Factor of nyquist sample for binning bmaj, etc. vs SNR
+        dtype: int
+        default: 2
+      psf_smooth:
+        info: Size of Gaussian to use for smoothing of interpolated images in arcsec.
+          If not set, no smoothing.
+        dtype: float
+      psf_snrcut:
+        info: Minimum SNR for statistics
+        dtype: float
+        default: 10.0
+      psf_snrcutstack:
+        info: Unresolved sources with higher SNR taken for stacked psfs
+        dtype: float
+        default: 15.0
+      psf_snrtop:
+        info: Fraction of SNR > snrcut as primary generators
+        dtype: float
+        default: 0.15
+      psf_stype_only:
+        info: 'Restrict sources to be only of type ''S'' '
+        dtype: bool
+        default: true
+      rms_map:
+        info: 'Background rms map: True => use 2-D rms map; False => use constant
+          rms; None => calculate inside program'
+        dtype: bool
+      shapelet_do:
+        info: Decompose islands into shapelets
+        dtype: bool
+        default: false
+      shapelet_basis:
+        info: 'Basis set for shapelet decomposition: ''cartesian'' or ''polar''. Fair
+          warning - polar mode was not implemented at the time of writing this info,
+          use at your own risk.'
+        dtype: str
+        default: cartesian
+      shapelet_fitmode:
+        info: 'Calculate shapelet coeff''s by fitting (''fit'') or integrating (None).
+          WARNING: the default is ''fit'', not none, so to run in default mode, explicitely
+          set this to ''fit'', else leave as is.'
+        dtype: str
+      shapelet_gresid:
+        info: Use Gaussian residual image for shapelet decomposition?
+        dtype: bool
+        default: 'false'
+      thresh:
+        info: 'Type of thresholding: None => calculate inside program, ''fdr'' =>
+          use false detection rate algorithm, ''hard'' => use sigma clipping'
+        dtype: str
+        choices:
+        - fdr
+        - hard
+        - null
+      thresh_isl:
+        info: Threshold for the island boundary in number of sigma above the mean.
+          Determines extent of island used for fitting
+        dtype: float
+        default: 3.0
+      thresh_pix:
+        info: 'Source detection threshold: threshold for the island peak in number
+          of sigma above the mean. If false detection rate thresholding is used, this
+          value is ignored and thresh_pix is calculated inside the program'
+        dtype: float
+        default: 5.0
+      aperture:
+        info: Radius of aperture in pixels inside which aperture fluxes are measured
+          for each source. None => no aperture fluxes measured
+        dtype: bool
+      aperture_posn:
+        info: 'Position the aperture (if aperture is not None) on: ''centroid'' or
+          ''peak'' of the source.'
+        dtype: str
+        default: centroid
+        choices:
+        - centroid
+        - peak
+      blank_limit:
+        info: Limit in Jy/beam below which pixels are blanked. None => no such blanking
+          is done
+        dtype: float
+      bmpersrc_th:
+        info: Theoretical estimate of number of beams per source. None => calculate
+          inside program
+        dtype: float
+      check_outsideuniv:
+        info: Check for pixels outside the universe
+        dtype: bool
+        default: false
+      detection_image:
+        info: Detection image file name used only for detecting islands of emission.
+          Source measurement is still done on the main image
+        dtype: File
+      do_cache:
+        info: Cache internally derived images to disk
+        dtype: bool
+        default: false
+      do_mc_errors:
+        info: stimate uncertainties for 'M'-type sources using Monte Carlo method
+        dtype: bool
+        default: false
+      fdr_alpha:
+        info: Alpha for FDR algorithm for thresholds
+        dtype: float
+        default: 0.05
+      fdr_ratio:
+        info: 'For thresh = None; if #false_pix / #source_pix < fdr_ratio, thresh
+          = ''hard'' else thresh = ''fdr'''
+        dtype: float
+        default: 0.1
+      fittedimage_clip:
+        info: Sigma for clipping Gaussians while creating fitted image
+        dtype: float
+        default: 0.1
+      fix_to_beam:
+        info: Fix major and minor axes and PA of Gaussians to beam?
+        dtype: bool
+        default: true
+      group_by_isl:
+        info: Group all Gaussians in each island into a single source
+        dtype: bool
+        default: false
+      group_method:
+        info: Group Gaussians into sources using 'intensity' map or 'curvature' map
+        dtype: str
+        default: intensity
+        choices:
+        - intensity
+        - curvature
+      group_tol:
+        info: 'Tolerance for grouping of Gaussians into sources: larger values will
+          result in larger sources'
+        dtype: float
+        default: 1.0
+      ini_gausfit:
+        info: 'Initial guess for Gaussian parameters: ''default'', ''simple'', or
+          ''nobeam'''
+        dtype: str
+        default: default
+        choices:
+        - default
+        - simple
+        - nobeam
+      ini_method:
+        info: 'Method by which inital guess for fitting of Gaussians is chosen: ''intensity''
+          or ''curvature'''
+        dtype: str
+        default: intensity
+        choices:
+        - intensity
+        - curvature
+      kappa_clip:
+        info: Kappa for clipped mean and rms. None => calculate inside program
+        dtype: float
+      minpix_isl:
+        info: Minimum number of pixels with emission per island (minimum is 6 pixels).
+          None -> calculate inside program
+        dtype: int
+      ncores:
+        info: Number of cores to use during fitting, None => use all
+        dtype: int
+      peak_fit:
+        info: Find and fit peaks of large islands iteratively
+        dtype: bool
+        default: true
+      peak_maxsize:
+        info: If island size in beam area is more than this, attempt to fit peaks
+          iteratively (if peak_fit = True). Min value is 30
+        dtype: float
+        default: 30.0
+      rms_value:
+        info: Value of constant rms in Jy/beam to use if rms_map = False. None =>
+          calculate inside program
+        dtype: float
+      spline_rank:
+        info: Rank of the interpolating function for rms/mean map
+        dtype: int
+        default: 3
+      split_isl:
+        info: Split island if it is too large, has a large convex deficiency and it
+          opens well.
+        dtype: bool
+        default: true
+      splitisl_maxsize:
+        info: If island size in beam area is more than this, consider splitting island.
+          Min value is 50
+        dtype: float
+        default: 50.0
+      src_ra_dec:
+        info: List of source positions at which fitting is done.  E.g., src_ra_dec
+          = [(197.1932, 47.9188), (196.5573, 42.4852)]
+        dtype: list:list
+      src_radius_pix:
+        info: Radius of the island (if src_ra_dec is not None) in pixels. None =>
+          radius is set to the FWHM of the beam major axis.
+        dtype: int
+      stop_at:
+        info: 'Stops after: ''isl'' = island finding step or ''read'' = image reading
+          step'
+        dtype: str
+        choices:
+        - isl
+        - read
+      trim_box:
+        info: Do source detection on only a part of the image. Specify as (xmin, xmax,
+          ymin, ymax) in pixels. E.g., trim_box = (120, 840, 15, 895). None => use
+          entire image
+        dtype: list:int
+      bbs_patches:
+        info: 'BBS format, type of patch to use: None => no patches. ''single'' =>
+          all Gaussians in one patch. ''gaussian'' => each Gaussian gets its own patch.
+          ''source'' => all Gaussians belonging to a single source are grouped into
+          one patch. ''mask'' => use mask file specified by bbs_patches_mask'
+        dtype: str
+        choices:
+        - single
+        - gaussian
+        - source
+        - mask
+        - null
+      bbs_patches_mask:
+        info: Name of the mask file (of same size as input image) that defines the
+          patches if bbs_patches = 'mask'
+        dtype: File
+      catalog_type:
+        info: 'Type of catalog to write:  ''gaul'' - Gaussian list, ''srl'' - source
+          list (formed by grouping Gaussians), ''shap'' - shapelet list (FITS format
+          only)'
+        dtype: str
+        default: gaul
+        choices:
+        - srl
+        - gaul
+        - shap
+      clobber:
+        info: Overwrite existing file?
+        dtype: bool
+        default: true
+      correct_proj:
+        info: Correct source parameters for image projection (BBS format only)?
+        dtype: bool
+        default: true
+      format:
+        info: Format of output catalog
+        dtype: str
+        default: fits
+        choices:
+        - bbs
+        - ds9
+        - fits
+        - star
+        - kvis
+        - ascii
+        - csv
+        - casabox
+        - sagecal
+      incl_chan:
+        info: Include flux densities from each channel (if any)?
+        dtype: bool
+        default: false
+      incl_empty:
+        info: Include islands without any valid Gaussians (source list only)?
+        dtype: bool
+        default: false
+      port2tigger:
+        info: Convert output model to tigger format
+        dtype: bool
+        default: true
+      spectralindex_do:
+        info: Calculate spectral indices (for multi-channel image)
+        dtype: bool
+        default: false
+      flagchan_rms:
+        info: Flag channels before (averaging and) extracting spectral index, if their
+          rms is more than 5 (clipped) sigma outside the median rms over all channels,
+          but only if <= 10% of channels
+        dtype: bool
+        default: true
+      flagchan_snr:
+        info: Flag channels that do not meet SNR criterion set by specind_snr
+        dtype: bool
+        default: true
+      specind_maxchan:
+        info: Maximum number of channels to average for a given source when when attempting
+          to meet target SNR. 1 => no averaging; 0 => no maximum
+        dtype: int
+        default: 0
+      specind_snr:
+        info: Target SNR to use when fitting power law. If there is insufficient SNR,
+          neighboring channels are averaged to attempt to obtain the target SNR. Channels
+          with SNRs below this will be flagged if flagchan_snr = True
+        dtype: float
+        default: 3.0
+      freq0:
+        info: Start frequency (unit => Hz)
+        dtype: float
+    outputs:
+      outfile:
+        info: Output file name. None => file is named automatically; 'SAMP' => send
+          to SAMP hub (e.g., to TOPCAT, ds9, or Aladin)
+        dtype: File
+        required: true
+      srcroot:
+        info: Name for entries in the output catalog (BBS format only). None => use
+          image file name
+        dtype: File

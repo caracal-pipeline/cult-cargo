@@ -1,0 +1,334 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.plotms:
+    name: casa.plotms
+    info: CASA plotms task
+    command: plotms
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: ' '
+      replace:
+        _: '-'
+    inputs:
+      msname:
+        info: MS name
+        dtype: MS
+        required: true
+        nom_de_guerre: vis
+      gridrows:
+        info: Number of subplot rows (default 1).
+        dtype: int
+        default: 1
+      gridcols:
+        info: Number of subplot columns
+        dtype: int
+        default: 1
+      rowindex:
+        info: Row location of the plot
+        dtype: int
+        default: 0
+      colindex:
+        info: Column location of the plot
+        dtype: int
+        default: 0
+      plotindex:
+        info: Index to address a subplot
+        dtype: int
+        default: 0
+      xaxis:
+        info: ' plot x-axis (blank for default/current)'
+        dtype: str
+      yaxis:
+        info: Plot y-axis (blank for default/current)
+        dtype: str
+      xdatacolumn:
+        info: which data column to use for Visibility values
+        dtype: str
+      ydatacolumn:
+        info: which data column to use for Visibility values
+        dtype: str
+      field:
+        info: Field names or field index numbers
+        dtype: str
+      spw:
+        info: Spectral windows:channels
+        dtype: str
+      timerange:
+        info: Time range (blank for all)
+        dtype: str
+      uvrange:
+        info: Uv range (blank for all)
+        dtype: str
+      antenna:
+        info: Antenna/baselines (blank for all)
+        dtype: str
+      scan:
+        info: Scan numbers (blank for all)
+        dtype: str
+      correlation:
+        info: Correlations (blank for all)
+        dtype: str
+      array:
+        info: (sub)array numbers (blank for all)
+        dtype: str
+      selectdata:
+        info: Select data
+        dtype: bool
+      observation:
+        info: Select by observation ID(s)
+        dtype: str
+      msselect:
+        info: MS selection (blank for all)
+        dtype: str
+      averagedata:
+        info: Average data
+        dtype: bool
+      avgchannel:
+        info: Average over channel?  (blank = False, otherwise value in channels)
+        dtype: str
+      avgtime:
+        info: Average over time? (blank = False, otherwise value in seconds)
+        dtype: str
+      avgscan:
+        info: Only valid if time averaging is turned on.  average over scans?
+        dtype: bool
+        default: false
+      avgfield:
+        info: Only valid if time averaging is turned on.  average over fields?
+        dtype: bool
+        default: false
+      avgbaseline:
+        info: Average over all baselines?  (mutually exclusive with avgantenna)
+        dtype: bool
+        default: false
+      avgantenna:
+        info: Average by per-antenna?  (mutually  exclusive with avgbaseline)
+        dtype: bool
+        default: false
+      avgspw:
+        info: Average over all spectral windows?
+        dtype: bool
+        default: false
+      scalar:
+        info: Do scalar averaging?
+        dtype: bool
+        default: false
+      freqframe:
+        info: The frame in which to render frequency and velocity axes
+        dtype: str
+      restfreq:
+        info: Rest frequency to use for velocity  conversions
+        dtype: str
+      veldef:
+        info: The definition in which to render velocity
+        dtype: str
+        default: RADIO
+      shift:
+        info: Adjust phases by this phase center shift [dx,dy] (arcsec)
+        dtype: list:float
+        default:
+        - 0.0
+        - 0.0
+      extcorr:
+        info: Extend flags based on correlation?
+        dtype: bool
+        default: false
+      extchannel:
+        info: Extend flags based on channel?
+        dtype: bool
+        default: false
+      iteraxis:
+        info: the axis over which to iterate
+        dtype: str
+        choices:
+        - scan
+        - field
+        - spw
+        - baseline
+        - antenna
+        - time
+        - corr
+        - ''
+      xselfscale:
+        info: If true, iterated plots should share a common x-axis label per column.
+        dtype: bool
+        default: false
+      yselfscale:
+        info: If true, iterated plots should share a common y-axis label per row.
+        dtype: bool
+        default: false
+      xsharedaxis:
+        info: Plots should share a common x-axis.
+        dtype: bool
+        default: false
+      ysharedaxis:
+        info: Plots should share a common y-axis.
+        dtype: bool
+        default: false
+      customsymbol:
+        info: set a custom symbol(s) for unflagged points
+        dtype: bool
+        default: false
+      symbolshape:
+        info: shape of plotted unflagged symbols
+        dtype: str
+        default: autoscaling
+        choices:
+        - autoscaling
+        - circle
+        - square
+        - diamond
+        - pixel
+        - nosymbol
+      symbolsize:
+        info: size of plotted unflagged symbols
+        dtype: int
+        default: 2
+      symbolcolor:
+        info: color of plotted unflagged symbols
+        dtype: str
+        default: 0000ff
+      symbolfill:
+        info: fill type of plotted unflagged symbols
+        dtype: str
+        default: fill
+        choices:
+        - fill
+        - mesh1
+        - mesh2
+        - mesh3
+        - nofill
+      symboloutline:
+        info: selects outlining plotted unflagged points
+        dtype: bool
+        default: false
+      coloraxis:
+        info: selects which data to use for colorizing
+        dtype: str
+      customflaggedsymbol:
+        info: set a custom plot symbol for flagged points
+        dtype: bool
+        default: false
+      flaggedsymbolshape:
+        info: shape of plotted flagged symbols
+        dtype: str
+        default: nosymbol
+        choices:
+        - autoscaling
+        - circle
+        - square
+        - diamond
+        - pixel
+        - nosymbol
+      flaggedsymbolsize:
+        info: size of plotted flagged symbols
+        dtype: int
+        default: 2
+      flaggedsymbolcolor:
+        info: color of plotted flagged symbols
+        dtype: str
+        default: ff0000
+      flaggedsymbolfill:
+        info: fill type of plotted flagged symbols
+        dtype: str
+        default: fill
+        choices:
+        - fill
+        - mesh1
+        - mesh2
+        - mesh3
+        - nofill
+      flaggedsymboloutline:
+        info: selects outlining plotted flagged points
+        dtype: bool
+        default: false
+      plotrange:
+        info: 'plot axes ranges: [xmin,xmax,ymin,ymax]'
+        dtype: list:float
+      title:
+        info: Title written along top of plot
+        dtype: str
+      xlabel:
+        info: Text for horizontal axis. Blank for default.
+        dtype: str
+      ylabel:
+        info: Text for vertical axis. Blank for default.
+        dtype: str
+      showmajorgrid:
+        info: Show major grid lines (horiz and vert.)
+        dtype: bool
+        default: false
+      majorwidth:
+        info: Line width in pixels of major grid lines
+        dtype: int
+        default: 0
+      majorstyle:
+        info: 'Major grid line style: solid dash dot none'
+        dtype: str
+        choices:
+        - solid
+        - dash
+        - dot
+        - more
+      majorcolor:
+        info: Color as name or hex code of major grid lines
+        dtype: str
+      showminorgrid:
+        info: Show minor grid lines (horiz and vert.)
+        dtype: bool
+        default: false
+      showlegend:
+        info: Show a legend on the plot.
+        dtype: bool
+        default: false
+      minorwidth:
+        info: Line width in pixels of minor grid lines
+        dtype: int
+        default: 0
+      minorstyle:
+        info: Line width in pixels of minor grid lines
+        dtype: str
+        choices:
+        - solid
+        - dash
+        - dot
+        - more
+      minorcolor:
+        info: Color as name or hex code of minor grid lines
+        dtype: str
+      clearplots:
+        info: Remove any existing plots so new ones can replace them.
+        dtype: bool
+        default: true
+      expformat:
+        info: Export format type (jpg, png, ps, pdf, txt), if not provided, plotfile
+          extension will be used
+        dtype: str
+        default: png
+        choices:
+        - png
+        - jpg
+        - pdf
+        - ps
+        - txt
+      exprange:
+        info: Export all iteration plots or only the current one
+        dtype: str
+        choices:
+        - all
+        - current
+      overwrite:
+        info: Overwrite exsting file
+        dtype: bool
+        default: false
+      showgui:
+        info: Show gui
+        dtype: bool
+        default: false
+    outputs:
+      plotfile:
+        info: Name of plot file to save automatically.
+        dtype: File

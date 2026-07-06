@@ -1,0 +1,47 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  spimple imconv:
+    name: spimple imconv
+    info: Convolve images to a common resolution
+    command: spimple-imconv
+    image:
+      _use: vars.cult-cargo.images
+      name: spimple
+    policies:
+      prefix: --
+    inputs:
+      image:
+        info: Input image name
+        dtype: str
+        required: true
+      psf-pars:
+        info: Beam parameters matching FWHM of restoring beam specified as emaj emin
+          pa.
+        dtype: list:float
+      nthreads:
+        info: Number of threads to use
+        dtype: int
+      circ-psf:
+        info: Convolve with a circularised beam, not an elliptical one
+        dtype: bool
+      beam-model:
+        info: Fits beam model to use
+        dtype: str
+      band:
+        info: Band to use with JimBeam. L or UHF. Default is 'l'
+        dtype: str
+      pb-min:
+        info: Set image to zero where pb falls below this value. Default is 0.05
+        dtype: float
+      padding-frac:
+        info: Padding fraction for FFTs (half on either side). Default is 0.5
+        dtype: float
+      out-dtype:
+        info: Data type of output. Default is single precision
+        dtype: str
+    outputs:
+      output-filename:
+        info: Path to output directory
+        dtype: str
+        required: true

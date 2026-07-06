@@ -1,0 +1,155 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  ragavi:
+    name: ragavi
+    info: Radio Astronomy Gain and Visibility Inspector
+    command: ragavi-vis
+    image:
+      _use: vars.cult-cargo.images
+      name: ragavi
+    policies:
+      prefix: --
+    inputs:
+      ms:
+        info: MS to plot.
+        dtype: MS
+        required: true
+      xaxis:
+        info: X-axis to plot.
+        dtype: str
+        required: true
+        choices:
+        - antenna1
+        - antenna2
+        - amplitude
+        - amp
+        - channel
+        - chan
+        - frequency
+        - freq
+        - imaginary
+        - imag
+        - phase
+        - real
+        - scan
+        - time
+        - uvdist
+        - uvwave
+      yaxis:
+        info: Y-axis to plot.
+        dtype: str
+        required: true
+        choices:
+        - amplitude
+        - amp
+        - imaginary
+        - imag
+        - phase
+        - real
+      canvas-height:
+        info: Set height of the resulting image.
+        dtype: int
+      canvas-width:
+        info: Set width of the resulting image.
+        dtype: int
+      cbin:
+        info: Size of channel bins over which to average.
+        dtype: int
+      ant:
+        info: Select baselines where ANTENNA1 corresponds to the supplied antenna(s)
+        dtype: str
+      chan:
+        info: Channels to select. Defaults to all.
+        dtype: str
+      chunks:
+        info: Chunk sizes to be applied to the dataset. Defaults to 5,000 in the row
+          axis.
+        dtype: str
+      cmap:
+        info: Colour or colour map to use. Defaults to blues.
+        dtype: str
+      colour-axis:
+        info: Select column to colourise by.
+        dtype: str
+        choices:
+        - antenna1
+        - antenna2
+        - baseline
+        - corr
+        - field
+        - scan
+        - spw
+      cols:
+        info: Number columns in grid if iteration is active. Defaults to 5.
+        dtype: int
+      corr:
+        info: Correlation index or subset to plot. Can be specified using normal python
+          slicing syntax. Defaults to all.
+        dtype: str
+      data-column:
+        info: MS column to use for data.
+        dtype: str
+        default: DATA
+      debug:
+        info: Enable debugging messages
+        dtype: bool
+      ddid:
+        info: DATA_DESC_ID(s) /spw to select. Can be specified as e.g. 5, 5,6,7, 5~7
+          (inclusive range), 5:8 (exclusive range), 5:(from 5 to last). Defaults to
+          all
+        dtype: str
+      field:
+        info: Field ID(s) / NAME(s) to plot. Can be specified as '0', '0,2,4', '0~3'
+          (inclusive range), '0:3' (exclusive range), '3:' (from 3 to last) or using
+          a field name or comma separated field names. Defaults to all.
+        dtype: str
+      iter-axis:
+        info: Select column to iterate by.
+        dtype: str
+        choices:
+        - antenna
+        - antenna1
+        - antenna2
+        - baseline
+        - corr
+        - field
+        - scan
+        - spw
+      logfile:
+        info: Desired name of logfile. Default is ragavi.log
+        dtype: str
+      mem-limit:
+        info: Memory limit per core. Default is 1GB.
+        dtype: str
+      include-flagged:
+        info: Include flagged data in the generated plot. Default is false
+        dtype: bool
+      num-cores:
+        info: Number of CPU cores to be used by Dask. Defaults to 10 or less cores
+        dtype: int
+      scan:
+        info: Scan Number to select. Defaults to all.
+        dtype: str
+      taql:
+        info: TAQL where clause
+        dtype: str
+      tbin:
+        info: Time in seconds over which to average.
+        dtype: float
+      xmin:
+        info: Minimum x value to plot
+        dtype: float
+      xmax:
+        info: Maximum x value to plot
+        dtype: float
+      ymin:
+        info: Minimum y value to plot
+        dtype: float
+      ymax:
+        info: Maximum y value to plot
+        dtype: float
+    outputs:
+      htmlname:
+        info: Output HTML file name (without .html suffix)
+        dtype: str

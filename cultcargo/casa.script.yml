@@ -1,0 +1,22 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.script:
+    name: casa.script
+    info: Runs a user defined script within CASA
+    command: casa
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: ''
+      replace:
+        _: '-'
+    inputs:
+      vis:
+        info: MS to process
+        dtype: MS
+      script:
+        info: Custom script (string) to run within CASA
+        dtype: str
+        default: print("Hello CASA!")

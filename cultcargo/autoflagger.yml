@@ -1,0 +1,65 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  autoflagger:
+    name: autoflagger
+    info: This program will execute an RFI strategy as can be created with the RFI
+      gui and executes it on one or several observations.
+    command: aoflagger
+    image:
+      _use: vars.cult-cargo.images
+      name: aoflagger
+    policies:
+      prefix: '-'
+    inputs:
+      msname:
+        info: MS name(s) to be flagged
+        dtype: MS
+        default: false
+        required: true
+      verbose:
+        info: Produce verbose output
+        dtype: bool
+        default: false
+        nom_de_guerre: v
+      threads:
+        info: 'overrides the number of threads specified in the strategy (default:
+          one thread for each CPU core)'
+        dtype: int
+        nom_de_guerre: j
+      strategy:
+        info: specifies a possible customized strategy
+        dtype: File
+      indirect-read:
+        info: will reorder the measurement set before starting, which is normally
+          faster but requires free disk space to reorder the data to
+        dtype: bool
+        default: true
+      memory-read:
+        info: will read the entire measurement set in memory. This is the fastest,
+          but requires much memory.
+        dtype: bool
+        default: false
+      auto-read-mode:
+        info: will select either memory or direct mode based on available memory
+        dtype: bool
+        default: true
+      uvw:
+        info: reads uvw values (some exotic strategies require these)
+        dtype: bool
+        default: false
+      column:
+        info: specify column to flag
+        dtype: str
+        default: DATA
+      skip-flagged:
+        info: will skip an ms if it has already been processed by AOFlagger according
+          to its HISTORY table.
+        dtype: bool
+        default: false
+      bands:
+        info: comma separated list of (zero-indexed) band ids to process
+        dtype: int
+      fields:
+        info: Field ID(s). Comma separated string if more than one field
+        dtype: int

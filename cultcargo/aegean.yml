@@ -1,0 +1,60 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  aegean:
+    name: aegean
+    info: A source finding program designed to find and characterise compact continuum
+      radio sources
+    command: aegean
+    image:
+      _use: vars.cult-cargo.images
+      name: aegean
+    policies:
+      prefix: --
+    inputs:
+      filename:
+        info: Image to extract radio sources
+        dtype: File
+        required: true
+      outfile:
+        info: 'Additional table outputs, format inferred from extension (database:
+          .db, votable: .vot, and ascii: .csv/.tab)'
+        dtype: File
+        required: true
+        nom_de_guerre: table
+      slice:
+        info: If the input data is a cube, then this slice will determine the array
+          index of the image which will be processed by aegean
+        dtype: int
+      psf:
+        info: A .fits file that represents the local psf
+        dtype: File
+      noise:
+        info: A .fits file that represents the image noise
+        dtype: File
+      region:
+        info: Use this regions file to restrict source finding in this image. Use
+          MIMAS region (.mim) files.
+        dtype: File
+      forcerms:
+        info: Assume a single image noise of rms
+        dtype: float
+      forcebkg:
+        info: Assume a single image background
+        dtype: float
+      maxsummits:
+        info: 'If more than *maxsummits* summits are detected in an island, no fitting
+          is done, only estimation. [default: no limit]'
+        dtype: int
+      seedclip:
+        info: The clipping value (in sigmas) for seeding islands
+        dtype: int
+        default: 5
+      floodclip:
+        info: The clipping value (in sigmas) for growing islands
+        dtype: int
+        default: 4
+      port2tigger:
+        info: Convert output model to tigger format
+        dtype: bool
+        default: true

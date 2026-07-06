@@ -1,0 +1,79 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.statwt:
+    name: casa.statwt
+    info: Reweight visibilities according to their scatter (Experimental)
+    command: statwt
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: ''
+      replace:
+        _: '-'
+    inputs:
+      msname:
+        info: Name of measurement set
+        dtype: MS
+        nom_de_guerre: vis
+      dorms:
+        info: Use rms instead of stddev
+        dtype: bool
+        default: false
+      byantenna:
+        info: Estimate the noise per antenna -not implemented (vs. per baseline)
+        dtype: bool
+        default: false
+      fitspw:
+        info: The signal-free spectral window:channels to estimate the scatter from
+        dtype: str
+      fitcorr:
+        info: The signal-free correlation(s) to estimate the scatter from (not implemented)
+        dtype: str
+      combine:
+        info: Let estimates span changes in spw, corr, scan and/or state
+        dtype: str
+        choices:
+        - spw
+        - corr
+        - scan
+        - state
+      timebin:
+        info: Bin length for estimates (not implemented)
+        dtype: str
+        default: 0s
+      minsamp:
+        info: Minimum number of unflagged visibilities for estimating the scatter
+        dtype: int
+        default: 2
+      field:
+        info: Select field using ID(s) or name(s)
+        dtype: str
+        default: '0'
+      spw:
+        info: Select spectral window/channels
+        dtype: str
+      antenna:
+        info: Select data based on antenna/baseline
+        dtype: str
+      timerange:
+        info: Select data by time range
+        dtype: str
+      scan:
+        info: Select data by scan numbers
+        dtype: str
+      intent:
+        info: Select data by scan intents
+        dtype: str
+      array:
+        info: Select (sub)array(s) by array ID number
+        dtype: str
+      observation:
+        info: Select by observation ID(s)
+        dtype: str
+      column:
+        info: Which data column to calculate the scatter from
+        dtype: str
+        default: corrected
+        nom_de_guerre: datacolumn

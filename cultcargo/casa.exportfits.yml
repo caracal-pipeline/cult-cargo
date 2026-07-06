@@ -1,0 +1,54 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.exportfits:
+    name: casa.exportfits
+    info: Convert a CASA image to a FITS file
+    command: exportfits
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: ' '
+      replace:
+        _: '-'
+    inputs:
+      fitsimage:
+        info: Name of input image FITS file
+        dtype: File
+        required: true
+      velocity:
+        info: Use velocity (rather than frequency) as spectral axis
+        dtype: bool
+      optical:
+        info: Use the optical (rather than radio) velocity convention
+        dtype: bool
+      bitpix:
+        info: Bits per pixel
+        dtype: int
+      minpix:
+        info: Minimum pixel value (if minpix > maxpix, value is automatically dertermined)
+        dtype: float
+      maxpix:
+        info: dropstokes
+        dtype: bool
+      dropstokes:
+        info: Drop stokes axis?
+        dtype: bool
+      stokeslast:
+        info: Put Stokes axis last in header?
+        dtype: bool
+      history:
+        info: Write history to the FITS image?
+        dtype: bool
+      dropdeg:
+        info: Drop all degenerate axes (e.g. stokes and/or frequency)
+        dtype: bool
+      overwrite:
+        info: Overwrite pre-existing imagename
+        dtype: bool
+    outputs:
+      imagename:
+        info: Name of output CASA image
+        dtype: File
+        required: true

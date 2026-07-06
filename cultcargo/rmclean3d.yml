@@ -1,0 +1,70 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  rmclean3d:
+    name: rmclean3d
+    info: "Run RM-CLEAN on a cube of Faraday dispersion functions (FDFs), applying\
+      \ \n a cube of rotation measure spread functions created by the script \n 'do_RMsynth_3D.py'.\
+      \ Saves cubes of deconvolved FDFs & clean-component\n spectra, and a pixel map\
+      \ showing the number of iterations performed.\n Set any of the multiprocessing\
+      \ options to enable parallelization\n (otherwise, pixels will be processed serially).\n\
+      \  Expects that the input is in the form of the Stokes-separated\n (single extension)\
+      \ FITS cubes produced by do_RMsynth_3D."
+    command: rmclean3d
+    image:
+      _use: vars.cult-cargo.images
+      name: rm-tools
+    policies:
+      prefix: '-'
+    inputs:
+      dirty-pdf:
+        info: FITS cube containing the dirty FDF. (Can be any of the FDF output cubes
+          from do_RMsynth_3D.py)
+        dtype: File
+        required: true
+      rmsf-fwhm:
+        info: FITS cube containing the RMSF and FWHM image. (Can be any of the RMSF
+          output cubes from do_RMsynth_3D.py)
+        dtype: File
+        required: true
+      cutoff:
+        info: CLEAN cutoff in flux units
+        dtype: float
+        nom_de_guerre: c
+      maxiter:
+        info: Maximum number of CLEAN iterations per pixel [1000].
+        dtype: str
+        default: 1000
+        nom_de_guerre: n
+      gain:
+        info: Clean loop gain
+        dtype: float
+        default: 0.1
+        nom_de_guerre: g
+      prefixout:
+        info: prefix to prepend to output files
+        dtype: str
+        nom_de_guerre: o
+      f:
+        info: Store different Stokes as FITS extensions [False, store as separate
+          files]
+        dtype: bool
+        default: false
+      v:
+        info: Verbose output
+        dtype: bool
+        default: false
+      ncores:
+        info: Number of processes (uses multiprocessing)
+        dtype: int
+      chunk:
+        info: Chunk size (uses multiprocessing -- not available in MPI!)
+        dtype: int
+      p:
+        info: Show the plots
+        dtype: bool
+        default: false
+      mpi:
+        info: Run with MPI
+        dtype: bool
+        default: false

@@ -1,0 +1,146 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  flagms:
+    name: flagms
+    info: This program will execute an RFI strategy as can be created with the RFI
+      gui and executes it on one or several   observations.
+    command: flag-ms.py
+    image:
+      _use: vars.cult-cargo.images
+      name: owlcat
+    policies:
+      prefix: --
+    inputs:
+      msname:
+        info: Name of MS to be flagged
+        dtype: MS
+      channels:
+        info: 'channel selection: single number or start:end[:step] to select channels
+          start through end-1, or start~end[:step] to select channels start through
+          end, with an optional stepping.'
+        dtype: list:int
+      timeslots:
+        info: 'timeslot selection: single number or start:end to select timeslots
+          start through end-1, or start~end to select timeslots start through end.'
+        dtype: list:int
+      timeslot-multiplier:
+        info: multiplies the timeslot numbers given to -T by the given factor.
+        dtype: int
+        default: 1
+      corrs:
+        info: correlation selection. Use comma-separated list of correlation indices.
+        dtype: list:int
+      stations:
+        info: station (=antenna) selection. Use comma-separated list of station indices.
+        dtype: list:int
+      ifrs:
+        info: interferometer selection.
+        dtype: str
+      ddid:
+        info: DATA_DESC_ID selection. Single number, or comma-separated list.
+        dtype: list:int
+      field:
+        info: FIELD_ID selection. Single number, or comma-separated list.
+        dtype: list:int
+      taql:
+        info: Additional TaQL selection to restrict subset. Selection by data value
+        dtype: str
+      above:
+        info: select on abs(data)>X
+        dtype: float
+      below:
+        info: select on abs(data)<X
+        dtype: float
+      nan:
+        info: select on invalid data (NaN or infinite)
+        dtype: bool
+        default: false
+      fm-above:
+        info: select on mean(abs(data))>X, where mean is over frequencies
+        dtype: float
+      fm-below=X:
+        info: select on mean(abs(data))<X, where mean is over frequencies
+        dtype: float
+      column:
+        info: data column for --above/--below/--nan options.
+        dtype: str
+        default: CORRECTED_DATA
+        nom_de_guerre: data-column
+      data-flagmask:
+        info: flags to apply to data column (when e.g. computing mean). Default is
+          ALL. See below for details on specifying flags.
+        dtype: str
+      flagged-any:
+        info: Selects if any of the specified flags are raised. For this and all other
+          options taking a FLAGS argument, FLAGS can be a flagset name or an integer
+          bitmask (if bitflags are in use -- see also the -l/--list option). Prefix
+          the bitmask by '0x' to use hex. Append a '+L' to include legacy boolean
+          FLAG/FLAG_ROW columns. Use 'all' for all bitflags, and 'ALL' for all bitflags
+          plus legacy flags (equivalent to 'all+L'). FLAGS may also be a comma-separated
+          list of any of the above terms.
+        dtype: list:str
+      flagged-all:
+        info: Selects if all of the specified flags are raised
+        dtype: str
+      flagged-none:
+        info: Selects if none of the specified flags are raised
+        dtype: bool
+        default: false
+      extend-all-corr:
+        info: Apply selection to all correlations if at least one is selected
+        dtype: bool
+        default: false
+      create:
+        info: 'for ''flag'' option only: if a named flagset doesn''t exist, creates
+          it. Without this option, an error is reported'
+        dtype: bool
+      flag:
+        info: Raise the specified FLAGS
+        dtype: str
+      unflag:
+        info: Clear the specified flags
+        dtype: str
+      fill-legacy:
+        info: 'Fills legacy FLAG/FLAG_ROW columns using the specified FLAGS. When
+          -f/--flag or -u/--unflag or -r/--remove is used, legacy flags are implicitly
+          reset using all bitflags: use ''-g -'' to skip this step. You may also use
+          this option on its own to reset legacy flags (within the specified data
+          subset) using some bitmask. Use ''-g 0'' to clear legacy flags. -c, --create
+          for -f/--flag option only: if a named flagset doesn''t exist, creates it.
+          Without this option, an error is reported.'
+        dtype: str
+      list:
+        info: lists various info about the MS, including its flagsets.
+        dtype: bool
+        default: false
+      stats:
+        info: prints per-flagset flagging stats.
+        dtype: bool
+        default: false
+      remove:
+        info: Unflags and removes named flagset(s). You can use a comma-separated
+          list.
+        dtype: str
+      import:
+        info: Imports flags from flag file. If any flagging actions are specified,
+          these will be done after the import.
+        dtype: File
+      verbose:
+        info: Verbosity level for messages. Higher is more verbose
+        dtype: int
+        default: 0
+      timestamps:
+        info: adds timestamps to verbosity messages.
+        dtype: str
+      chunk-size:
+        info: Number of rows to process at once. Set to higher values if you have
+          RAM to spare.
+        dtype: int
+        default: 20000
+    outputs:
+      export:
+        info: exports all flags to flag file. FILENAME may end with .gz to produce
+          a gzip-compressed file. If any flagging actions are specified, these will
+          be done before the export.
+        dtype: File

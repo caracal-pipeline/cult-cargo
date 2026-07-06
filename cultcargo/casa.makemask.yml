@@ -1,0 +1,47 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.makemask:
+    name: casa.makemask
+    info: Makes and manipulates image masks
+    command: makemask
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: '-'
+      replace:
+        _: '-'
+    inputs:
+      mode:
+        info: Mask method
+        dtype: str
+        default: copy
+        required: true
+        choices:
+        - list
+        - copy
+        - expand
+        - delete
+        - setdefaultmask
+      inpimage:
+        info: Name of input image
+        dtype: File
+        required: true
+      inpmask:
+        info: 'Mask(s) to be processed: image masks,T/F internal masks(Need to include
+          parent image'
+        dtype: File
+      overwrite:
+        info: overwrite output if exists
+        dtype: bool
+        default: false
+        required: true
+      threshold:
+        info: Cut-off threshold to mask sources
+        dtype: float
+    outputs:
+      output:
+        info: Name of output mask (imagename or imagename:internal_maskname)
+        dtype: str
+        required: true

@@ -1,0 +1,100 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  catdagger:
+    name: catdagger
+    info: CATDagger - An automatic differential gain catalog tagger
+    command: dagger
+    image:
+      _use: vars.cult-cargo.images
+      name: catdagger
+    policies:
+      prefix: --
+    inputs:
+      stokes:
+        info: Stokes to consider when computing global noise estimates. Ideally this
+          should be 'V', if available
+        dtype: str
+        default: I
+      min-tiles-region:
+        info: Minimum number of tiles per region. Regions with fewer tiles will not
+          be tagged as dE
+        dtype: int
+        default: 3
+      sigma:
+        info: Threshold to use in detecting outlier regions
+        dtype: float
+        default: 4.5
+      tile-size:
+        info: Number of pixels per region tile axis
+        dtype: int
+        default: 80
+      global-rms-percentile:
+        info: Percentile tiles to consider for global rms calculations
+        dtype: float
+        default: 20.0
+      de-tag-name:
+        info: Tag name to use for tagged sources in tigger LSM
+        dtype: str
+        default: dE
+      min-distance-from-tracking-centre:
+        info: Cutoff distance from phase centre in which no tags be raised. This can
+          be used to effectively exclude the FWHM of an parabolic reflector-based
+          interferometer.
+        dtype: int
+        default: 0
+      add-custom-exclusion-zone:
+        info: Add manual exclusion zone to which no dE tags shall be added. Expects
+          a tripple of centre X, Y pixel and radius.
+        dtype: list:int
+      max-region-right-skewness:
+        info: The maximum tolerance for right skewness of a pixel distribution within
+          a region.A large value (tailed distribution) indicates significant uncleaned
+          flux remaining in the residual. This can be used to effectively control
+          detection sensitivity to uncleaned extended emission, but should be set
+          to 0 if residuals other than stokes I are used
+        dtype: float
+        default: 2
+      only-dEs-in-lsm:
+        info: Only store dE tagged sources in lsm. This option is useful for hybrid
+          DFT-CLEAN component modelling, as only bright compact gaussian emission
+          contributes to dE solutions
+        dtype: bool
+      max-positive-to-negative-flux:
+        info: The maximum tolerance for the ratio of positive to negative flux. Only
+          to be used with stokes I
+        dtype: float
+        default: 1.1
+      max-region-abs-skewness:
+        info: The maximum tolerance for absolute skewness of a pixel distribution
+          within a region.A large value (tailed distribution) indicates significant
+          uncleaned flux remaining in the residual. This can be used to effectively
+          control detection sensitivity to uncleaned extended emission, but should
+          be set to 0 if residuals other than stokes Q,U or V are used
+        dtype: float
+        default: 99999999999999
+    outputs:
+      noise-map:
+        info: Residual / noise FITS map to use for estimating local RMS
+        dtype: File
+        required: true
+      ds9-reg-file:
+        info: SAODS9 regions filename to write out
+        dtype: File
+        default: dE.reg
+      ds9-tag-reg-file:
+        info: SAODS9 regions filename to contain tagged cluster leads as circles
+        dtype: File
+        default: dE.clusterleads.reg
+      psf-image:
+        info: PSF image from which BPA, BMAJ and BMIN may be extracted
+        dtype: File
+      input-lsm:
+        info: Tigger LSM to recluster and tag. If this is not specified only DS9 regions
+          will be written out
+        dtype: File
+      remove-tagged-dE-components-from-model-images:
+        info: Blank out model images within resolution of tagged LSM components. Expects
+          list of model FITS files. This option is useful for hybrid DFT-CLEAN component
+          modelling as onlyextended / faint clean components contributes to model.
+        dtype: File

@@ -1,0 +1,49 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  curl:
+    name: curl
+    info: Download data from a remote path
+    command: curl
+    image:
+      _use: vars.cult-cargo.images
+      name: curl
+    policies:
+      prefix: --
+    inputs:
+      url:
+        info: url name
+        dtype: str
+        required: true
+      cert:
+        info: ' Client certificate file and password (SSL)'
+        dtype: File
+      cert-status:
+        info: Verify the status of the server certificate
+        dtype: bool
+      cert-type:
+        info: Verify the status of the server certificate
+        dtype: str
+        choices:
+        - DER
+        - PEM
+        - ENG
+      ciphers:
+        info: SSL ciphers to use
+        dtype: list
+      location:
+        info: Follow redirects
+        dtype: bool
+        default: true
+      config:
+        info: Read config from FILE
+        dtype: File
+      continue-at:
+        info: Specify number of bytes to resume download from, alternatively specify
+          '-' to tell curl to automatically detect
+        dtype: str
+        default: '-'
+    outputs:
+      output:
+        dtype: File
+        default: true

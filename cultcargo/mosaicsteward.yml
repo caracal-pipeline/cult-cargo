@@ -1,0 +1,38 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  mosaicsteward:
+    name: mosaicsteward
+    info: A package that allows continuum (2D) images and spectral (3D) images to
+      be mosaicked together, using montage commands.
+    command: MosaicSteward
+    image:
+      _use: vars.cult-cargo.images
+      name: montage
+    policies:
+      prefix: --
+    inputs:
+      mosaic-type:
+        info: State 'continuum' or 'spectral' as the type of mosaic to be made.
+        dtype: str
+        required: true
+      domontage:
+        info: Include this argument if you wish to use montage for regridding the
+          images and beams (if they have not already been created).
+        dtype: bool
+      cutoff:
+        info: The cutoff in the primary beam to use (assuming a Gaussian at the moment).
+          E.g. The default of 0.1 means going down to the 10 percent level for each
+          pointing.
+        dtype: float
+        default: 0.1
+      name:
+        info: The prefix to be used for output files.
+        dtype: str
+        default: mymosaic
+      target-images:
+        info: The filenames of each target/pointing image to be mosaicked. A suffix
+          of 'image.fits' is expected, and this is replaced by 'pb.fits' in order
+          to locate the corresponding beams (which are also required as input).
+        dtype: list:File
+        required: true

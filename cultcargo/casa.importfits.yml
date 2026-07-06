@@ -1,0 +1,45 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.importfits:
+    name: casa.importfits
+    info: Convert aFITS image to a CASA file
+    command: importfits
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: ' '
+      replace:
+        _: '-'
+    inputs:
+      fitsimage:
+        info: Name of input image FITS file
+        dtype: File
+        required: true
+      whichrep:
+        info: If fits image has multiple coordinate reps, choose one
+        dtype: int
+      whichhdu:
+        info: If its file contains multiple images, choose one (0 = first HDU, -1
+          = first valid image).
+        dtype: int
+      zeroblanks:
+        info: Set blanked pixels to zero (not NaN)
+        dtype: bool
+      overwrite:
+        info: Overwrite pre-existing imagename
+        dtype: bool
+      defaultaxesvalues:
+        info: List of values to assign to added degenerate axes defaultaxes==True
+          (ra,dec,freq,stokes)
+        dtype: list:str
+      beam:
+        info: List of values to be used to define the synthesized beam [BMAJ,BMIN,BPA]
+          (as in the FITS keywords)
+        dtype: list:str
+    outputs:
+      imagename:
+        info: Name of output CASA image
+        dtype: File
+        required: true

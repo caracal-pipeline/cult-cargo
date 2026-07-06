@@ -1,0 +1,52 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  rfimasker:
+    name: rfimasker
+    info: Tiny tool to apply a numpy boolean array to the spectral flags column of
+      a measurement set to mask out known RFI sources like GSM and satelite in L-band.
+      Typically flagging known RFI sources produces much better backgrounds and tools
+      like the mighty AOFlagger RFI hammer needs fewer iterations to converge to good
+      solutions.
+    command: mask_ms.py
+    image:
+      _use: vars.cult-cargo.images
+      name: rfimasker
+    policies:
+      prefix: --
+    inputs:
+      msname:
+        info: MS(s) to flagged
+        dtype: MS
+        nom_de_guerre: ms
+      mask:
+        info: A numpy array of chan x (boolean, channel_centre[float64])
+        dtype: File
+      accumulation_mode:
+        info: Specifies whether mask should override current flags or be added (or)
+          to the current
+        dtype: str
+        default: or
+        choices:
+        - or
+        - overide
+      statistics:
+        info: Computes and reports some statistics about the flagged RFI in the MS
+        dtype: bool
+        default: false
+      memory:
+        info: Maximum memory to consume in MB for the flag buffer
+        dtype: int
+        default: 50
+      spwid:
+        info: SPW id (or ids if multiple MSs have been specified)
+        dtype: list:int
+        default: 0
+      uvrange:
+        info: 'UV range to select (CASA style range: lower~upper) for flagging. Leave
+          blank for entire array'
+        dtype: str
+      simulate:
+        info: Simulate only. Do not apply flags - useful for statistics
+        dtype: bool
+        default: false

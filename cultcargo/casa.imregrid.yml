@@ -1,0 +1,54 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.imregrid:
+    name: casa.imregrid
+    info: All-purpose flagging task based on data-selections and flagging modes/algorithms.
+    command: imregrid
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: ' '
+      replace:
+        _: '-'
+    inputs:
+      imagename:
+        info: Name of the source image
+        dtype: File
+        required: true
+      template:
+        info: A dictionary, refcode, or name of an image that provides the output
+          shape and coordinate system
+        dtype: File
+        required: true
+      asvelocity:
+        info: Regrid spectral axis in velocity space rather than frequency space?
+        dtype: bool
+        default: true
+      axes:
+        info: The pixel axes to regrid
+        dtype: list:int
+        default:
+        - -1
+      interpolation:
+        info: The interpolation method
+        dtype: str
+        default: linear
+        choices:
+        - nearest
+        - linear
+        - cubic
+      decimate:
+        info: Decimation factor for coordinate grid computation
+        dtype: int
+      replicate:
+        info: Replicate image rather than regrid
+        dtype: bool
+      overwrite:
+        info: verwrite (unprompted) pre-existing output file
+        dtype: bool
+    outputs:
+      output:
+        info: Name for the regridded image
+        dtype: File

@@ -1,0 +1,246 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  lwimager:
+    name: lwimager
+    info: Image and deconvolve a measurement set (MS)
+    command: lwimager
+    image:
+      _use: vars.cult-cargo.images
+      name: casarest
+    policies:
+      prefix: ' '
+    inputs:
+      msname:
+        info: MS to be imaged and/or deconvolved
+        dtype: MS
+        required: true
+        nom_de_guerre: ms
+      column:
+        info: Column to be imaged. Note that you can only make a clean (or restored)
+          image from the CORRECTED_DATA column
+        dtype: str
+        default: CORRECTED_DATA
+        nom_de_guerre: data
+      npix:
+        info: Image size in pixels
+        dtype: int
+        default: 2048
+      cellsize:
+        info: Size of a pixel in arcsec. But can also be specified as '2arcsec/2armnin
+          etc.
+        dtype: str
+        default: 2arcsec
+      weight:
+        info: Visibility weighting mode
+        dtype: str
+        default: briggs
+        choices:
+        - briggs
+        - natural
+        - uniform
+        - radial
+      robust:
+        info: Briggs robustness parameter
+        dtype: float
+        default: 0.0
+      prior:
+        info: Name of prior image file
+        dtype: File
+      mode:
+        info: Imaging mode
+        dtype: str
+        default: mfs
+        choices:
+        - mfs
+        - channel
+        - velocity
+      filter:
+        info: Apply gaussian tapering filter; specify as major,minor,pa
+        dtype: str
+      clean_beam:
+        info: Specify clean restoring beam; specify as major axis,minor axis,position
+          angle with unitsi
+        dtype: str
+      weight_fov:
+        info: Field of view size for uniform/briggs weighting, if different from image
+          size
+        dtype: str
+      noise:
+        info: Noise (in Jy) for briggsabs weightingfloat
+        dtype: float
+      wprojplanes:
+        info: if >0 specifies nr of convolution functions to use in W-projection
+        dtype: int
+        default: 0
+      padding:
+        info: padding factor in image plane (>=1.0)
+        dtype: float
+      cachesize:
+        info: Maximum size of gridding cache (in MB)
+        dtype: int
+        default: 512
+      stokes:
+        info: Stokes parameters to image
+        dtype: str
+        default: I
+      nfacets:
+        info: Number of facets in x or y
+        dtype: int
+      phasecenter:
+        info: Phase center to be used (e.g. 'j2000,05h30m,-30.2deg')
+        dtype: str
+      field-id:
+        info: Field ID
+        dtype: int
+        default: 0
+        nom_de_guerre: field
+      spw-id:
+        info: Spectral window ID(s)
+        dtype: str
+        nom_de_guerre: spwid
+      chanmode:
+        info: Frequency channel mode
+        dtype: str
+        default: channel
+      nchan:
+        info: number of frequency channels to select from each spectral window (one
+          number per spw). Comma separated string
+        dtype: str
+        default: 1
+      chanstart:
+        info: First frequency channel per each spw (0-relative). Comma separated string
+        dtype: str
+        default: 0
+      chanstep:
+        info: frequency channel step per each spw. Comma separated string
+        dtype: str
+        default: 1
+      img_nchan:
+        info: Number of frequency channels in image
+        dtype: int
+        default: 1
+      img_chanstart:
+        info: first frequency channel in image (0-relative)
+        dtype: int
+        default: 0
+      img_chanstep:
+        info: frequency channel step in image
+        dtype: int
+        default: 1
+      uvrange:
+        info: UV range filter for MS
+        dtype: str
+      select:
+        info: TaQL selection string for MS
+        dtype: str
+      operation:
+        info: Operation
+        dtype: str
+        default: image
+        choices:
+        - empty
+        - image
+        - psf
+        - clark
+        - hogbom
+        - csclean
+        - multiscale
+        - entropy
+      clean_iterations:
+        info: Number of clean iterations
+        dtype: int
+        default: 0
+        nom_de_guerre: niter
+      gain:
+        info: Loop gain for cleaning
+        dtype: float
+        default: 0.1
+      threshold:
+        info: Flux level at which to stop cleaning. Assumed to be in Jy if units not
+          specified.
+        dtype: float
+        default: 0
+      noise_image:
+        info: Noise image to compute sigma for stopping threshold (in case specified
+          it will replace threshold)
+        dtype: File
+      noise_sigma:
+        info: Noise sigma for stopping deconvolution in the case where noise_image
+          is provided (new thresh = sigma*noise_image.std())
+        dtype: float
+        default: 3
+      targetflux:
+        info: Target flux for maximum entropy
+        dtype: float
+      sigma:
+        info: Deviation for maximum entropy
+        dtype: float
+      fixed:
+        info: Keep clean model fixed
+        dtype: bool
+        default: false
+      fillmodel:
+        info: Fill MODEL_DATA column with clean model visibilities, else keeps model
+          in memory
+        dtype: bool
+        default: true
+      constrainflux:
+        info: Constrain image to match target flux? For max entropy
+        dtype: bool
+      prefervelocity:
+        info: Should FITS image spectral axis be velocity or frequency
+        dtype: bool
+      mask:
+        info: Name of the mask to use in cleaning
+        dtype: File
+      maskblc:
+        info: Bottom left corner of mask region
+        dtype: str
+      masktrc:
+        info: Top right corner of mask region
+        dtype: str
+      nscales:
+        info: Scales for multiscale clean
+        dtype: int
+      uservector:
+        info: User-defined scales for multiscale clean. Comma separated string
+        dtype: str
+      maskvalue:
+        info: Value to store in mask region; if given, mask is created; if mask not
+          exists, defaults to 1.0
+        dtype: float
+      simulate_fits:
+        info: Simulate a FITS image into MS
+        dtype: File
+      chanchunk:
+        info: Predict from FITS files in chunks in the frequency axis
+        dtype: int
+      cyclefactor:
+        info: Multi-field deconvolution parameter; see casapy's imager.setmfcontrol
+        dtype: float
+      cyclespeedup:
+        info: multi-field deconvolution parameter; see casapy's imager.setmfcontrol
+        dtype: float
+      cyclemaxpsffraction:
+        info: Multi-field deconvolution parameter; see casapy's imager.setmfcontrol
+        dtype: int
+      stoplargenegatives:
+        info: Multi-field deconvolution parameter; see casapy's imager.setmfcontrol
+        dtype: int
+      stoppointmode:
+        info: Multi-field deconvolution parameter; see casapy's imager.setmfcontrol
+        dtype: int
+      port2fits:
+        info: Convert output images to FITS files
+        dtype: bool
+        default: true
+      keep_casa_images:
+        info: Keep casa images when 'port2fits' is enabled
+        dtype: bool
+        default: false
+    outputs:
+      prefix:
+        info: Prefix for output images. If not specified, will use the basename of
+          MS.
+        dtype: File

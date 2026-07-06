@@ -1,0 +1,86 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  casa.immath:
+    name: casa.immath
+    info: Perform math operations on images
+    command: immath
+    image:
+      _use: vars.cult-cargo.images
+      name: casa
+    policies:
+      prefix: '-'
+      replace:
+        _: '-'
+    inputs:
+      mode:
+        info: Mode for math operation
+        dtype: str
+        default: evalexpr
+        required: true
+        choices:
+        - evalexpr
+        - spix
+        - pola
+        - poli
+      imagename:
+        info: A list of input images
+        dtype: list:File
+        required: true
+      mask:
+        info: Mask to use
+        dtype: File
+      expr:
+        info: Mathematical expression using images
+        dtype: str
+        default: IM0
+        required: true
+      varnames:
+        info: A list of variable names to use with the image file
+        dtype: list:str
+      polithresh:
+        info: Threshold in linear polarization intensity image below which to mask
+          pixels
+        dtype: str
+      region:
+        info: Region selection
+        dtype: str
+      box:
+        info: Rectangular region to select in direction plane. Default is to use the
+          entire direction
+        dtype: str
+      chans:
+        info: Channels to use
+        dtype: str
+      stokes:
+        info: Stokes planes to use
+        dtype: str
+      stretch:
+        info: Stretch the mask if necessary and possible?
+        dtype: bool
+        default: false
+      imagemd:
+        info: An image name from which metadata should be copied. The input can be
+          either an image listed under imagename or any other image on disk. Leaving
+          this parameter unset may copy header metadata from any of the input images,
+          which one is not guaranteed
+        dtype: str
+      nchans:
+        info: Number of channels to ustack in cube (not to be confused with chan)
+        dtype: int
+      unstack:
+        info: Unstack a casa image cube into [nchans] chunks along the freq axis.
+        dtype: str
+      port2fits:
+        info: Convert output images to FITS files
+        dtype: bool
+        default: false
+      keep_casa_images:
+        info: Keep casa images when 'port2fits' is enabled
+        dtype: bool
+        default: false
+    outputs:
+      outfile:
+        info: Prefix of output (Extension will be same as imagename)
+        dtype: str
+        required: true

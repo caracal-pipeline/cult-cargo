@@ -1,0 +1,78 @@
+_include:
+- genesis/cult-cargo-base.yml
+cabs:
+  rmsynth3d:
+    name: rmsynth3d
+    info: "Run RM-synthesis on Stokes I, Q and U spectra (1D) stored in an ASCII file.\
+      \ The Stokes I spectrum is first fit with a polynomial and the resulting model\
+      \ used to create fractional q = Q/I and u = U/I spectra. The ASCII file should\
+      \ the following columns, in a space separated format: \n [freq_Hz, I, Q, U,\
+      \ I_err, Q_err, U_err] \n OR \n [freq_Hz, Q, U, Q_err, U_err] \n To get outputs,\
+      \ one or more of the following flags must be set: -S, -p, -v."
+    command: rmsynth3d
+    image:
+      _use: vars.cult-cargo.images
+      name: rm-tools
+    policies:
+      prefix: '-'
+    inputs:
+      fitsq:
+        info: FITS cube containing Stokes Q data
+        dtype: File
+        required: true
+      fitsu:
+        info: FITS cube containing Stokes U data
+        dtype: File
+        required: true
+      freqs:
+        info: ASCII file containing the frequency vector (Hz).
+        dtype: File
+      fitsi:
+        info: FITS cube containing Stokes I model
+        dtype: File
+        nom_de_guerre: i
+      s:
+        info: number of samples across the RMSF lobe
+        dtype: int
+        default: 10
+      w:
+        info: weighting ['variance'] or 'uniform' (all 1s).
+        dtype: str
+        choices:
+        - variance
+        - uniform
+      fit-gauss:
+        info: Fit a Gaussian to the RMSF
+        dtype: bool
+        default: false
+        nom_de_guerre: t
+      phimax-radm2:
+        info: Absolute max Faraday depth sampled (overrides NSAMPLES)
+        dtype: float
+        default: false
+        nom_de_guerre: l
+      phi-depth:
+        info: Width of Faraday depth channel
+        dtype: float
+        nom_de_guerre: d
+      prefixout:
+        info: Prefix to prepend to output files
+        dtype: str
+        nom_de_guerre: o
+      v:
+        info: Verbose output
+        dtype: bool
+        default: false
+      nsamples:
+        info: Number of samples across the FWHM RMSF.
+        dtype: int
+        nom_de_guerre: s
+      f:
+        info: Store different Stokes as FITS extensions [False, store as separate
+          files]
+        dtype: bool
+        default: false
+      R:
+        info: Skip calculation of RMSF?
+        dtype: bool
+        default: false
