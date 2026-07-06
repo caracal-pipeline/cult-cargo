@@ -1,0 +1,290 @@
+_include:
+  - genesis/cult-cargo-base.yml
+
+# Cabs for the MSUtils package caracal actually uses
+# (https://github.com/SpheMakh/msutils, checked out at ../msutils-classic
+# relative to this repo). Named "pymsutils" (not "msutils") to avoid
+# colliding with this file's sibling msutils.yml: that file's
+# msutils.summary wraps a completely different tool (QuartiCal's
+# goquartical-summary), and its msutils.addcol doesn't match this
+# package's real addcol signature (has a "likecol" input that doesn't
+# exist on MSUtils.msutils.addcol) -- these cabs are converted directly
+# from stimela-classic's msutils/parameters.json (a single cab with a
+# `command` choice of 10 names) plus the real function signatures in
+# MSUtils/msutils.py, MSUtils/imp_plotter.py, MSUtils/ClassESW.py, split
+# into one cab per command -- the same "CASA-like", one-cab-per-task
+# shape as cultcargo/casa/*.yml.
+cabs:
+  pymsutils.summary:
+    info: Provides a summary of the MS content (MSUtils.msutils.summary)
+    flavour: python
+    command: MSUtils.msutils.summary
+    image:
+      _use: vars.cult-cargo.images
+      name: python-astro
+    inputs:
+      msname:
+        info: MS name
+        dtype: MS
+        required: true
+      display:
+        info: Display MS summary to stdout
+        dtype: bool
+        default: true
+    outputs:
+      outfile:
+        info: Output file for MS summary (json format)
+        dtype: File
+
+  pymsutils.addcol:
+    info: Add a column to an MS (MSUtils.msutils.addcol)
+    flavour: python
+    command: MSUtils.msutils.addcol
+    image:
+      _use: vars.cult-cargo.images
+      name: python-astro
+    inputs:
+      msname:
+        info: MS to add column to
+        dtype: MS
+        required: true
+        writable: true
+      colname:
+        info: Column name
+        dtype: str
+        nom_de_guerre: colname
+      shape:
+        info: Shape of column to add to MS
+        dtype: str
+      valuetype:
+        info: Column data type
+        dtype: str
+      data_desc_type:
+        info: 'Data description type for data in column to be added: ''scalar'' for scalar elements, ''array'' for array elements'
+        dtype: str
+        choices: [array, scalar]
+        default: array
+      init_with:
+        info: Value to initialize new data column with
+        dtype: float
+
+  pymsutils.sumcols:
+    info: Add/subtract two columns, or sum a list of columns (MSUtils.msutils.sumcols)
+    flavour: python
+    command: MSUtils.msutils.sumcols
+    image:
+      _use: vars.cult-cargo.images
+      name: python-astro
+    inputs:
+      msname:
+        dtype: MS
+        required: true
+        writable: true
+      col1:
+        info: First column to add/subtract
+        dtype: str
+      col2:
+        info: Second column to add/subtract
+        dtype: str
+      # not in stimela-classic's parameters.json (an omission there --
+      # MSUtils.msutils.sumcols requires it to know where to write the result)
+      outcol:
+        info: Column to write the result to (created if it doesn't exist)
+        dtype: str
+      cols:
+        info: Columns to sum (alternative to col1/col2)
+        dtype: List[str]
+      subtract:
+        info: Subtract 'col2' from 'col1' instead of summing
+        dtype: bool
+        default: false
+
+  pymsutils.copycol:
+    info: Copy data from one MS column to another (MSUtils.msutils.copycol)
+    flavour: python
+    command: MSUtils.msutils.copycol
+    image:
+      _use: vars.cult-cargo.images
+      name: python-astro
+    inputs:
+      msname:
+        dtype: MS
+        required: true
+        writable: true
+      fromcol:
+        info: Column to copy data from
+        dtype: str
+        required: true
+      tocol:
+        info: Column to copy data to
+        dtype: str
+        required: true
+
+  pymsutils.compute_vis_noise:
+    info: Compute nominal per-visibility noise (MSUtils.msutils.compute_vis_noise)
+    flavour: python
+    command: MSUtils.msutils.compute_vis_noise
+    image:
+      _use: vars.cult-cargo.images
+      name: python-astro
+    inputs:
+      msname:
+        dtype: MS
+        required: true
+      sefd:
+        info: System Equivalent Flux Density, in Jy -- noise is calculated from this
+        dtype: float
+        required: true
+      spw_id:
+        info: Spectral window ID
+        dtype: int
+        default: 0
+
+  pymsutils.verify_antpos:
+    info: Verify (and optionally fix) antenna Y-position hemisphere convention (MSUtils.msutils.verify_antpos)
+    flavour: python
+    command: MSUtils.msutils.verify_antpos
+    image:
+      _use: vars.cult-cargo.images
+      name: python-astro
+    inputs:
+      msname:
+        dtype: MS
+        required: true
+        writable: true
+      fix:
+        info: If the Y-coordinate convention is wrong, fix the positions instead of raising an error
+        dtype: bool
+        default: false
+      hemisphere:
+        info: 'Assume observatory hemisphere: -1 Western, 1 Eastern. If unset, tries to determine it from the MS and pyrap.measures.'
+        dtype: int
+
+  pymsutils.prep:
+    info: Prepare an MS for use with MeqTrees -- adds imaging/BITFLAG columns, backs up current flags to a 'legacy' flagset (MSUtils.msutils.prep)
+    flavour: python
+    command: MSUtils.msutils.prep
+    image:
+      _use: vars.cult-cargo.images
+      name: python-astro
+    inputs:
+      msname:
+        dtype: MS
+        required: true
+        writable: true
+      verify:
+        info: Also verify (and fix) antenna positions first
+        dtype: bool
+        default: false
+
+  pymsutils.addnoise:
+    info: Add Gaussian noise to an MS column (MSUtils.msutils.addnoise)
+    flavour: python
+    command: MSUtils.msutils.addnoise
+    image:
+      _use: vars.cult-cargo.images
+      name: python-astro
+    inputs:
+      msname:
+        dtype: MS
+        required: true
+        writable: true
+      column:
+        info: Column to add noise to
+        dtype: str
+        default: MODEL_DATA
+      noise:
+        info: Noise standard deviation (Jy) to add to 'column'. If zero, computed from 'sefd' instead.
+        dtype: float
+        default: 0
+      sefd:
+        info: System Equivalent Flux Density (Jy), used to compute the noise if 'noise' is zero
+        dtype: float
+        default: 551
+      addToCol:
+        info: Add noise to this column instead of overwriting 'column'
+        nom_de_guerre: addToCol
+        dtype: str
+      spw_id:
+        info: Spectral window ID
+        dtype: int
+
+  pymsutils.estimate_weights:
+    info: Estimate visibility noise/weights as a function of frequency (MSUtils.ClassESW.MSNoise.estimate_weights)
+    flavour: python-code
+    command: |
+      from MSUtils.ClassESW import MSNoise
+      noise = MSNoise(msname)
+      noise.estimate_weights(
+          mode=mode,
+          stats_data=stats_data,
+          normalise=normalise,
+          smooth=smooth,
+          fit_order=fit_order,
+          plot_stats=plot_stats,
+      )
+    image:
+      _use: vars.cult-cargo.images
+      name: python-astro
+    inputs:
+      msname:
+        info: MS to estimate weights for
+        dtype: MS
+        required: true
+      mode:
+        info: "Mode for estimating noise statistics: 'specs' uses a file/array of sensitivity-vs-frequency values (e.g. SEFD); 'calc' estimates noise internally from inter-channel differences"
+        dtype: str
+        choices: [specs, calc]
+        default: specs
+      stats_data:
+        info: File or array with sensitivity-vs-frequency (Hz) data. For MeerKAT use 'use_package_meerkat_spec' unless you have your own.
+        dtype: str
+        default: use_package_meerkat_spec
+      normalise:
+        info: Normalise the estimated weights
+        dtype: bool
+        default: true
+      smooth:
+        info: Function used to smooth the noise/weights before further calculations
+        dtype: str
+        choices: [polyn, spline]
+        default: polyn
+      fit_order:
+        info: Fit order for the smoothing function
+        dtype: int
+        default: 9
+      plot_stats:
+        info: Plot the estimated spectral noise/weights
+        dtype: bool
+        default: true
+
+  pymsutils.plot_gains:
+    info: Plot a CASA calibration table (MSUtils.imp_plotter.gain_plotter)
+    flavour: python
+    command: MSUtils.imp_plotter.gain_plotter
+    image:
+      _use: vars.cult-cargo.images
+      name: python-astro
+    inputs:
+      caltable:
+        info: Calibration table to plot
+        dtype: File
+        required: true
+      typ:
+        info: Type of the calibration table
+        dtype: str
+        choices: [bandpass, gain, delay]
+        required: true
+      outfile:
+        info: Output plot filename
+        nom_de_guerre: outfile
+        dtype: str
+        required: true
+      plt_scale:
+        info: Scale for the plot subplots
+        dtype: int
+        default: 6
+      plt_dpi:
+        info: DPI for the plot
+        dtype: int
+        default: 600
