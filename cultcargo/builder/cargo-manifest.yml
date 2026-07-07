@@ -155,16 +155,16 @@ images:
     assign:
       CMD: simms --help
     versions:
-      '1.2.0':
-        package: simms==1.2.0
+      '2.1.0':
+        package: simms==2.1.0
 
   # simms 3.0 (skysim/telsim CLI) -- ubuntu 24.04 / python 3.12, installed off master
   simms:
     assign:
       CMD: simms --help
     versions:
-      master:
-        package: git+https://github.com/wits-cfa/simms
+      'beta1':
+        package: git+https://github.com/wits-cfa/simms@7511d435348d05b816d2ff4ec1f7bdd652dec6a1
 
   bdsf:
     assign:
