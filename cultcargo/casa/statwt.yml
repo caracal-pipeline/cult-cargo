@@ -1,5 +1,6 @@
 _include:
-- genesis/cult-cargo-base.yml
+- (cultcargo):
+  - genesis/cult-cargo-base.yml
 cabs:
   casa.statwt:
     name: casa.statwt

@@ -76,10 +76,20 @@ def convert_parameter(param: Dict[str, Any]) -> Dict[str, Any]:
 def convert_cab(classic: Dict[str, Any]) -> Dict[str, Any]:
     """Convert a complete cab definition from classic to scabha format."""
     cab_name = classic["task"]
-    
+
+    # A `casa.<task>` cab is written into a `casa/` subdirectory (see
+    # `main()`), one level deeper than the cult-cargo package root -- so
+    # its `_include` must be package-scoped (resolves from the package
+    # root regardless of the including file's own directory), not a
+    # relative path (which a plain top-level cab can use safely).
+    if cab_name.startswith("casa."):
+        include = [{"(cultcargo)": ["genesis/cult-cargo-base.yml"]}]
+    else:
+        include = ["genesis/cult-cargo-base.yml"]
+
     # Build the scabha structure
     scabha = {
-        "_include": ["genesis/cult-cargo-base.yml"],
+        "_include": include,
         "cabs": {
             cab_name: {}
         }
@@ -142,9 +152,15 @@ def convert_cab(classic: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def get_cult_cargo_cabs(cult_cargo_dir: Path) -> Set[str]:
-    """Get list of cab names already in cult-cargo."""
+    """Get list of cab names already in cult-cargo. Recursive (`rglob`,
+    not `glob`) -- cult-cargo nests real cabs in subdirectories (e.g.
+    `casa/plotms.yml`), and a non-recursive scan here would miss them,
+    causing a "missing" cab to actually be a duplicate of one already
+    defined deeper in the tree (see `casa.plotms`, converted and written
+    to a colliding top-level `casa.plotms.yml` before this fix).
+    """
     cabs = set()
-    for yml_file in cult_cargo_dir.glob("*.yml"):
+    for yml_file in cult_cargo_dir.rglob("*.yml"):
         if yml_file.name.startswith("_"):
             continue
         try:
@@ -211,9 +227,19 @@ def main():
                 classic = json.load(f)
             
             scabha = convert_cab(classic)
-            
-            # Write to output
-            output_file = output_dir / f"{cab_name}.yml"
+
+            # Write to output. CASA-task cabs (`casa.<task>`) follow the
+            # project's existing convention: dotted cab *name*, but living
+            # as a bare `<task>.yml` file inside a `casa/` subdirectory
+            # (see cultcargo/casa/plotms.yml et al.) -- not a flat
+            # top-level `casa.<task>.yml` file.
+            if cab_name.startswith("casa."):
+                task = cab_name[len("casa."):]
+                output_subdir = output_dir / "casa"
+                output_subdir.mkdir(parents=True, exist_ok=True)
+                output_file = output_subdir / f"{task}.yml"
+            else:
+                output_file = output_dir / f"{cab_name}.yml"
             with open(output_file, "w") as f:
                 yaml.dump(scabha, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
             
