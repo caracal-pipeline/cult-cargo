@@ -16,20 +16,16 @@ cabs:
         dtype: Directory
         must_exist: true
         required: true
-        policies:
-          positional: true
         info: Directory containing the (2D or 3D) images and beams.
       target-images:
         dtype: List[File]
         required: true
         policies:
-          positional: true
+          repeat: ','
         info: Space-separated list of images to be mosaicked; 'image.fits' automatically replaced by 'pb.fits' to locate beams.
       name:
         dtype: str
         required: true
-        policies:
-          positional: true
         info: Prefix to be used for output files.
       num-workers:
         dtype: int
@@ -38,6 +34,8 @@ cabs:
       associated-mosaics:
         dtype: List[str]
         choices: [mask, model, residual]
+        policies:
+          repeat: ','
         info: Also make mosaics of associated files; space-separated list. e.g masks, models or residuals.
       regrid:
         dtype: bool
@@ -89,6 +87,4 @@ cabs:
         mkdir: true
         must_exist: false
         required: true
-        policies:
-          positional: true
         info: Directory for all output files.
