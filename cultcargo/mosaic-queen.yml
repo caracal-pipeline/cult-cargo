@@ -36,8 +36,9 @@ cabs:
         default: 0
         info: Number of worker threads; 0 uses all available threads.
       associated-mosaics:
-        dtype: List[File]
-        info: Also make mosaics of associated files; space-separated list. e.g masks, models or residuals
+        dtype: List[str]
+        choices: [mask, model, residual]
+        info: Also make mosaics of associated files; space-separated list. e.g masks, models or residuals.
       regrid:
         dtype: bool
         info: Use montage for regridding images and beams.
