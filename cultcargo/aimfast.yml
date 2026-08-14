@@ -12,31 +12,141 @@ cabs:
       prefix: '--'
       replace: {'_': '-'}
     inputs:
-      html_prefix:
-        dtype: str
+      ncpu:
+        dtype: int
+      compare_models:
+        dtype: List[File]
+        policies:
+          repeat: list
+      compare_images:
+        dtype: List[File]
+        policies:
+          repeat: list
+      compare_online:
+        dtype: List[File]
+        policies:
+          repeat: repeat
+      compare_residuals:
+        dtype: List[File]
+        policies:
+          repeat: list
+      compare_residual_subimages:
+        dtype: List[File]
+        policies:
+          repeat: list
+      tigger_model:
+        dtype: File
       restored_image:
+        dtype: File
+      psf_image:
         dtype: File
       residual_image:
         dtype: File
       mask_image:
         dtype: File
-      tigger_model:
+      fidelity_results:
         dtype: File
       input_regions:
         dtype: File
-      compare_models:
-        dtype: List[File]
-      compare_images:
-        dtype: List[File]
-      compare_online:
-        dtype: List[File]
-      compare_residuals:
-        dtype: List[File]
-      tolerance:
+      config:
+        dtype: File
+      source_finder:
+        dtype: List[str]
+        choices: [aegean, breizorro, pybdsf]
+        policies:
+          repeat: repeat
+      sf_threshold:
+        dtype: float
+      online_catalog_name:
+        dtype: str
+      online_catalog:
+        dtype: str
+        choices: [sumss, nvss, racs-low, racs-mid, racs-high, vlass]
+      centre_coord:
+        dtype: List[float]
+        policies:
+          repeat: ','
+      width:
+        dtype: float
+      normality_test:
+        dtype: str
+        choices: [shapiro, normaltest]
+      data_range:
+        dtype: List[float]
+        policies:
+          repeat: ','
+      threshold:
+        dtype: float
+      chans:
+        dtype: int
+      centre_pix_size:
+        dtype: List[float]
+        policies:
+          repeat: ','
+      points:
+        dtype: List[float]
+        policies:
+          repeat: ','
+      fp:
+        dtype: str
+        choices: [log, snr, inout]
+      fss:
+        dtype: bool
+      cr:
+        dtype: bool
+      hlfe:
+        dtype: bool
+      units:
+        dtype: str
+        choices: [jansky, milli, micro, nano]
+      deci:
+        dtype: float
+      oa:
+        dtype: float
+      af:
+        dtype: float
+      fov_factor:
+        dtype: float
+      tol:
         dtype: float
       all_source:
         dtype: bool
         default: False
+      closest:
+        dtype: bool
+      shape_limit:
+        dtype: float
+      label:
+        dtype: str
+      html_prefix:
+        dtype: str
+      svg:
+        dtype: bool
     outputs:
       outfile:
+        dtype: List[File]
+
+  aimfast-finder:
+    info: Aimfast source-finder mode
+    command: aimfast source-finder
+    image:
+      _use: vars.cult-cargo.images
+      name: aimfast
+    policies:
+      prefix: '--'
+      replace: {'_': '-'}
+    inputs:
+      config:
         dtype: File
+      source_finder:
+        dtype: str
+        choices: [aegean, breizorro, pybdsf]
+      sf_threshold:
+        dtype: float
+      restored_image:
+        dtype: File
+      ncpu:
+        dtype: int
+    outputs:
+      outfiles:
+        dtype: List[File]
