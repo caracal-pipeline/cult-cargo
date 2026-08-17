@@ -13,118 +13,166 @@ cabs:
       replace: {'_': '-'}
     inputs:
       ncpu:
+        info: "Number of CPU cores to use for source finders during compare-images"
         dtype: int
       compare_models:
+        info: "List of tigger model (text/lsm.html) files to compare e.g. --compare-models model1.lsm.html model2.lsm.html"
         dtype: List[File]
         policies:
           repeat: list
       compare_images:
+        info: "List of restored image (fits) files to compare. Note that this will initially run a source finder. e.g. --compare-images image1.fits image2.fits"
         dtype: List[File]
         policies:
           repeat: list
       compare_online:
+        info: "List of catalog models (html/ascii, fits) restored image (fits) files to compare with online catalog. e.g. --compare-online image1.fit"
         dtype: List[File]
         policies:
           repeat: repeat
       compare_residuals:
+        info: "List of noise-like (fits) files to compare e.g. --compare-residuals residual1.fits residual2.fits"
         dtype: List[File]
         policies:
           repeat: list
       compare_residual_subimages:
+        info: "List of noise-like (fits) files to compare e.g. --compare-residuals residual1.fits residual2.fits"
         dtype: List[File]
         policies:
           repeat: list
       tigger_model:
+        info: "Name of the tigger model lsm.html file or any supported catalog"
         dtype: File
       restored_image:
+        info: "Name of the restored image fits file (also used as background overlay in catalog comparison plots)"
         dtype: File
       psf_image:
+        info: "Name of the point spread function file or psf size in arcsec"
         dtype: File
       residual_image:
+        info: "Name of the residual image fits file"
         dtype: File
       mask_image:
-        dtype: File
-      fidelity_results:
+        info: "Name of the mask image fits file"
         dtype: File
       input_regions:
+        info: "Region file with regions to generate stats)"
         dtype: File
       config:
+        info: "Config file to run source finder of choice (YAML format)"
         dtype: File
       source_finder:
+        info: "Source finder(s) to run if comparing restored images. Use one value to reuse for every image, two values to reuse the first and second finder for every pair, or 2*N values to assign a finder per image in each pair."
         dtype: List[str]
         choices: [aegean, breizorro, pybdsf]
         policies:
           repeat: repeat
       sf_threshold:
+        info: "Threshold override for the source finder(s) run by --compare-images (thresh_pix for pybdsf, floodclip for aegean, threshold for breizorro)."
         dtype: float
       online_catalog_name:
+        info: "Prefix of output catalog file name"
         dtype: str
       online_catalog:
+        info: "Online catalog to compare local image/model. sumss (843MHz), nvss (1.4GHz, Dec>-40 only), racs-low (887.5MHz), racs-mid (1367.5MHz), racs-high (1655.5MHz), all full Southern-sky; vlass (2-4GHz S-band, Dec>-40 only)."
         dtype: str
         choices: [sumss, nvss, racs-low, racs-mid, racs-high, vlass]
       centre_coord:
+        info: 'Centre of online catalog to compare local image/model in "RA hh:mm:ss, Dec deg:min:sec".'
         dtype: List[float]
         policies:
           repeat: ','
       width:
+        info: "Field of view width to querry online catalog in degrees.e.g. -w 3.0d"
         dtype: float
       normality_test:
+        info: "Name of model to use for normality testing. options: [shapiro, normaltest] NB: normaltest is the D`Agostino"
         dtype: str
         choices: [shapiro, normaltest]
       data_range:
+        info: "Data range to perform normality testing"
         dtype: List[float]
         policies:
           repeat: ','
       threshold:
+        info: "Get stats of channels with pixel flux above thresh in Jy/Beam. Also this can be used to filter out sources from online catalog"
         dtype: float
       chans:
+        info: 'Get stats of specified channels e.g. "10~20;100~1000"'
         dtype: int
       centre_pix_size:
+        info: "List of subimage centre pixels and their sizes to compute stats. e.g. 500,500,20 200,10,5"
         dtype: List[float]
         policies:
           repeat: ','
       points:
+        info: "Data points to sample the residual/noise image"
         dtype: List[float]
         policies:
           repeat: ','
       fp:
+        info: "Type of plot for flux comparison of the two catalogs"
         dtype: str
         choices: [log, snr, inout]
       fss:
+        info: "Shade a +/-1 sigma band around the flux comparison fit line, showing the (error-weighted) scatter of the data around the trend, not the formal uncertainty on the fit parameters themselves."
         dtype: bool
       cr:
+        info: "Combine the flux and position comparison plots into a single html report (tabbed), instead of two separate FluxOffset.html/PositionOffset.html files."
         dtype: bool
       hlfe:
+        info: "Start the flux plot with error bars hidden for any point whose flux error exceeds its own value (still shown as their own click-to-hide legend entry, 'Errors (>100%)', on the flux figure, just starts hidden instead of shown). The point itself is always plotted either way; the fit is unaffected regardless (already down-weighted)."
         dtype: bool
       units:
+        info: "Units to represent the results"
         dtype: str
         choices: [jansky, milli, micro, nano]
       deci:
+        info: "Number of decimal places to round off results"
         dtype: float
       oa:
+        info: "Plot only cross-matched sources with distance from the phase centre less than this value"
         dtype: float
       af:
+        info: "Factor to multiply the beam area to get target peak area"
         dtype: float
       fov_factor:
+        info: "Factor to multiply the field of view for random points. i.e. 0.0-1.0"
         dtype: float
       tol:
+        info: "Tolerance to cross-match sources in arcsec"
         dtype: float
       all_source:
+        info: "Compare all sources irrespective of shape, otherwise only point-like sources are compared"
         dtype: bool
         default: False
       closest:
+        info: "Use the closest source only when cross matching sources"
         dtype: bool
       shape_limit:
+        info: "Cross-match only sources with a maj-axis equal or less than this value"
         dtype: float
       label:
+        info: "Use this label instead of the FITS image path when saving data as JSON file"
         dtype: str
       html_prefix:
+        info: "Prefix of output html files. Default: None."
         dtype: str
       svg:
+        info: "Save plots in SVG format."
         dtype: bool
+      fidelity_results:
+        info: "Name of output json results"
+        dytpe: str
+        default: fidelity_results.json
     outputs:
       outfile:
+        info: "Output report file names"
         dtype: List[File]
+      fidelity_results:
+        info: "aimfast fidelity results file (JSON format)"
+        dtype: File
+        default: =current.fidelity_results
 
   aimfast-finder:
     info: Aimfast source-finder mode
@@ -137,16 +185,22 @@ cabs:
       replace: {'_': '-'}
     inputs:
       config:
+        info: "Config file to run source finder of choice (YAML format)"
         dtype: File
       source_finder:
+        info: "Source finder(s) to run if comparing restored images. Use one value to reuse for every image, two values to reuse the first and second finder for every pair, or 2*N values to assign a finder per image in each pair."
         dtype: str
         choices: [aegean, breizorro, pybdsf]
       sf_threshold:
+        info: "Threshold override for the source finder(s) run by --compare-images (thresh_pix for pybdsf, floodclip for aegean, threshold for breizorro)."
         dtype: float
       restored_image:
+        info: "Name of the restored image fits file (also used as background overlay in catalog comparison plots)"
         dtype: File
       ncpu:
+        info: "Number of CPU cores to use for source finders during compare-images"
         dtype: int
     outputs:
       outfiles:
+        info: "Output catalog or result files generated by the chosen source finder"
         dtype: List[File]
