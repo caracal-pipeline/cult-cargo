@@ -161,9 +161,9 @@ cabs:
       svg:
         info: "Save plots in SVG format."
         dtype: bool
-      fidelity_results:
+      name_fidelity_results:
         info: "Name of output json results"
-        dytpe: str
+        dtype: str
         default: fidelity_results.json
     outputs:
       outfile:
@@ -172,7 +172,7 @@ cabs:
       fidelity_results:
         info: "aimfast fidelity results file (JSON format)"
         dtype: File
-        default: =current.fidelity_results
+        default: =current.name_fidelity_results
 
   aimfast-finder:
     info: Aimfast source-finder mode
