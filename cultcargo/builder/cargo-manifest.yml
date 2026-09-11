@@ -66,9 +66,12 @@ images:
     versions:
       '1.3.4':
         package: aimfast==1.3.4
-      ## new master incoming so stay with 1.3.4 as latest version in cc0.2.1
-      # master:
-      #   package: git+https://github.com/Athanaseus/aimfast.git
+      '1.4.0':
+        package: aimfast==1.4.0[all]
+      latest:
+        package: aimfast[all]
+      master:
+        package: git+https://github.com/Athanaseus/aimfast.git[all]
 
   meqtrees:
     versions:
