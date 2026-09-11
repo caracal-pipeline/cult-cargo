@@ -68,7 +68,7 @@ images:
       '1.4.0':
         package: aimfast[all]==1.4.0
       latest:
-        package: "aimfast[all]"
+        package: aimfast[all]
       master:
         package: git+https://github.com/Athanaseus/aimfast.git/[all]
 
