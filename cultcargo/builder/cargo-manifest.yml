@@ -145,10 +145,12 @@ images:
         package: shadems==0.5.3 pyarrow dask[dataframe]\<2025.1
       '0.5.4':
         package: shadems==0.5.4 pyarrow dask[dataframe]\<2025.1
+      '0.5.5':
+        package: shadems==0.5.5
       latest:
-        package: shadems pyarrow dask[dataframe]\<2025.1
+        package: shadems
       master:
-        package: git+https://github.com/ratt-ru/shadeMS pyarrow dask[dataframe]\<2025.1
+        package: git+https://github.com/ratt-ru/shadeMS
 
   crystalball:
     assign:
