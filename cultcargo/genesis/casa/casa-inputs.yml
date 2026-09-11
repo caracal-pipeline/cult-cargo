@@ -113,7 +113,10 @@ lib:
             command-data:
                 flavour:
                     kind: python
-                    interpreter_binary: python3.10
+                    # Deliberately unpinned. The image's python is built from
+                    # default_python_version in the build manifest, so pinning a
+                    # minor version here goes stale when that is bumped. See #183.
+                    interpreter_binary: python
                     pre_commands:
                         filter-warnings: |
                             import warnings
