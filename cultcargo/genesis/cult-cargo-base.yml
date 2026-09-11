@@ -2,7 +2,7 @@ vars:
   cult-cargo:
     images:
       registry: quay.io/stimela2
-      version: cc0.2.1
+      version: cc0.3.0
 
 lib:
   misc:

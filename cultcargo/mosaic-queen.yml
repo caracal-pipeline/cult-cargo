@@ -16,35 +16,32 @@ cabs:
         dtype: Directory
         must_exist: true
         required: true
-        policies:
-          positional: true
         info: Directory containing the (2D or 3D) images and beams.
       target-images:
         dtype: List[File]
         required: true
         policies:
-          positional: true
+          repeat: ','
         info: Space-separated list of images to be mosaicked; 'image.fits' automatically replaced by 'pb.fits' to locate beams.
       name:
         dtype: str
         required: true
-        policies:
-          positional: true
         info: Prefix to be used for output files.
       num-workers:
         dtype: int
         default: 0
         info: Number of worker threads; 0 uses all available threads.
       associated-mosaics:
-        dtype: List[File]
-        info: Also make mosaics of associated files; space-separated list. e.g masks, models or residuals
+        dtype: List[str]
+        choices: [mask, model, residual]
+        policies:
+          repeat: ','
+        info: Also make mosaics of associated files; space-separated list. e.g masks, models or residuals.
       regrid:
         dtype: bool
-        action: store_true
         info: Use montage for regridding images and beams.
       force-regrid:
         dtype: bool
-        action: store_true
         info: Force newly-regridded files even if they exist.
       beam-cutoff:
         dtype: float
@@ -56,7 +53,6 @@ cabs:
         info: Sensitivity cutoff in final mosaic; pixels with noise > min_noise / cutoff are blanked.
       unity-weights:
         dtype: bool
-        action: store_true
         info: Use weight=1 instead of weight=1/noise**2.
       statistic:
         dtype: str
@@ -91,6 +87,4 @@ cabs:
         mkdir: true
         must_exist: false
         required: true
-        policies:
-          positional: true
         info: Directory for all output files.
