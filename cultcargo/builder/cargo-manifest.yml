@@ -60,18 +60,17 @@ images:
   # Package-specific images follow
 
   aimfast:
-    assign:
-      default_python_version: '3.9'
-      pip_install_flags: '--no-build-isolation'
     versions:
       '1.3.4':
+        default_python_version: '3.9'
+        pip_install_flags: '--no-build-isolation'
         package: aimfast==1.3.4
       '1.4.0':
-        package: aimfast==1.4.0[all]
+        package: aimfast[all]==1.4.0
       latest:
-        package: aimfast[all]
+        package: "aimfast[all]"
       master:
-        package: git+https://github.com/Athanaseus/aimfast.git[all]
+        package: git+https://github.com/Athanaseus/aimfast.git/[all]
 
   meqtrees:
     versions:
