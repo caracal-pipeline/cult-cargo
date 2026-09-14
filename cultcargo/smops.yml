@@ -39,5 +39,6 @@ cabs:
     outputs:
       model:
         dtype: List[File]
+        must_exist: true
         implicit: =GLOB("{current.output-prefix}*model*fits")
 

@@ -1,4 +1,4 @@
-from dataclasses import make_dataclass
+from dataclasses import make_dataclass, field
 from omegaconf import OmegaConf as oc
 from typing import Dict, Any
 from scabha.cargo import Parameter
@@ -16,11 +16,11 @@ def finalize_structure(additional_config):
             break
 
     # Use the default terms if no alternative is specified.
-    terms = terms or BaseConfig.solver.terms
+    terms = terms or BaseConfig().solver.terms
 
     FinalConfig = make_dataclass(
         "FinalConfig",
-        [(t, Gain, Gain()) for t in terms],
+        [(t, Gain, field(default_factory=Gain)) for t in terms],
         bases=(BaseConfig,)
     )
 
@@ -41,7 +41,7 @@ def make_stimela_schema(
     else:
         terms = params.get('solver.terms', None)
     if terms is None:
-        terms = BaseConfig.solver.terms  # Fall back to default.
+        terms = BaseConfig().solver.terms  # Fall back to default.
 
     # For each term, add the relevant entries to the inputs.
     for jones in terms:

@@ -6,7 +6,7 @@ RUN apt-get update && apt-get -y upgrade && \
         libboost-date-time-dev libboost-filesystem-dev \
         libboost-program-options-dev libboost-system-dev \
         libcfitsio-dev cmake g++ cmake \
-        libblas-dev liblapack-dev \
+        libblas-dev liblapack-dev pybind11-dev \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/archives 
 

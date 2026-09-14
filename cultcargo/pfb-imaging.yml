@@ -13,51 +13,51 @@ cabs:
   _include: genesis/pfb-imaging/latest/uncabbedcabs.yml
 
   pfb.init:
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
     image:
       _use: vars.cult-cargo.pfb-imaging.image
-    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
 
   pfb.grid:
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
     image:
       _use: vars.cult-cargo.pfb-imaging.image
-    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
 
   pfb.degrid:
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
     image:
       _use: vars.cult-cargo.pfb-imaging.image
-    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
 
   pfb.kclean:
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
     image:
       _use: vars.cult-cargo.pfb-imaging.image
-    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
 
   pfb.restore:
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
     image:
       _use: vars.cult-cargo.pfb-imaging.image
-    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
 
   pfb.fluxtractor:
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
     image:
       _use: vars.cult-cargo.pfb-imaging.image
-    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
 
   pfb.sara:
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
     image:
       _use: vars.cult-cargo.pfb-imaging.image
-    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
 
   pfb.model2comps:
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
     image:
       _use: vars.cult-cargo.pfb-imaging.image
-    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
 
   pfb.hci:
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
     image:
       _use: vars.cult-cargo.pfb-imaging.image
-    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
     
   pfb.smoovie:
+    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings
     image:
       _use: vars.cult-cargo.pfb-imaging.image
-    _use: lib.misc.numba.cache-cab-settings  # pull in numba cache dir settings

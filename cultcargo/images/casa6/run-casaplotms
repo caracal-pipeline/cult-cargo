@@ -1,0 +1,9 @@
+#!/bin/sh
+# The casaplotms AppImage bundles its own Qt and OpenSSL shared libraries. Putting
+# that bundle on LD_LIBRARY_PATH image-wide makes its older libcrypto.so.3 shadow
+# the system one, which breaks the Python interpreter's _ssl module (and hence
+# "import casatasks") for every cab using this image. Scope the bundle to the
+# casaplotms process only.
+# Fixes caracal-pipeline/cult-cargo#184
+export LD_LIBRARY_PATH=/opt/casaplotms/usr/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+exec /opt/casaplotms/usr/bin/casaplotms "$@"
