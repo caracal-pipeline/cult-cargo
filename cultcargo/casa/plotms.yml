@@ -6,12 +6,12 @@ _include:
 
 cabs:
   casa.plotms:
-    info: "CASA 'plotms' task: generates plots based on an MS" 
+    _use:
+      - lib.misc.casa6.command-data
+    info: "CASA 'plotms' task: generates plots based on an MS"
     extra_info:
         See also: https://casadocs.readthedocs.io/en/stable/api/tt/casaplotms.plotms.html
     command: casaplotms.plotms
-    _use: 
-      - lib.misc.casa6.command-data
     flavour:
       kind: python
       interpreter_binary: xvfb-run -a python

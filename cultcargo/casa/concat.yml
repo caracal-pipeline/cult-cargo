@@ -5,16 +5,16 @@ _include:
 
 cabs:
     casa.concat:
-        info: "CASA 'concat' task: concatenates MSs" 
-        extra_info:
-            See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.manipulation.concat.html        
-        command: casatasks.concat
         _use: lib.misc.casa6.command-data
+        info: "CASA 'concat' task: concatenates MSs"
+        extra_info:
+            See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.manipulation.concat.html
+        command: casatasks.concat
         inputs:
             _use: lib.params.casa.base-inputs
             timesort:
                 info: If true, sort by TIME in ascending order
-                dtype: bool    
+                dtype: bool
             freqtol:
                 info: Frequency shift tolerance for considering data as the same spwid
                 dtype: str

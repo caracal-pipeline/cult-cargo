@@ -5,13 +5,13 @@ _include:
 
 cabs:
     casa.applycal:
-        info: "CASA 'applycal' task: applies calibration tables and generates corrected data" 
+        _use: lib.misc.casa6.command-data
+        info: "CASA 'applycal' task: applies calibration tables and generates corrected data"
         extra_info:
             See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.calibration.applycal.html
         command: casatasks.applycal
-        _use: lib.misc.casa6.command-data
         inputs:
-            _use: 
+            _use:
                 - lib.params.casa.ms-selectdata-inputs
                 - lib.params.casa.calibration-inputs
             calwt:
@@ -19,11 +19,11 @@ cabs:
                 dtype: List[bool]
             applymode:
                 info: Calibration apply mode (default is 'calflag')
-                dtype: str 
+                dtype: str
                 choices: [calflag, calflagstrict, trial, flagonly, flagonlystrict, calonly]
             flagbackup:
                 info: Automatically back up the state of flags before the run? Default is true
-                dtype: bool 
+                dtype: bool
             parang:
                 info: Apply parallactic angle correction
                 dtype: bool
@@ -38,14 +38,14 @@ cabs:
                 # need writing to parent dir in case it needs to be created. Should this be done automatically by stimela?
                 path_policies:
                     write_parent: true
-                
+
 
     casa.fluxscale:
-        info: "CASA 'fluxscale' task: bootstraps the flux density scale from standard calibrators"      
+        _use: lib.misc.casa6.command-data
+        info: "CASA 'fluxscale' task: bootstraps the flux density scale from standard calibrators"
         extra_info:
             See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.calibration.fluxscale.html
         command: casatasks.fluxscale
-        _use: lib.misc.casa6.command-data
         outputs:
             fluxtable:
                 info: Name of output flux-scaled calibation table
@@ -60,7 +60,7 @@ cabs:
                 required: true
             reference:
                 info: Reference field name(s) (transfer flux scale FROM
-                dtype: str 
+                dtype: str
                 required: true
             transfer:
                 info: Transfer field name(s) (transfer flux scale TO)
@@ -69,7 +69,7 @@ cabs:
                  repeat: ','
             listfile:
                 info: Name of listfile that contains the fit information
-                dtype: str 
+                dtype: str
             append:
                 info: Append fluxscaled solutions to the fluxtable?
                 dtype: bool
@@ -81,13 +81,13 @@ cabs:
                 dtype: float
             timerange:
                 info: Select based on time range. E.g. '09:14:0~09:54:0', default ('') is all
-                dtype: str 
+                dtype: str
             antenna:
                 info: Select antenna/baselines. E.g. '3,VA04', default ('') is all
-                dtype: str 
+                dtype: str
             scan:
                 info: Select based on scan number range, e.g. '0~5'
-                dtype: str 
+                dtype: str
             incremental:
                 info: Create an incremental caltable containing only gain correction factor?
                 dtype: bool
@@ -97,49 +97,49 @@ cabs:
             display:
                 info: Display statistics and/or spectral fitting results?
                 dtype: bool
-                
-            
+
+
     casa.gaincal:
-        info: "CASA 'gaincal' task: gain calibration"      
+        _use: lib.misc.casa6.command-data
+        info: "CASA 'gaincal' task: gain calibration"
         extra_info:
             See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.calibration.gaincal.html
         command: casatasks.gaincal
-        _use: lib.misc.casa6.command-data
         outputs:
             caltable:
                 info: Name of output gain calibration table
-                dtype: Directory 
+                dtype: Directory
                 required: true
                 mkdir: false
         inputs:
-            _use: 
+            _use:
                 - lib.params.casa.ms-selectdata-inputs
                 - lib.params.casa.calibration-inputs
             solint:
                 info: Solution interval
-                dtype: str 
+                dtype: str
             combine:
                 info: Data axes which to combine for solve. Options are 'obs', 'scan', 'spw', 'field', or any comma-separated combination
-                dtype: str 
+                dtype: str
             preavg:
                 info: Pre-averaging interval (sec), default is -1 to disable
                 dtype: float
             refant:
                 info: Reference antenna. You may use any antenna that is working for the whole duration of the observation.
-                dtype: str 
+                dtype: str
                 required: true
             refantmode:
-                info: Reference antenna mode 
-                dtype: str 
+                info: Reference antenna mode
+                dtype: str
             minblperant:
                 info: Minimum number of baselines required per antenna for each solve
-                dtype: int 
+                dtype: int
             minsnr:
                 info: Reject solutions below this SNR
                 dtype: float
             solnorm:
                 info: Normalize (squared) solution amplitudes (G, T only)
-                dtype: bool 
+                dtype: bool
             normtype:
                 info: Solution normalization calculation type
                 dtype: str
@@ -160,14 +160,14 @@ cabs:
                 dtype: str
                 choices: [ '', L1, R, L1R ]
             rmsthresh:
-                info: RMS Threshold sequence. Subparameter of solmode='R' or 'L1R'                
+                info: RMS Threshold sequence. Subparameter of solmode='R' or 'L1R'
                 dtype: List[float]
             corrdepflags:
                 info: See CASA docs
-                dtype: bool 
+                dtype: bool
             append:
                 info: Append solutions to the (existing) table
-                dtype: bool 
+                dtype: bool
             splinetime:
                 info: Spline timescale(sec); All spw's are first averaged. Subparameter of gaintype=’GSPLINE’
                 dtype: float
@@ -179,5 +179,4 @@ cabs:
                 dtype: float
             parang:
                 info: Apply parallactic angle correction
-                dtype: bool 
-         
+                dtype: bool

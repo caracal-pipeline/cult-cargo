@@ -4,13 +4,12 @@ _include:
         - genesis/casa/casa-inputs.yml
 cabs:
     casa.clearcal:
-        info: Summarize dataset 
-        command: casatasks.clearcal
         _use: lib.misc.casa6.command-data
+        info: Summarize dataset
+        command: casatasks.clearcal
         inputs:
             _use: lib.params.casa.ms-selectdata-inputs
             _scrub: [selectdata]   # not used by this task
-            addmodel: 
+            addmodel:
                info:  Add MODEL_DATA scratch column
                dtype: bool
-
