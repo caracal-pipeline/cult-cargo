@@ -5,11 +5,11 @@ _include:
 
 cabs:
     casa.flagman:
+        _use: lib.misc.casa6.command-data
         name: casa.flagman
         info: "CASA 'flagmanager' task: saves/restores flags" 
         extra_info:
             See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.flagging.flagmanager.html
-        _use: lib.misc.casa6.command-data
         flavour: 
             kind: python-code
             input_dict: args
@@ -69,11 +69,11 @@ cabs:
                     - HIGHLIGHT:green
 
     casa.flagman.save:
+        _use: lib.misc.casa6.command-data
         name: casa.flagman.save
         info: "Specialised CASA 'flagmanager' task for saving flags"
         extra_info:
             See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.flagging.flagmanager.html
-        _use: lib.misc.casa6.command-data
         command: casatasks.flagmanager
         inputs:
             _use: lib.params.casa.base-inputs
@@ -103,11 +103,11 @@ cabs:
                     write_parent: true
 
     casa.flagman.restore:
+        _use: lib.misc.casa6.command-data
         name: casa.flagman.restore
         info: "Specialised CASA 'flagmanager' task for restoring flags"
         extra_info:
             See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.flagging.flagmanager.html
-        _use: lib.misc.casa6.command-data
         command: casatasks.flagmanager
         inputs:
             _use: lib.params.casa.base-inputs
@@ -132,9 +132,9 @@ cabs:
                     write_parent: true
 
     casa.flagsummary:
+        _use: lib.misc.casa6.command-data
         name: casa.flagsummary
         info: "invoke CASA 'flagdata' to generate a flagging summary" 
-        _use: lib.misc.casa6.command-data
         flavour: 
             kind: python-code
             input_dict: args
@@ -161,10 +161,10 @@ cabs:
                     - HIGHLIGHT:bold green
 
     casa5.flagsummary:
+        _use: lib.misc.casa5.command-data
         name: casa5.flagsummary
         info: "invoke CASA5 'flagdata' task to generate a flagging summary" 
         command: flagdata
-        _use: lib.misc.casa5.command-data
         inputs:
             _use: lib.params.casa.ms-selectdata-extended-inputs
             _scrub: [selectdata, msselect]   # these ones not implemented by this task
@@ -181,12 +181,12 @@ cabs:
                     - HIGHLIGHT:bold green
 
     casa.flagdata:
+        _use: lib.misc.casa6.command-data
         name: casa.flagdata
         info: "CASA 'flagdata' task: performs flagging" 
         extra_info:
             See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.flagging.flagdata.html
         command: casatasks.flagdata
-        _use: lib.misc.casa6.command-data
         inputs:
             _use: lib.params.casa.ms-selectdata-extended-inputs
             _scrub: [selectdata, msselect]   # these ones not implemented by this task

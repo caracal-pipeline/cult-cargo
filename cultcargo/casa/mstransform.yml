@@ -5,9 +5,9 @@ _include:
 
 cabs:
     casa.mstransform:
-        info: Summarize dataset 
-        command: casatasks.mstransform
         _use: lib.misc.casa6.command-data
+        info: Summarize dataset
+        command: casatasks.mstransform
         inputs:
             _use:
                 - lib.params.casa.ms-selectdata-extended-inputs
@@ -62,25 +62,25 @@ cabs:
                dtype: bool
             phasecenter:
                info: Phase center direction to be used for the spectral coordinate transformation. direction measure or field index
-               dtype: str 
+               dtype: str
             taql:
                info: Table query for nested selections
                dtype: str
             restfreq:
                info: Rest frequency to use for output.
-               dtype: str 
+               dtype: str
             outframe:
                info: Output reference frame (‘’=keep input frame).
-               dtype: str 
+               dtype: str
             timespan:
                info: Span the timebin across scan, state or both.
-               dtype: str 
+               dtype: str
             callib:
                info:  Path to calibration library file
-               dtype: str 
+               dtype: str
             fitspw:
                info: Spectral window:channel selection for fitting the continuum
-               dtype: str 
+               dtype: str
             timebin:
                info:  Bin width for time averaging.
                dtype: str
@@ -89,34 +89,34 @@ cabs:
                dtype: list
             ddistart:
                info: Hidden parameter for internal use only. Do not change it!
-               dtype: int 
+               dtype: int
             width:
                info: Channel width of the output visibilities. Used for regridding, together with 'start', and 'nchan'.
-               dtype: int 
+               dtype: int
             nspw:
                info:  Number of output spws to create in output MS.
                dtype: int
             start:
-               info: Start of the output visibilities. Used for regridding, together with 'width' and 'nchan'. 
-               dtype: int 
+               info: Start of the output visibilities. Used for regridding, together with 'width' and 'nchan'.
+               dtype: int
             nchan:
                info: Number of channels in the output spw (-1=all). Used for regridding, together with 'start' and 'width'.
-               dtype: int 
+               dtype: int
             chanbin:
                info: Width (bin) of input channels to average to form an output channel.
-               dtype: int 
+               dtype: int
             niter:
                info: Number of iterations for re-weighted linear fit
-               dtype: int 
+               dtype: int
             nthreads:
                info: Number of OMP threads to use (currently maximum limited by number of polarizations)
-               dtype: int 
+               dtype: int
             maxuvwdistance:
                info: Maximum separation of start-to-end baselines that can be included in an average. (meters)
                dtype: int
             fitorder:
                info:  Polynomial order for the fits
-               dtype: int   
+               dtype: int
             mode:
                info: Regridding mode (channel/velocity/frequency/channel_b).
                dtype: str
@@ -141,5 +141,3 @@ cabs:
             interpolation:
                info: Spectral interpolation method.
                dtype: str
-
-

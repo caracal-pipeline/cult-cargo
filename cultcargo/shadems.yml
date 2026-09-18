@@ -201,6 +201,14 @@ cabs:
             ylabel:
                 info: Template for Y axis labels. Default is y-axis name and unit
                 dtype: str
+            vline:
+                info: Draw a vertical line at the given X coordinate(s). You can append a matplotlib linestyle (-, --, -., :) and/or a colour. You can also use a comma-separated list.
+                dtype: str
+                metavar: X[-[colour]]
+            hline:
+                info: Draw a horizontal line at the given Y coordinate(s). You can append a matplotlib linestyle (-, --, -., :) and/or a colour. You can also use a comma-separated list.
+                dtype: str
+                metavar: Y[-[colour]]
             debug:
                 info: Enable debugging output.
                 dtype: bool

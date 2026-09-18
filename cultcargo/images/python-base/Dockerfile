@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install apt-utils && \
 RUN python{VERSION} -m pip install --no-cache-dir -U pip setuptools wheel packaging uv
 
 ## install stimela -- needed to form output arguments
-RUN python{VERSION} -m pip install --no-cache-dir stimela
+RUN python{VERSION} -m pip install --no-cache-dir scabha>=2.2.0rc0
 
 CMD python{VERSION}
 

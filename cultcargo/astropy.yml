@@ -3,7 +3,7 @@ _include: (cultcargo)/genesis/cult-cargo-base.yml
 cabs:
   astropy.test-internal-cache:
     info: Tests astropy IERS and site data cache which is downloaded into the python-astro image at release time
-    flavour: 
+    flavour:
       kind: python-code
     command: |
       import os
@@ -17,9 +17,9 @@ cabs:
       print(EarthLocation.of_site('VLA'))
 
   astropy.test-host-cache:
-    info: Tests local astropy IERS and site data cache
     _use: lib.misc.astropy.data-dir-cab-settings
-    flavour: 
+    info: Tests local astropy IERS and site data cache
+    flavour:
       kind: python-code
     inputs:
       cache-dir:
@@ -39,8 +39,8 @@ cabs:
       print(EarthLocation.of_site('VLA'))
 
   astropy.refresh-host-cache:
-    info: Refreshes local astropy IERS and site data cache
     _use: lib.misc.astropy.data-dir-cab-settings
+    info: Refreshes local astropy IERS and site data cache
     inputs:
       clear-cache:
         dtype: bool
@@ -53,7 +53,7 @@ cabs:
         mkdir: true
         policies:
           skip: false  # pass it in as a variable since we print it below
-    flavour: 
+    flavour:
       kind: python-code
     command: |
       import os

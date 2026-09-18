@@ -5,9 +5,9 @@ _include:
 
 cabs:
     casa.plotants:
-        info: Summarize dataset 
-        command: casatasks.plotants
         _use: lib.misc.casa6.command-data
+        info: Summarize dataset
+        command: casatasks.plotants
         inputs:
             _use: lib.params.casa.base-inputs
             figfile:
@@ -23,4 +23,3 @@ cabs:
                info: show plot on gui
                dtype: bool
                implicit: false
-               

@@ -28,9 +28,9 @@ RUN python{default_python_version} -m casaconfig --measurespath /opt/casa/data -
 # extract casaplotms AppImage 
 RUN cd opt; /usr/local/lib/python{default_python_version}/site-packages/casaplotms/__bin__/casaplotms-x86_64.AppImage --appimage-extract
 RUN mv /opt/squashfs-root /opt/casaplotms
+COPY run-casaplotms /opt/casaplotms/run-casaplotms
 RUN chmod -R go+rx /opt/casaplotms
-RUN sed -i -e "s|app_path = __os.path.join( __os.path.abspath( __os.path.join(__os.path.dirname(__file__),\"..\") ), '__bin__/casaplotms-x86_64.AppImage')|app_path = '/opt/casaplotms/usr/bin/casaplotms'|g" /usr/local/lib/python{default_python_version}/site-packages/casaplotms/private/plotmstool.py
-ENV LD_LIBRARY_PATH /opt/casaplotms/usr/lib/
+RUN sed -i -e "s|app_path = __os.path.join( __os.path.abspath( __os.path.join(__os.path.dirname(__file__),\"..\") ), '__bin__/casaplotms-x86_64.AppImage')|app_path = '/opt/casaplotms/run-casaplotms'|g" /usr/local/lib/python{default_python_version}/site-packages/casaplotms/private/plotmstool.py
 ENV QT_QPA_PLATFORM_PLUGIN_PATH /opt/casaplotms/usr/lib/plugins/platforms
 
 # point to CASA data
