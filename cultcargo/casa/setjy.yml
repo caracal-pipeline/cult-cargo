@@ -5,11 +5,11 @@ _include:
 
 cabs:
     casa.setjy:
-        info: "CASA 'setjy' task: sets model from a flux density scale" 
-        command: casatasks.setjy
         _use: lib.misc.casa6.command-data
+        info: "CASA 'setjy' task: sets model from a flux density scale"
+        command: casatasks.setjy
         inputs:
-            _use: 
+            _use:
                 - lib.params.casa.ms-selectdata-inputs
             _scrub: [antenna, uvrange, msselect]   # not used by this task
             standard:
@@ -38,7 +38,7 @@ cabs:
                 info: Spectral index (including higher terms) of I fluxdensity (default 0.0)
                 dtype: Union[float, List[float]]
             polindex:
-                info: Coefficients of the frequency-dependent linear polarization index (polarization fraction) 
+                info: Coefficients of the frequency-dependent linear polarization index (polarization fraction)
                 dtype: List[float]
             model:
                 info: File location for field model

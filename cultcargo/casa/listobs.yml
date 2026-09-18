@@ -5,14 +5,14 @@ _include:
 
 cabs:
     casa.listobs:
-        info: "CASA 'listobs' task: summarizes an MS" 
-        command: casatasks.listobs
         _use: lib.misc.casa6.command-data
+        info: "CASA 'listobs' task: summarizes an MS"
+        command: casatasks.listobs
         inputs:
             _use: lib.params.casa.base-inputs
             overwrite:
                info:  If True, tacitly overwrite listfile if it exists.
-               dtype: bool 
+               dtype: bool
             listfile:
                info: Name of disk file to write output. Default is none (output is written to logger only)
                dtype: str
@@ -22,6 +22,6 @@ cabs:
             listunf:
                info: List unflagged row counts? If true, it can have significant negative performance impact.
                dtype: bool
-            cachesize: 
+            cachesize:
                info: EXPERIMENTAL. Maximum size in megabytes of cache in which data structures can be held
                dtype: int

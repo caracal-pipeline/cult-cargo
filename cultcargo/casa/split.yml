@@ -4,15 +4,15 @@ _include:
         - genesis/casa/casa-inputs.yml
 
 cabs:
-            
+
     casa.split:
-        info: "CASA 'split' task: splits out a subset of MS" 
-        extra_info:
-            See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.manipulation.split.html        
-        command: casatasks.split
         _use: lib.misc.casa6.command-data
+        info: "CASA 'split' task: splits out a subset of MS"
+        extra_info:
+            See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.manipulation.split.html
+        command: casatasks.split
         inputs:
-            _use: 
+            _use:
                 - lib.params.casa.ms-selectdata-extended-inputs
             _scrub: [selectdata, msselect]        # not used in this task
             # make MS read-only
@@ -20,17 +20,17 @@ cabs:
                 writable: false
             datacolumn:
                 info: Which data column(s) to process, default is corrected
-                dtype: str 
-                choices: 
+                dtype: str
+                choices:
                     - data
                     - corrected
                     - model
             width:
                 info: Number of channels to average to form one output channel
-                dtype: int 
+                dtype: int
             timebin:
                 info: Bin width for time averaging
-                dtype: str 
+                dtype: str
         outputs:
             output-ms:
                 info: Name of output MS

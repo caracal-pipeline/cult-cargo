@@ -1,17 +1,18 @@
 _include:
     - (cultcargo):
         - genesis/cult-cargo-base.yml
+        - genesis/casa/casa-inputs.yml
 
 cabs:
     casa.importgmrt:
+        _use: lib.misc.casa6.command-data
         info: "CASA 'importgmrt' task: imports GMRT UVFITS file into an MS"
         extra_info:
             See also: https://casadocs.readthedocs.io/en/stable/api/tt/casatasks.data.importgmrt.html
         command: casatasks.importgmrt
-        _use: lib.misc.casa6.command-data
         inputs:
             fitsfile:
-                info: UVFITS file from GMRT 
+                info: UVFITS file from GMRT
                 dtype: File
                 required: true
         outputs:
